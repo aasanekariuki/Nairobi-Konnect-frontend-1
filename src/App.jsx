@@ -5,20 +5,22 @@ import Driver from './components/Driver';
 import Landing from './components/Landing';
 import Login from './components/Login';
 import Navbar from './components/Navbar';
+import Company from './components/Company'
 import Seller from './components/Seller';
-import Signup from './components/Signup'; // Ensure this matches the component name
 import SignUp from './components/Signup';
 import Stalls from './components/Stalls';
 import User from './components/User';
 
 function App() {
   return (
+    
     <Router>
-     {/* Navbar will be displayed on every page */}
+     <Navbar/>
       <div className="app-content">
         <Routes>
           <Route path="/" element={<Landing />} /> {}
           <Route path="/bus" element={<Bus />} />
+          <Route path="/company/:companyId" element={<Company />} />
           <Route path="/driver" element={<Driver />} />
           <Route path="/login" element={<Login />} />
           <Route path="/seller" element={<Seller />} />
@@ -30,6 +32,5 @@ function App() {
     </Router>
   );
 }
-
 
 export default App;
