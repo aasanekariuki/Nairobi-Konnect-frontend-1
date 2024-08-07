@@ -13,10 +13,10 @@ import User from './components/User';
 function App() {
   return (
     <Router>
-     {/* Navbar will be displayed on every page */}
+     {}
       <div className="app-content">
         <Routes>
-          <Route path="/" element={<Landing />} /> {/* Default route */}
+          <Route path="/" element={<Landing />} /> {}
           <Route path="/bus" element={<Bus />} />
           <Route path="/driver" element={<Driver />} />
           <Route path="/login" element={<Login />} />

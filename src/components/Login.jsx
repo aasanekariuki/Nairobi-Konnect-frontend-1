@@ -1,6 +1,6 @@
 // src/pages/LoginPage.jsx
 import React, { useState } from 'react';
-import './Login.css'; // Make sure the path is correct
+import './Login.css'; 
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -9,8 +9,8 @@ const LoginPage = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        // Here you would typically handle the login logic (e.g., API call)
-        setMessage('Login successful!'); // Replace with actual success message
+        
+        setMessage('Login successful!'); 
     };
 
     return (
