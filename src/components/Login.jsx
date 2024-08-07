@@ -9,8 +9,8 @@ const LoginPage = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        // Here you would typically handle the login logic (e.g., API call)
-        setMessage('Login successful!'); // Replace with actual success message
+        
+        setMessage('Login successful!');
     };
 
     return (
