@@ -54,25 +54,24 @@ const Seller = () => {
   };
 
   return (
-    <div className="position-relative min-vh-100 d-flex align-items-center justify-content-center" style={{ background: 'linear-gradient(to right, #F4A460, #FFFFFF)' }}>
-      <div className="position-absolute top-0 left-0 w-100 h-100 overflow-hidden">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-[#F4A460] to-white">
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
         {images.map((image, index) => (
           <div
             key={index}
-            className="slideshow-image"
+            className="absolute top-0 left-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-1000"
             style={{
               backgroundImage: `url(${image})`,
               animation: `fade ${images.length * 10}s infinite`,
-              opacity: 0,
               animationDelay: `${index * (10 / images.length)}s`,
             }}
           />
         ))}
       </div>
-      <div className="position-relative bg-custom text-dark p-3 rounded-3xl shadow-2xl w-100" style={{ maxWidth: '600px', margin: '0 auto', borderRadius: '1rem' }}>
-        <div className="d-flex flex-column flex-md-row">
-          <div style={{ flex: 1, marginRight: '1rem' }}>
-            <h2 className="text-center mb-3" style={{ fontWeight: 'bold', color: '#3E2723', fontSize: '1.5rem' }}>Post a New Product</h2>
+      <div className="relative bg-[#F4A460] text-dark p-6 rounded-3xl shadow-2xl w-full max-w-3xl"> {/* Increased max width */}
+        <div className="flex flex-col md:flex-row">
+          <div className="flex-1 mr-0 md:mr-4">
+            <h2 className="text-center mb-4 font-bold text-[#3E2723] text-xl">Post a New Product</h2>
             <form onSubmit={handleSubmit}>
               {[
                 { name: 'name', type: 'text', label: 'Product Name' },
@@ -82,16 +81,15 @@ const Seller = () => {
                 { name: 'shop_name', type: 'text', label: 'Shop Name' },
                 { name: 'location', type: 'text', label: 'Location' },
               ].map(({ name, type, label }) => (
-                <div key={name} className="mb-2">
-                  <label className="form-label" style={{ fontSize: '1rem', color: '#3E2723' }}>{label}</label>
+                <div key={name} className="mb-4">
+                  <label className="block text-[#3E2723] text-sm font-medium">{label}</label>
                   {type === 'textarea' ? (
                     <textarea
                       name={name}
                       value={product[name]}
                       onChange={handleChange}
-                      className="form-control rounded-lg"
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[#FFF8E1] text-[#3E2723]"
                       required
-                      style={{ backgroundColor: '#FFF8E1', color: '#3E2723', borderRadius: '1rem' }}
                     ></textarea>
                   ) : (
                     <input
@@ -99,21 +97,19 @@ const Seller = () => {
                       name={name}
                       value={product[name]}
                       onChange={handleChange}
-                      className="form-control rounded-lg"
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[#FFF8E1] text-[#3E2723]"
                       required
-                      style={{ backgroundColor: '#FFF8E1', color: '#3E2723', borderRadius: '1rem' }}
                     />
                   )}
                 </div>
               ))}
-              <div className="mb-2">
-                <label className="form-label" style={{ fontSize: '1rem', color: '#3E2723' }}>Product Image (Upload or URL)</label>
+              <div className="mb-4">
+                <label className="block text-[#3E2723] text-sm font-medium">Product Image (Upload or URL)</label>
                 <input
                   type="file"
                   name="image"
                   onChange={handleChange}
-                  className="form-control rounded-lg"
-                  style={{ backgroundColor: '#FFF8E1', color: '#3E2723', borderRadius: '1rem' }}
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[#FFF8E1] text-[#3E2723]"
                 />
                 <input
                   type="text"
@@ -121,86 +117,29 @@ const Seller = () => {
                   value={product.imageUrl}
                   onChange={handleChange}
                   placeholder="Or enter image URL"
-                  className="form-control rounded-lg mt-2"
-                  style={{ backgroundColor: '#FFF8E1', color: '#3E2723', borderRadius: '1rem' }}
+                  className="mt-2 block w-full p-2 border border-gray-300 rounded-lg bg-[#FFF8E1] text-[#3E2723]"
                 />
               </div>
-              <div className="d-grid gap-2">
-                <button type="submit" className="btn btn-custom rounded-full">
+              <div className="grid gap-2">
+                <button type="submit" className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-[#FF6F61] to-[#004D40] text-white font-bold rounded-full hover:scale-105 transition-transform">
                   Post Product
                 </button>
               </div>
             </form>
           </div>
-          <img src="https://img.pikbest.com/photo/20240716/orange-line-on-stock-graph-indicates-bearish-trend-and-global-issues_10670625.jpg!f305cw" alt="Side Image" style={{ maxWidth: '300px', borderRadius: '1rem', objectFit: 'cover' }} />
+          <img
+            src="https://img.pikbest.com/photo/20240716/orange-line-on-stock-graph-indicates-bearish-trend-and-global-issues_10670625.jpg!f305cw"
+            alt="Side Image"
+            className="max-w-xs md:max-w-sm rounded-lg object-cover mt-4 md:mt-0"
+            style={{ width: '350px', height: '750px' }} // Adjust width as needed
+          />
         </div>
       </div>
       <style>
         {`
-          .slideshow-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-          }
-
           @keyframes fade {
             0%, 20%, 100% { opacity: 0; }
             25%, 95% { opacity: 1; }
-          }
-
-          .bg-custom {
-            background-color: #F4A460;
-          }
-
-          .btn-custom {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 13rem;
-            overflow: hidden;
-            height: 3rem;
-            background-size: 300% 300%;
-            backdrop-filter: blur(1rem);
-            border-radius: 2rem;
-            transition: 0.5s;
-            animation: gradient_301 5s ease infinite;
-            border: none; /* Remove border */
-            background-image: linear-gradient(137.48deg, #FF6F61 10%, #004D40 45%); /* Bright coral to dark teal */
-            margin-top: 10px; /* Reduced margin */
-            color: white; /* Text color */
-            font-weight: bold; /* Make text bolder */
-          }
-
-          .btn-custom:hover {
-            transform: scale(1.1);
-            color: white;
-          }
-
-          .btn-custom:active {
-            border: double 4px #00251a; /* Even darker teal on click */
-            background-origin: border-box;
-            background-clip: content-box, border-box;
-            animation: none;
-          }
-
-          @keyframes gradient_301 {
-            0% {
-              background-position: 0% 50%;
-            }
-
-            50% {
-              background-position: 100% 50%;
-            }
-
-            100% {
-              background-position: 0% 50%;
-            }
           }
         `}
       </style>
