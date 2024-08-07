@@ -6,6 +6,7 @@ import Landing from './components/Landing';
 import Login from './components/Login';
 import Navbar from './components/Navbar';
 import Seller from './components/Seller';
+import Signup from './components/Signup'; // Ensure this matches the component name
 import SignUp from './components/Signup';
 import Stalls from './components/Stalls';
 import User from './components/User';
@@ -13,6 +14,15 @@ import User from './components/User';
 function App() {
   return (
     <Router>
+      <div>
+        <Navbar />
+        <Routes>
+          <Route path="/bus" element={<Bus />} />
+          <Route path="/driver" element={<Driver />} />
+          <Route path="/landing" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/seller" element={<Seller />} />
+          <Route path="/signup" element={<Signup />} /> {/* Ensure this matches the import */}
      {/* Navbar will be displayed on every page */}
       <div className="app-content">
         <Routes>
@@ -29,5 +39,6 @@ function App() {
     </Router>
   );
 }
+
 
 export default App;
