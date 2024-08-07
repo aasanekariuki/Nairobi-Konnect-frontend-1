@@ -1,0 +1,398 @@
+/* Navbar.css */
+
+:root {
+    --dark-blue: #1a237e; /* Dark blue for accents */
+    --blue: #3949ab; /* Lighter blue for additional accents */
+    --white: #ffffff; /* White background */
+    --black: #000000; /* Black text */
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: var(--white); /* White background */
+    color: var(--black); /* Black text */
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--dark-blue); /* Dark blue for the brand */
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: var(--blue); /* Change color to lighter blue on hover */
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.navbar-item {
+    color: var(--black); /* Black text */
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.navbar-item:hover {
+    color: var(--dark-blue); /* Dark blue on hover */
+}
+/* Navbar.css */
+
+.navbar {
+    background-color: #333;
+    padding: 10px;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5em;
+}
+
+.navbar-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar-menu li {
+    margin: 0 15px;
+}
+
+.navbar-item {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-item .icon {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+.navbar-item:hover {
+    color: #ddd;
+}
+/* General styles for the navbar */
+.navbar {
+    position: fixed; /* Fixes the navbar to the top of the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #333; /* Dark background for the navbar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow to create floating effect */
+    z-index: 1000; /* Ensures it stays above other elements */
+    transition: background 0.3s ease; /* Smooth transition for background change */
+}
+
+/* Container to center the content inside the navbar */
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px; /* Adjust padding as needed */
+    max-width: 1200px; /* Limit width for large screens */
+    margin: 0 auto; /* Center the container */
+}
+
+/* Styling for the brand link */
+.navbar-brand {
+    color: #fff; /* White text color */
+    font-size: 24px; /* Adjust font size */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make the font bold */
+}
+
+/* Menu items container */
+.navbar-menu {
+    list-style: none; /* Remove default list styling */
+    display: flex; /* Arrange menu items in a row */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+}
+
+/* Styling for each menu item */
+.navbar-menu li {
+    margin: 0 15px; /* Space between items */
+}
+
+/* Styling for menu item links */
+.navbar-item {
+    color: #fff; /* White text color */
+    text-decoration: none; /* Remove underline */
+    font-size: 16px; /* Adjust font size */
+    display: flex;
+    align-items: center; /* Center icon and text */
+    position: relative; /* Positioning context for the hover line */
+}
+
+/* Icon styles */
+.icon {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+/* Hover effect for menu items */
+.navbar-item::after {
+    content: ''; /* Empty content to create the line */
+    position: absolute;
+    left: 0;
+    bottom: -5px; /* Position the line just below the text */
+    width: 100%; /* Full width of the item */
+    height: 2px; /* Line thickness */
+    background: #f39c12; /* Line color, change as needed */
+    transform: scaleX(0); /* Initially hidden */
+    transition: transform 0.3s ease; /* Smooth transition for line appearance */
+}
+
+.navbar-item:hover::after {
+    transform: scaleX(1); /* Show the line on hover */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .navbar-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: flex-start; /* Align items to the left */
+    }
+
+    .navbar-menu {
+        flex-direction: column; /* Stack menu items vertically */
+        width: 100%; /* Full width for the menu */
+        margin-top: 10px; /* Space above the menu */
+    }
+
+    .navbar-menu li {
+        margin: 10px 0; /* Space between vertical items */
+    }
+}
+
+
+/* General styles for the navbar */
+.navbar {
+    position: fixed; /* Fixes the navbar to the top of the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow to create floating effect */
+    z-index: 1000; /* Ensures it stays above other elements */
+    backdrop-filter: blur(10px); /* Adds a blur effect to the background */
+    transition: background 0.3s ease; /* Smooth transition for background change */
+}
+
+/* Container to center the content inside the navbar */
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px; /* Adjust padding as needed */
+    max-width: 1200px; /* Limit width for large screens */
+    margin: 0 auto; /* Center the container */
+}
+
+/* Styling for the brand link */
+.navbar-brand {
+    color: #fff; /* White text color */
+    font-size: 24px; /* Adjust font size */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make the font bold */
+}
+
+/* Menu items container */
+.navbar-menu {
+    list-style: none; /* Remove default list styling */
+    display: flex; /* Arrange menu items in a row */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+}
+
+/* Styling for each menu item */
+.navbar-menu li {
+    margin: 0 15px; /* Space between items */
+}
+
+/* Styling for menu item links */
+.navbar-item {
+    color: #fff; /* White text color */
+    text-decoration: none; /* Remove underline */
+    font-size: 16px; /* Adjust font size */
+    display: flex;
+    align-items: center; /* Center icon and text */
+    position: relative; /* Positioning context for the hover line */
+}
+
+/* Icon styles */
+.icon {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+/* Hover effect for menu items */
+.navbar-item::after {
+    content: ''; /* Empty content to create the line */
+    position: absolute;
+    left: 0;
+    bottom: -5px; /* Position the line just below the text */
+    width: 100%; /* Full width of the item */
+    height: 2px; /* Line thickness */
+    background: #f39c12; /* Line color, change as needed */
+    transform: scaleX(0); /* Initially hidden */
+    transition: transform 0.3s ease; /* Smooth transition for line appearance */
+}
+
+.navbar-item:hover::after {
+    transform: scaleX(1); /* Show the line on hover */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .navbar-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: flex-start; /* Align items to the left */
+    }
+
+    .navbar-menu {
+        flex-direction: column; /* Stack menu items vertically */
+        width: 100%; /* Full width for the menu */
+        margin-top: 10px; /* Space above the menu */
+    }
+
+    .navbar-menu li {
+        margin: 10px 0; /* Space between vertical items */
+    }
+}
+
+/* General styles for the navbar */
+.navbar {
+    position: fixed; /* Fixes the navbar to the top of the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow to create floating effect */
+    z-index: 1000; /* Ensures it stays above other elements */
+    backdrop-filter: blur(10px); /* Adds a blur effect to the background */
+    transition: background 0.3s ease; /* Smooth transition for background change */
+}
+
+/* Container to center the content inside the navbar */
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px; /* Adjust padding as needed */
+    max-width: 1200px; /* Limit width for large screens */
+    margin: 0 auto; /* Center the container */
+}
+
+/* Styling for the brand link */
+.navbar-brand {
+    color: #fff; /* White text color */
+    font-size: 24px; /* Adjust font size */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make the font bold */
+}
+
+/* Menu items container */
+.navbar-menu {
+    list-style: none; /* Remove default list styling */
+    display: flex; /* Arrange menu items in a row */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+}
+
+/* Styling for each menu item */
+.navbar-menu li {
+    margin: 0 15px; /* Space between items */
+}
+
+/* Styling for menu item links */
+.navbar-item {
+    color: #fff; /* White text color */
+    text-decoration: none; /* Remove underline */
+    font-size: 16px; /* Adjust font size */
+    display: flex;
+    align-items: center; /* Center icon and text */
+    position: relative; /* Positioning context for the hover line */
+}
+
+/* Icon styles */
+.icon {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+/* Hover effect for menu items */
+.navbar-item::after {
+    content: ''; /* Empty content to create the line */
+    position: absolute;
+    left: 0;
+    bottom: -5px; /* Position the line just below the text */
+    width: 100%; /* Full width of the item */
+    height: 2px; /* Line thickness */
+    background: #f39c12; /* Line color, change as needed */
+    transform: scaleX(0); /* Initially hidden */
+    transition: transform 0.3s ease; /* Smooth transition for line appearance */
+}
+
+.navbar-item:hover::after {
+    transform: scaleX(1); /* Show the line on hover */
+}
+
+/* Specific styles for the login button */
+.navbar-item.login-button {
+    background-color: #007bff; /* Blue background color */
+    color: #fff; /* White text color */
+    border: 2px solid #007bff; /* Blue border color */
+    border-radius: 5px; /* Rounded corners */
+    padding: 8px 16px; /* Padding inside the button */
+    font-weight: bold; /* Bold text */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transitions */
+}
+
+.navbar-item.login-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    border-color: #0056b3; /* Darker blue border on hover */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .navbar-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: flex-start; /* Align items to the left */
+    }
+
+    .navbar-menu {
+        flex-direction: column; /* Stack menu items vertically */
+        width: 100%; /* Full width for the menu */
+        margin-top: 10px; /* Space above the menu */
+    }
+
+    .navbar-menu li {
+        margin: 10px 0; /* Space between vertical items */
+    }
+}
+
