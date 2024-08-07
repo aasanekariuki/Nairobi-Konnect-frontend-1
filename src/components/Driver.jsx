@@ -45,27 +45,26 @@ const Driver = () => {
   };
 
   return (
-    <div className="position-relative min-vh-100 d-flex align-items-center justify-content-center" style={{ background: 'linear-gradient(to right, #F4A460, #FFFFFF)' }}>
-      <div className="position-absolute top-0 left-0 w-100 h-100 overflow-hidden">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-[#F4A460] to-white">
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
         {images.map((image, index) => (
           <div
             key={index}
-            className="slideshow-image"
+            className="slideshow-image absolute top-0 left-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-1000"
             style={{
               backgroundImage: `url(${image})`,
               animation: `fade ${images.length * 10}s infinite`,
-              opacity: 0,
               animationDelay: `${index * (10 / images.length)}s`,
             }}
           />
         ))}
       </div>
-      <div className="position-relative bg-custom text-dark p-5 rounded-3xl shadow-2xl w-100" style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '2rem', backgroundColor: '#ADD8E6' }}>
-        <img src="https://cdn.pixabay.com/photo/2019/02/06/10/09/driver-3978839_1280.jpg" alt="Logo" className="logo-image mb-4" />
-        <h2 className="text-center mb-4" style={{ fontWeight: 'bold', color: '#3E2723' }}>Welcome, Driver</h2>
-        <div className="d-flex flex-column flex-md-row">
-          <div style={{ flex: 1, marginRight: '2rem' }}>
-            <h3 className="text-center mb-4" style={{ fontWeight: 'bold', color: '#3E2723' }}>Add a New Route</h3>
+      <div className="relative bg-[#ADD8E6] text-dark p-8 rounded-3xl shadow-2xl w-full max-w-2xl">
+        <img src="https://cdn.pixabay.com/photo/2019/02/06/10/09/driver-3978839_1280.jpg" alt="Logo" className="mb-4 w-24 h-24 rounded-full mx-auto transition-transform hover:scale-110" />
+        <h2 className="text-center mb-4 font-bold text-[#3E2723] text-xl">Welcome, Driver</h2>
+        <div className="flex flex-col md:flex-row">
+          <div className="flex-1 mr-4">
+            <h3 className="text-center mb-4 font-bold text-[#3E2723]">Add a New Route</h3>
             <form onSubmit={handleSubmit}>
               {[
                 { name: 'start_location', type: 'text', label: 'Start Location' },
@@ -73,36 +72,35 @@ const Driver = () => {
                 { name: 'departure_time', type: 'datetime-local', label: 'Departure Time' },
                 { name: 'arrival_time', type: 'datetime-local', label: 'Arrival Time' }
               ].map(({ name, type, label }) => (
-                <div key={name} className="mb-3">
-                  <label className="form-label" style={{ fontSize: '1.1rem', color: '#3E2723' }}>{label}</label>
+                <div key={name} className="mb-4">
+                  <label className="block text-[#3E2723] text-sm font-medium">{label}</label>
                   <input
                     type={type}
                     name={name}
                     value={route[name]}
                     onChange={handleChange}
-                    className="form-control rounded-lg"
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[#FFF8E1] text-[#3E2723]"
                     required
-                    style={{ backgroundColor: '#FFF8E1', color: '#3E2723', borderRadius: '1rem' }}
                   />
                 </div>
               ))}
               <div className="d-grid gap-2">
-                <button type="submit" className="btn btn-custom rounded-full">
+                <button type="submit" className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-[#FF6F61] to-[#004D40] text-white font-bold rounded-full hover:scale-105 transition-transform">
                   Add Route
                 </button>
               </div>
             </form>
           </div>
-          <div style={{ flex: 1 }}>
-            <h3 className="text-center mb-4" style={{ fontWeight: 'bold', color: '#3E2723' }}>View Booked Seats & Tickets</h3>
-            <button onClick={fetchTickets} className="btn btn-custom rounded-full mb-4">
+          <div className="flex-1">
+            <h3 className="text-center mb-4 font-bold text-[#3E2723]">View Booked Seats & Tickets</h3>
+            <button onClick={fetchTickets} className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-[#FF6F61] to-[#004D40] text-white font-bold rounded-full hover:scale-105 transition-transform mb-4">
               Fetch Tickets
             </button>
             {tickets.length > 0 ? (
-              <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+              <div className="max-h-96 overflow-y-auto">
                 {tickets.map((ticket, index) => (
-                  <div key={index} className="card mb-3" style={{ backgroundColor: '#FFF8E1', color: '#3E2723', borderRadius: '1rem' }}>
-                    <div className="card-body">
+                  <div key={index} className="card mb-3 bg-[#FFF8E1] text-[#3E2723] rounded-lg">
+                    <div className="card-body p-4">
                       <h5 className="card-title">Route ID: {ticket.route_id}</h5>
                       <p className="card-text">Start Location: {ticket.start_location}</p>
                       <p className="card-text">End Location: {ticket.end_location}</p>
@@ -127,84 +125,9 @@ const Driver = () => {
       </div>
       <style>
         {`
-          .slideshow-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-          }
-
           @keyframes fade {
             0%, 20%, 100% { opacity: 0; }
             25%, 95% { opacity: 1; }
-          }
-
-          .bg-custom {
-            background-color: #ADD8E6;
-          }
-
-          .btn-custom {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 13rem;
-            overflow: hidden;
-            height: 3rem;
-            background-size: 300% 300%;
-            backdrop-filter: blur(1rem);
-            border-radius: 2rem;
-            transition: 0.5s;
-            animation: gradient_301 5s ease infinite;
-            border: none;
-            background-image: linear-gradient(137.48deg, #FF6F61 10%, #004D40 45%);
-            margin-top: 20px;
-            color: white;
-            font-weight: bold;
-          }
-
-          .btn-custom:hover {
-            transform: scale(1.1);
-            color: white;
-          }
-
-          .btn-custom:active {
-            border: double 4px #00251a;
-            background-origin: border-box;
-            background-clip: content-box, border-box;
-            animation: none;
-          }
-
-          @keyframes gradient_301 {
-            0% {
-              background-position: 0% 50%;
-            }
-
-            50% {
-              background-position: 100% 50%;
-            }
-
-            100% {
-              background-position: 0% 50%;
-            }
-          }
-
-          .logo-image {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 100px; /* Set width */
-            height: 100px; /* Set height to the same value for a circle */
-            border-radius: 50%; /* Make it circular */
-            transition: transform 0.3s ease;
-          }
-
-          .logo-image:hover {
-            transform: scale(1.1);
           }
         `}
       </style>
