@@ -45,7 +45,7 @@ const Driver = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-[#6a60f4] to-dark-blue">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-[#1c1a36] to-dark-blue">
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
         {images.map((image, index) => (
           <div
@@ -85,7 +85,7 @@ const Driver = () => {
                 </div>
               ))}
               <div className="d-grid gap-2">
-                <button type="submit" className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-[#7c68d6] to-[#004D40] text-white font-bold rounded-full hover:scale-105 transition-transform">
+                <button type="submit" className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-[#252138] to-[#004D40] text-white font-bold rounded-full hover:scale-105 transition-transform">
                   Add Route
                 </button>
               </div>
