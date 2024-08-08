@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './Login.css'; 
 
+
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -9,7 +10,10 @@ const LoginPage = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        setMessage('Login successful!');
+
+     
+        setMessage('Login successful!'); 
+
     };
 
     return (
@@ -53,3 +57,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
