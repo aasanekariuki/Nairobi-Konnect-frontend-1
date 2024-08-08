@@ -33,7 +33,7 @@ function UserCard(props) {
 const User = () => {
   return (
     <div className="flex flex-col items-center min-h-screen gradient-background p-6">
-      <h1 className="text-5xl font-bold text-center text-white mb-12">
+      <h1 className="text-5xl font-extrabold text-center text-white mb-16 mt-12 shadow-lg">
         Services Available
       </h1>
       <div className="flex flex-wrap justify-center gap-12">
