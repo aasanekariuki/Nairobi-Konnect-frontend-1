@@ -1,6 +1,5 @@
 // src/pages/LoginPage.jsx
 import React, { useState } from 'react';
-
 import './Login.css'; 
 
 
@@ -11,8 +10,9 @@ const LoginPage = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
+     setMessage('Login successful!'); 
 
-        setMessage('Login successful!');
+
     };
 
     return (

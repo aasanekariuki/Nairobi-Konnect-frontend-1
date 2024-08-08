@@ -8,9 +8,17 @@ import Login from './components/Login';
 import Navbar from './components/Navbar';
 import Company from './components/Company';
 import Seller from './components/Seller';
+
+
+
+
+import SignUp from './components/Signup';
+import StallsPage from './components/Stalls'; 
+
 import SignUp from './components/Signup';
 import StallsPage from './components/Stalls'; 
 import Stalls from './components/Stalls';
+
 import User from './components/User';
 import Signup from './components/Signup';
 
@@ -26,9 +34,18 @@ function App() {
           <Route path="/driver" element={<Driver />} />
           <Route path="/login" element={<Login />} />
           <Route path="/seller" element={<Seller />} />
+
+
+          <Route path="/stalls" element={<Stalls />} />
+
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/stalls" element={<StallsPage />} /> {/* Use StallsPage here */}
+
+
           <Route path="/signup" element={<SignUp />} />
           <Route path="/stalls" element={<StallsPage />} /> 
           <Route path="/stalls" element={<Stalls />} />
+
           <Route path="/user" element={<User />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
