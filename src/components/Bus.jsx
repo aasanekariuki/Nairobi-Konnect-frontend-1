@@ -44,7 +44,7 @@ const Buses = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-custom-blue p-8">
-      <h1 className="text-5xl font-bold text-center text-white mb-16 mt-12"> {/* Adjusted margin */}
+      <h1 className="text-5xl font-bold text-center text-white mb-16 mt-12"> 
         Available Bus Companies
       </h1>
       <div className="flex flex-wrap justify-center gap-8">
