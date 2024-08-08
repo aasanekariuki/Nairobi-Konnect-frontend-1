@@ -1,3 +1,4 @@
+/* src/pages/LoginPage.css */
 @keyframes gradientShift {
   0% { background-position: 0% 0%; }
   50% { background-position: 100% 100%; }
@@ -37,6 +38,7 @@
   background: linear-gradient(135deg, #1E1E2F, #2F2F4F, #3A3A6C, #4D4D87) no-repeat;
   background-size: 400% 400%;
   animation: gradientShift 20s ease infinite;
+  background: #001f3f; /* Solid dark blue background */
   font-family: 'Poppins', sans-serif;
   color: #F4F4F4;
 }
@@ -209,6 +211,22 @@
   color: #D0CFE7;
 }
 
+
+}
+
+.side-text h3 {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  position: relative;
+  display: inline-block;
+  color: #EDE8F5;
+}
+
+.side-text p {
+  line-height: 1.5;
+  color: #D0CFE7;
+}
+
 .side-text::before {
   content: '';
   position: absolute;
@@ -227,3 +245,5 @@
   position: relative;
   z-index: 2;
 }
+}
+

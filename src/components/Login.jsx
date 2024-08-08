@@ -1,6 +1,9 @@
 // src/pages/LoginPage.jsx
 import React, { useState } from 'react';
+
 import './Login.css'; 
+import './Login.css'; // Make sure the path is correct
+
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -9,8 +12,10 @@ const LoginPage = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        
+     
         setMessage('Login successful!'); 
+
+        setMessage('Login successful!');
     };
 
     return (
@@ -54,3 +59,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
