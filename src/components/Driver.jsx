@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const images = [
-  'https://www.esi-africa.com/wp-content/uploads/2023/05/basigo-metrotrans.jpeg',
-  'https://www.techarena.co.ke/wp-content/uploads/2022/11/BasiGo.jpg',
-  'https://nnmedia.nation.africa/uploads/2023/06/Electric-Bus.jpg',
-  'https://i.ytimg.com/vi/EpAHcV-xPOg/maxresdefault.jpg',
+  '',
+  '',
+  '',
+  '',
 ];
 
 const Driver = () => {
