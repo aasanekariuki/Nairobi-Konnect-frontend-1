@@ -10,9 +10,8 @@ const LoginPage = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
+     setMessage('Login successful!'); 
 
-     
-        setMessage('Login successful!'); 
 
     };
 
