@@ -35,11 +35,7 @@ const Navbar = () => {
                             <FontAwesomeIcon icon={faEnvelope} className="icon" /> Contact
                         </a>
                     </li>
-                    <li>
-                        <Link to="/signup" className="navbar-item">
-                            <FontAwesomeIcon icon={faSignInAlt} className="icon" /> Signup
-                        </Link>
-                    </li>
+                
                     <li>
                         <Link to="/login" className="navbar-item login-button">
                             <FontAwesomeIcon icon={faSignInAlt} className="icon" /> Login
