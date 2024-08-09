@@ -244,17 +244,56 @@ const LandingPage = () => {
 </section>
 
 
+<section id="contact" className="contact">
+    <div className="contact-container">
+        <h2 className="contact-title">Get in Touch</h2>
+        <form className="contact-form">
+            <div className="form-group">
+                <label htmlFor="name" className="contact-label">Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    className="contact-input"
+                    placeholder="Your Name"
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="email" className="contact-label">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    className="contact-input"
+                    placeholder="you@example.com"
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="message" className="contact-label">Message</label>
+                <textarea
+                    id="message"
+                    className="contact-textarea"
+                    placeholder="Your Message"
+                />
+            </div>
+            <button
+                type="submit"
+                className="contact-submit"
+            >
+                Send Message
+            </button>
+        </form>
+    </div>
+</section>
 
-            <footer className="footer">
+<footer className="footer">
     <div className="footer-container">
         <div className="social-media">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                 <i className="fab fa-facebook-f"></i>
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                 <i className="fab fa-twitter"></i>
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                 <i className="fab fa-instagram"></i>
             </a>
             {/* <!-- More social media links --> */}
@@ -262,49 +301,8 @@ const LandingPage = () => {
         <p>&copy; 2024 NairobiKonnect. All rights reserved.</p>
     </div>
 </footer>
+</div>
 
-
-            <section id="contact" className="contact">
-                <div className="contact-container">
-                    <h2 className="contact-title">Get in Touch</h2>
-                    <form className="contact-form">
-                        <div className="form-group">
-                            <label htmlFor="name" className="contact-label">Name</label>
-                            <input
-                                type="text"
-                                id="name"
-                                className="contact-input"
-                                placeholder="Your Name"
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="email" className="contact-label">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                className="contact-input"
-                                placeholder="you@example.com"
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="message" className="contact-label">Message</label>
-                            <textarea
-                                id="message"
-                                className="contact-textarea"
-                                placeholder="Your Message"
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className="contact-submit"
-                        >
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-            </section>
-        </div>
-        
 
         
     );
