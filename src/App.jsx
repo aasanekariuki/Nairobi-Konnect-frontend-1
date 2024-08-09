@@ -6,7 +6,7 @@ import Landing from './components/Landing';
 import Login from './components/Login';
 import Navbar from './components/Navbar';
 import Seller from './components/Seller';
-import SignUp from './components/Signup';
+// import SignUp from './components/Signup';
 import Stalls from './components/Stalls';
 import User from './components/User';
 
@@ -21,7 +21,7 @@ function App() {
           <Route path="/driver" element={<Driver />} />
           <Route path="/login" element={<Login />} />
           <Route path="/seller" element={<Seller />} />
-          <Route path="/Signup" element={<SignUp />} />
+          {/* <Route path="/Signup" element={<SignUp />} /> */} 
           <Route path="/stalls" element={<Stalls />} />
           <Route path="/user" element={<User />} />
         </Routes>
