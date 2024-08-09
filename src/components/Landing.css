@@ -6,6 +6,10 @@
     --accent-color: #0077cc; 
     --text-color: #f0f0f0; 
     --bg-color: #121212; 
+    --hero-background-1: url('https://i.ytimg.com/vi/ofzQqJNEYBk/maxresdefault.jpg');
+    --hero-background-2: url('https://img.freepik.com/premium-photo/nairobi-city-county-kenyas-capital-cityscapes-skyline-skyscrapers-highrise-buildings-architecture_257688-277.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1722297600&semt=ais_hybrid');
+    --hero-background-3: url('https://www.voyagekenya.fr/cdn/ke-public/nairobi_centre_ville.jpg');
+    --hero-background-4: url('https://media.cnn.com/api/v1/images/stellar/prod/230202121817-basigo-electric-bus-nairobi-kenya-2.jpg?c=original');
 }
 
 * {
@@ -18,9 +22,20 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
+    line-height: 1.6;
 }
 
+/* General Styles */
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
+h1, h2, h3 {
+    margin-bottom: 1rem;
+}
+
+/* Hero Section */
 .hero {
     height: 100vh;
     display: flex;
@@ -32,6 +47,8 @@ body {
     background-repeat: no-repeat;
     animation: backgroundPulse 10s infinite alternate;
     overflow: hidden;
+    color: var(--text-color);
+    text-align: center;
 }
 
 .hero-content {
@@ -44,23 +61,19 @@ body {
 .hero-title {
     font-size: 4rem;
     font-weight: 700;
-    color: var(--text-color);
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
     margin-bottom: 1rem;
-    position: relative;
     display: inline-block;
     padding: 0.5rem;
     border: 5px solid var(--accent-color);
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.4); 
-    
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .hero-description {
     font-size: 1.5rem;
-    color: var(--text-color);
     margin-bottom: 2rem;
-    background-color: rgba(0, 0, 0, 0.5); 
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 1rem;
     border-radius: 5px;
 }
@@ -69,7 +82,6 @@ body {
     padding: 1rem 2rem;
     font-size: 1.2rem;
     background-color: var(--accent-color);
-    color: var(--text-color);
     border: none;
     border-radius: 50px;
     cursor: pointer;
@@ -84,344 +96,129 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-30px);
-    }
-    60% {
-        transform: translateY(-15px);
-    }
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
-    }
-    50% {
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
-    }
-}
-
-@keyframes backgroundPulse {
-    0% {
-        background-image: url('https://i.ytimg.com/vi/ofzQqJNEYBk/maxresdefault.jpg');
-    }
-    50% {
-        background-image: url('https://img.freepik.com/premium-photo/nairobi-city-county-kenyas-capital-cityscapes-skyline-skyscrapers-highrise-buildings-architecture_257688-277.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1722297600&semt=ais_hybrid');
-    }
-    100% {
-        background-image: url('https://www.voyagekenya.fr/cdn/ke-public/nairobi_centre_ville.jpg');
-    }
-    100% {
-        background-image: url('https://media.cnn.com/api/v1/images/stellar/prod/230202121817-basigo-electric-bus-nairobi-kenya-2.jpg?c=original');
-    }
-}
-
-
-
-.services {
-    padding: 5rem 0;
-    background-color: var(--primary-color);
-}
-
-.services-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.services-title {
+/* About Section */
+.about {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     text-align: center;
-    font-size: 3rem;
-    margin-bottom: 3rem;
-    color: var(--accent-color);
-}
-
-.services-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
-.service-card {
-    background-color: var(--secondary-color);
-    border-radius: 15px;
-    padding: 2rem;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-}
-
-.service-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 1rem;
-    background-color: var(--accent-color);
-    border-radius: 50%;
-}
-
-.service-title {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--accent-color);
-}
-
-.service-description {
-    font-size: 1rem;
     color: var(--text-color);
-}
-
-
-.contact {
-    padding: 5rem 0;
-    background-color: var(--primary-color);
-}
-
-.contact-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.contact-title {
-    text-align: center;
-    font-size: 3rem;
-    margin-bottom: 3rem;
-    color: var(--text-color);
-}
-
-.contact-form {
-    background-color: var(--secondary-color);
-    padding: 3rem;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.contact-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-}
-
-.contact-input,
-.contact-textarea {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #333;
-    border-radius: 5px;
-    font-size: 1rem;
-    color: var(--text-color);
-    background-color: var(--bg-color);
-}
-
-.contact-submit {
-    width: 100%;
-    padding: 1rem;
-    background-color: var(--accent-color);
-    color: var(--text-color);
-    border: none;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.contact-submit:hover {
-    background-color: #005fa3;
-}
-
-
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 3rem;
-    }
-
-    .hero-description {
-        font-size: 1.2rem;
-    }
-
-    .services-list {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-.scroll-to-top {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background-color: var(--primary-color);
-    color: var(--text-color);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.scroll-to-top:hover {
-    background-color: var(--accent-color);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-}
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-:root {
-    --primary-color: #00274d; 
-    --secondary-color: #000000; 
-    --accent-color: #0077cc; 
-    --text-color: #f0f0f0; 
-    --bg-color: #121212; 
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-}
-
-
-.hero {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: relative;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    animation: backgroundPulse 10s infinite alternate;
     overflow: hidden;
 }
 
-.hero-content {
-    text-align: center;
-    z-index: 2;
-    position: relative;
-    padding: 2rem;
+.about::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: -100px;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    z-index: 0;
+    animation: float 6s ease-in-out infinite;
 }
 
-.hero-title {
-    font-size: 4rem;
-    font-weight: 700;
-    color: var(--text-color);
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-    margin-bottom: 1rem;
-    position: relative;
-    display: inline-block;
-    padding: 0.5rem;
-    border: 5px solid var(--accent-color);
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.4); 
-    
-}
-
-.hero-description {
-    font-size: 1.5rem;
-    color: var(--text-color);
-    margin-bottom: 2rem;
-    background-color: rgba(0, 0, 0, 0.5); 
-    padding: 1rem;
-    border-radius: 5px;
-}
-
-.cta-button {
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    background-color: var(--accent-color);
-    color: var(--text-color);
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.about-title {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
     position: relative;
     z-index: 1;
-    animation: pulse 1.5s infinite;
 }
 
-.cta-button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+.about-description {
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
 }
 
+.about-features {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+}
 
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
+.feature-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 10px;
+    width: 200px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.about-cta {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: darken(var(--accent-color), 10%);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    border: 2px solid var(--accent-color);
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: var(--accent-color);
+    color: #fff;
+}
+
+@keyframes float {
+    0%, 100% {
         transform: translateY(0);
     }
-    40% {
-        transform: translateY(-30px);
-    }
-    60% {
-        transform: translateY(-15px);
-    }
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
-    }
     50% {
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
-    }
-}
-
-@keyframes backgroundPulse {
-    0% {
-        background-image: url('https://i.ytimg.com/vi/ofzQqJNEYBk/maxresdefault.jpg');
-    }
-    50% {
-        background-image: url('https://img.freepik.com/premium-photo/nairobi-city-county-kenyas-capital-cityscapes-skyline-skyscrapers-highrise-buildings-architecture_257688-277.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1722297600&semt=ais_hybrid');
-    }
-    100% {
-        background-image: url('https://www.voyagekenya.fr/cdn/ke-public/nairobi_centre_ville.jpg');
-    }
-    100% {
-        background-image: url('https://media.cnn.com/api/v1/images/stellar/prod/230202121817-basigo-electric-bus-nairobi-kenya-2.jpg?c=original');
+        transform: translateY(-20px);
     }
 }
 
 
-
+/* Services Section */
 .services {
     padding: 5rem 0;
-    background-color: var(--primary-color);
+    background: var(--primary-color);
+    color: #fff;
+    text-align: center;
 }
 
 .services-container {
@@ -431,150 +228,593 @@ body {
 }
 
 .services-title {
-    text-align: center;
     font-size: 3rem;
     margin-bottom: 3rem;
-    color: var(--accent-color);
+    color: #fff;
 }
 
 .services-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
 }
 
 .service-card {
-    background-color: var(--secondary-color);
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
     border-radius: 15px;
     padding: 2rem;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--text-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .service-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--text-color);
 }
 
 .service-icon {
     width: 80px;
     height: 80px;
     margin: 0 auto 1rem;
-    background-color: var(--accent-color);
+    background: var(--accent-color);
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:var(--text-color);
+    svg {
+        width: 40px;
+        height: 40px;
+    }
 }
 
 .service-title {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--accent-color);
+    color:var(--text-color);
 }
 
 .service-description {
     font-size: 1rem;
-    color: var(--text-color);
+    margin-bottom: 1.5rem;
+}
+
+.service-link {
+    font-size: 1rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 2px solid var(--primary-color);
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.service-link:hover {
+    color: #00796b;
+    border-color: #00796b;
 }
 
 
-.contact {
-    padding: 5rem 0;
+/* Testimonials Section */
+.testimonials {
+    padding: 4rem 2rem;
     background-color: var(--primary-color);
+    text-align: center;
+}
+
+.testimonials-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+    position: relative;
+    display: inline-block;
+}
+
+.testimonials-title::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background-color: var(--accent-color);
+    border-radius: 2px;
+}
+
+.testimonial {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+    background: var(--secondary-background-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.testimonial::before {
+    content: "\201C";
+    font-size: 4rem;
+    color: var(--accent-color);
+    position: absolute;
+    top: -10px;
+    left: 20px;
+}
+
+.testimonial-quote {
+    font-size: 1.25rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.testimonial-author {
+    font-size: 1rem;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.testimonial-form {
+    margin-top: 3rem;
+    background: var(--secondary-background-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.testimonial-form h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.testimonial-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.testimonial-form input,
+.testimonial-form textarea {
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.testimonial-form input:focus,
+.testimonial-form textarea:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.testimonial-form button {
+    background-color: var(--accent-color);
+    color: var(--button-text-color);
+    border: none;
+    padding: 0.75rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.testimonial-form button:hover {
+    background-color: var(--accent-color-dark);
+    transform: scale(1.05);
+}
+
+.testimonial-form button:active {
+    background-color: var(--accent-color);
+    transform: scale(1);
+}
+
+
+/* Featured Locations Section */
+.locations {
+    padding: 4rem 2rem;
+    background-color: var(--primary-color);
+    text-align: center;
+}
+
+.locations-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #fff;
+}
+
+.location-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.location-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+    transition: transform 0.3s ease;
+}
+
+.location-card:hover {
+    transform: translateY(-5px);
+}
+
+.location-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.location-title {
+    font-size: 1.5rem;
+    margin: 1rem;
+    color: #fff;
+}
+
+.location-description {
+    font-size: 1rem;
+    color: #666;
+    margin: 0 1rem 1.5rem 1rem;
+}
+
+/* Call to Action Section */
+.cta {
+    padding: 4rem 2rem;
+    background-color: var(--primary-color);
+    color: #fff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    clip-path: ellipse(70% 80% at 50% 50%);
+}
+
+.cta-container {
+    position: relative;
+    z-index: 2;
+}
+
+.cta-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.cta-description {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.cta-button {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    background-color: #fff;
+    color: var(--accent-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button:hover {
+    background-color: #e6e6e6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cta-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Storytelling Section */
+.storytelling {
+    padding: 4rem 2rem;
+    background:  var(--primary-color);
+    color: #333;
+    text-align: center;
+}
+
+.storytelling-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color:  #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.storytelling-content {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap onto the next line on smaller screens */
+    justify-content: center; /* Center the items horizontally */
+    gap: 2rem;
+}
+
+.storytelling-item {
+    flex: 1 1 300px; /* Grow and shrink, with a base width of 300px */
+    max-width: 320px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.storytelling-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.storytelling-svg {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.storytelling-svg svg {
+    width: 120px;
+    height: 120px;
+    transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+.storytelling-item:hover .storytelling-svg svg {
+    transform: scale(1.2);
+    fill: #ff5722; /* Change fill color on hover */
+}
+
+.storytelling-text {
+    font-size: 1.125rem;
+    color: #fff;
+    line-height: 1.6;
+    margin-top: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.storytelling-item:hover .storytelling-text {
+    color: #555;
+}
+
+/* Add animated borders */
+.storytelling-svg svg {
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-image: linear-gradient(45deg, #ff5722, #ffeb3b) 1;
+}
+
+
+
+/* Partners Section */
+.partners {
+    padding: 4rem 2rem;
+    background:var(--primary-color);
+    text-align: center;
+    color: #fff; /* Adjusted text color to ensure readability against the gradient */
+}
+
+.partners-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.partners-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.partner-logo {
+    width: 150px;
+    height: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.partner-logo:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Add some extra styling for the container */
+.partners-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.partner-logo img {
+    border-radius: 10px;
+    border: 2px solid #fff;
+    padding: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .partner-logo {
+        width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .partner-logo {
+        width: 100px;
+    }
+}
+
+/* Footer Section */
+.footer {
+    background:var(--primary-color);
+    color: #fff;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.social-media {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.social-media a {
+    color: #fff;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.social-media a:hover {
+    color: #ffeb3b; /* Accent color for hover effect */
+}
+
+.footer p {
+    margin: 0;
+    font-size: 1rem;
+}
+/* Contact Section */
+.contact {
+    padding: 5rem 2rem;
+    background: var(--primary-color);
+    color: #fff;
+    text-align: center;
+    margin-bottom: 2rem; /* Added margin to separate from footer */
 }
 
 .contact-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 1.5rem;
 }
 
 .contact-title {
-    text-align: center;
-    font-size: 3rem;
-    margin-bottom: 3rem;
-    color: var(--text-color);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
 }
 
 .contact-form {
-    background-color: var(--secondary-color);
-    padding: 3rem;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: grid;
+    gap: 1.5rem;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .contact-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
+    font-size: 1rem;
+    color: #fff;
 }
 
 .contact-input,
 .contact-textarea {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #333;
-    border-radius: 5px;
+    padding: 1.25rem; /* Increased padding for better user experience */
+    border: none;
+    border-radius: 8px;
     font-size: 1rem;
-    color: var(--text-color);
-    background-color: var(--bg-color);
+    outline: none;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.contact-input {
+    background-color: #fff;
+    color: #333;
+}
+
+.contact-textarea {
+    background-color: #fff;
+    color: #333;
+    resize: vertical;
+    min-height: 150px;
+}
+
+.contact-input:focus,
+.contact-textarea:focus {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    border-color: #004d40; /* Focus border color */
 }
 
 .contact-submit {
-    width: 100%;
-    padding: 1rem;
-    background-color: var(--accent-color);
-    color: var(--text-color);
+    background: var(--primary-color);
+    color: #fff;
+    padding: 1rem 2.5rem; /* Increased padding for a more prominent button */
     border: none;
-    border-radius: 5px;
-    font-size: 1.2rem;
+    border-radius: 8px;
+    font-size: 1.1rem; /* Slightly larger font size */
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .contact-submit:hover {
-    background-color: #005fa3;
+    background:rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
+.contact-submit:active {
+    background: #003d33; /* Darker shade for active state */
 }
 
 
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 3rem;
+@keyframes backgroundPulse {
+    0% {
+        background-image: var(--hero-background-1);
     }
-
-    .hero-description {
-        font-size: 1.2rem;
+    25% {
+        background-image: var(--hero-background-2);
     }
-
-    .services-list {
-        grid-template-columns: 1fr;
+    50% {
+        background-image: var(--hero-background-3);
     }
-}
-
-
-.scroll-to-top {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background-color: var(--primary-color);
-    color: var(--text-color);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.scroll-to-top:hover {
-    background-color: var(--accent-color);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    75% {
+        background-image: var(--hero-background-4);
+    }
+    100% {
+        background-image: var(--hero-background-1);
+    }
 }

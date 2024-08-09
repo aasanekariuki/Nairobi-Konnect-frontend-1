@@ -1,4 +1,4 @@
-// src/App.jsx
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Bus from './components/Bus';
@@ -11,6 +11,8 @@ import Seller from './components/Seller';
 import StallsPage from './components/Stalls'; 
 import SignUpUser from './components/SignupUser'; 
 import SignUpBusiness from './components/SignupBusiness'; 
+import StallsPage from './components/Jewellery '; 
+import SignUp from './components/Signup';
 import User from './components/User';
 
 function App() {
