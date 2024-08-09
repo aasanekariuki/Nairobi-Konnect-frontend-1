@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom'; 
+import { useParams } from 'react-router-dom';
 import Modal from 'react-modal';
 import './Company.css';
 
 Modal.setAppElement('#root');
 
-const RouteCard = ({ route, price, departureTime, arrivalTime, onBook }) => {
+const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked }) => {
   const [selectedTime, setSelectedTime] = useState(departureTime);
 
   const handleTimeChange = (e) => {
@@ -13,11 +13,13 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook }) => {
   };
 
   const handleBook = () => {
-    onBook(selectedTime, price);
+    if (!isBooked) {
+      onBook(selectedTime, price);
+    }
   };
 
   return (
-    <div className="w-full p-5 transition-transform transform cursor-pointer lg:w-1/3 hover:scale-105">
+    <div className={`w-full p-5 transition-transform transform cursor-pointer lg:w-1/3 hover:scale-105 ${isBooked ? 'opacity-50 cursor-not-allowed' : ''}`}>
       <div className="overflow-hidden rounded-lg shadow-md bg-sky-100">
         <div className="p-6">
           <h2 className="mb-3 text-xl font-semibold text-black text-center">{route}</h2>
@@ -27,6 +29,7 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook }) => {
               value={selectedTime}
               onChange={handleTimeChange}
               className="ml-2 p-1 border rounded"
+              disabled={isBooked}
             >
               <option value="08:00 AM">08:00 AM</option>
               <option value="09:00 AM">09:00 AM</option>
@@ -44,9 +47,10 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook }) => {
           <div className="flex justify-center">
             <button
               onClick={handleBook}
-              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition-all"
+              className={`px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition-all ${isBooked ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={isBooked}
             >
-              Book Now
+              {isBooked ? 'Booked' : 'Book Now'}
             </button>
           </div>
         </div>
@@ -56,7 +60,7 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook }) => {
 };
 
 const Company = () => {
-  const { companyId } = useParams(); // Use useParams to get the companyId from URL
+  const { companyId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -64,8 +68,8 @@ const Company = () => {
     amount: '',
     departureTime: '',
   });
-
   const [selectedRoute, setSelectedRoute] = useState(null);
+  const [bookedRoutes, setBookedRoutes] = useState([]);
 
   const routes = [
     { route: 'Route 1', price: 10, departureTime: '08:00 AM', arrivalTime: '10:00 AM' },
@@ -103,6 +107,7 @@ const Company = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`Ticket Generated: \nName: ${formData.name}\nSeat Number: ${formData.seatNumber}\nAmount: ${formData.amount}\nDeparture Time: ${formData.departureTime}`);
+    setBookedRoutes([...bookedRoutes, selectedRoute.route]);
     handleCloseModal();
   };
 
@@ -117,6 +122,7 @@ const Company = () => {
             key={index}
             {...route}
             onBook={(selectedTime, price) => handleOpenModal(route, selectedTime)}
+            isBooked={bookedRoutes.includes(route.route)}
           />
         ))}
       </div>
@@ -184,11 +190,11 @@ const Company = () => {
               readOnly
             />
           </div>
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-end space-x-4">
             <button
               type="button"
               onClick={handleCloseModal}
-              className="px-4 py-2 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-red-600 transition-all"
+              className="px-4 py-2 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition-all"
             >
               Cancel
             </button>
