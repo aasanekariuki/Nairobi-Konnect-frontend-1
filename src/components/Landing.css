@@ -674,41 +674,64 @@ h1, h2, h3 {
     }
 }
 
-/* Footer Section */
+/* Footer Styling */
 .footer {
-    background:var(--primary-color);
+    background-color: var(--primary-color); /* Tailwind gray-800 */
     color: #fff;
-    padding: 2rem 0;
+    padding: 1rem 2rem; /* Tailwind py-4 */
     text-align: center;
 }
 
-.footer-container {
-    max-width: 1200px;
+.footer-content {
+    max-width: 600px;
     margin: 0 auto;
-    padding: 0 2rem;
 }
 
+/* Social Media Section */
 .social-media {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1rem; /* Tailwind mb-2 */
 }
 
 .social-media a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     color: #fff;
-    font-size: 1.5rem;
-    transition: color 0.3s ease;
+    text-decoration: none;
+    margin: 0 0.5rem;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .social-media a:hover {
-    color: #ffeb3b; /* Accent color for hover effect */
+    color: #bbb;
 }
 
-.footer p {
-    margin: 0;
-    font-size: 1rem;
+.social-media a .icon {
+    margin-right: 0.5rem;
+    transition: transform 0.3s ease;
 }
+
+.social-media a:hover .icon {
+    transform: scale(1.25);
+}
+
+/* Contact Info Section */
+.contact-info {
+    margin-bottom: 1rem; 
+}
+
+.contact-info p {
+    margin: 0.5rem 0; 
+}
+
+/* Footer Bottom Section */
+.footer-bottom {
+    font-size: 0.875rem; 
+    color: #bbb;
+}
+
+
+
 /* Contact Section */
 .contact {
     padding: 5rem 2rem;
@@ -722,6 +745,9 @@ h1, h2, h3 {
     max-width: 800px;
     margin: 0 auto;
     padding: 0 1.5rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .contact-title {
@@ -738,7 +764,7 @@ h1, h2, h3 {
 
 .contact-form:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: rgba(255, 255, 255, 0.1);
 }
 
 .form-group {
