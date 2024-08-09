@@ -133,7 +133,7 @@ const ProductCard = ({ product, addToCart }) => {
   );
 };
 
-const StallsPage = () => {
+  const StallsPage = () => {
   const [cart, setCart] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -233,4 +233,4 @@ const StallsPage = () => {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<StallsPage />);
 
-export default StallsPage;
+export default StallsPage
