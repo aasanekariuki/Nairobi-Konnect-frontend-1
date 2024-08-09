@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import Navbar from '../components/Navbar';
 import './Landing.css';
 
@@ -11,6 +14,12 @@ const LandingPage = () => {
         'url(https://www.voyagekenya.fr/cdn/ke-public/nairobi_centre_ville.jpg)',
         'url(https://media.cnn.com/api/v1/images/stellar/prod/230202121817-basigo-electric-bus-nairobi-kenya-2.jpg?c=original)'
     ];
+
+    const landingSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+  role: z.string().min(2, { message: 'Role must be at least 2 characters' }),
+});
 
    
     useEffect(() => {

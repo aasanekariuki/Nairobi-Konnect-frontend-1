@@ -9,9 +9,9 @@ import Navbar from './components/Navbar';
 import Company from './components/Company';
 import Seller from './components/Seller';
 import StallsPage from './components/Stalls'; 
-import SignUp from './components/Signup';
+import SignUpUser from './components/SignupUser'; 
+import SignUpBusiness from './components/SignupBusiness'; 
 import User from './components/User';
-
 
 function App() {
   return (
@@ -25,14 +25,13 @@ function App() {
           <Route path="/driver" element={<Driver />} />
           <Route path="/login" element={<Login />} />
           <Route path="/seller" element={<Seller />} />
-
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signupUser" element={<SignUpUser />} />  
+          <Route path="/signupBusiness" element={<SignUpBusiness />} /> 
           <Route path="/stalls" element={<StallsPage />} /> 
           <Route path="/user" element={<User />} />
-         
         </Routes>
       </div>
-      </Router>
+    </Router>
   );
 }
 
