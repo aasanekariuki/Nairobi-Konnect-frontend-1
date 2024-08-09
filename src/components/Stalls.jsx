@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
-// Sample image URLs (you can replace these with your actual image URLs)
+
 const productImages = [
   'https://media-afr-cdn.oriflame.com/contentImage?externalMediaId=201bc7b3-c2f8-4578-af70-2dfe9523f20f&name=perfumes-1&inputFormat=png',
   'https://ke.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/16/360454/1.jpg?1646',
@@ -25,7 +27,6 @@ const productImages = [
   'https://via.placeholder.com/300x200?text=Product+20',
 ];
 
-// ProductCard Component
 const ProductCard = ({ product, addToCart }) => {
   return (
     <div className="p-4 border border-gray-700 rounded-lg shadow-lg m-4 w-64 text-center bg-gray-800 hover:bg-gray-700 transition duration-300">
@@ -39,33 +40,32 @@ const ProductCard = ({ product, addToCart }) => {
       <p className="text-lg font-bold mb-4 text-gray-100">${product.price.toFixed(2)}</p>
       <button
         onClick={() => addToCart(product)}
-        className="bg-blue-700 text-white py-2 px-4 rounded hover:bg-blue-800 transition duration-300"
+        className="bg-blue-700 text-white py-2 px-4 rounded hover:bg-blue-800 transition duration-300 flex items-center justify-center space-x-2"
       >
-        Add to Cart
+        <FontAwesomeIcon icon={faShoppingCart} className="w-5 h-5" />
+        <span>Add to Cart</span>
       </button>
     </div>
   );
 };
 
-// StallsPage Component
 const StallsPage = () => {
   const [cart, setCart] = useState([]);
 
-  // Expanded list of products with unique images
   const products = Array.from({ length: 20 }, (_, i) => ({
     id: i + 1,
     name: `Product ${i + 1}`,
     price: (i + 1) * 10.00,
     description: `This is a description of Product ${i + 1}`,
-    image: productImages[i] // Assign unique image URLs from the array
+    image: productImages[i]
   }));
 
   const addToCart = (product) => {
-    setCart([...cart, product]);
+    setCart(prevCart => [...prevCart, product]);
   };
 
   return (
-    <div className="p-8 bg-gradient-to-r from-blue-900 to-blue-700 min-h-screen">
+    <div className="gradient-background p-8 min-h-screen">
       <h1 className="text-4xl font-bold mb-6 text-center text-white">Stalls Page</h1>
       <div className="flex flex-wrap -m-4 justify-center">
         {products.map(product => (
@@ -85,7 +85,6 @@ const StallsPage = () => {
   );
 };
 
-// Render the StallsPage Component
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<StallsPage />);
 
