@@ -8,7 +8,6 @@ import './Company.css';
 
 Modal.setAppElement('#root');
 
-
 // Define the Zod schema directly in this file
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -17,10 +16,7 @@ const schema = z.object({
   departureTime: z.string().min(1, 'Departure Time is required'),
 });
 
-const RouteCard = ({ route, price, departureTime, arrivalTime, onBook }) => {
-
 const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked }) => {
-
   const [selectedTime, setSelectedTime] = useState(departureTime);
 
   const handleTimeChange = (e) => {
@@ -43,12 +39,8 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked 
             <select
               value={selectedTime}
               onChange={handleTimeChange}
-
               className="p-1 ml-2 border rounded"
-
-              className="ml-2 p-1 border rounded"
               disabled={isBooked}
-
             >
               <option value="08:00 AM">08:00 AM</option>
               <option value="09:00 AM">09:00 AM</option>
@@ -66,12 +58,8 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked 
           <div className="flex justify-center">
             <button
               onClick={handleBook}
-
-              className="px-4 py-2 font-bold text-white transition-all rounded-lg shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
-
-              className={`px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition-all ${isBooked ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`px-4 py-2 font-bold text-white transition-all rounded-lg shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 ${isBooked ? 'opacity-50 cursor-not-allowed' : ''}`}
               disabled={isBooked}
-
             >
               {isBooked ? 'Booked' : 'Book Now'}
             </button>
@@ -86,6 +74,7 @@ const Company = () => {
   const { companyId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState(null);
+  const [bookedRoutes, setBookedRoutes] = useState([]);
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm({
     resolver: zodResolver(schema),
@@ -96,17 +85,6 @@ const Company = () => {
       departureTime: '',
     },
   });
-
-  const [formData, setFormData] = useState({
-    name: '',
-    seatNumber: '',
-    amount: '',
-    departureTime: '',
-  });
-
-  const [selectedRoute, setSelectedRoute] = useState(null);
-  const [bookedRoutes, setBookedRoutes] = useState([]);
-
 
   const routes = [
     { route: 'Route 1', price: 10, departureTime: '08:00 AM', arrivalTime: '10:00 AM' },
@@ -122,12 +100,6 @@ const Company = () => {
   ];
 
   const handleOpenModal = (route, selectedTime) => {
-    setFormData({
-      name: '',
-      seatNumber: '',
-      amount: route.price,
-      departureTime: selectedTime,
-    });
     setValue('amount', route.price); // Set form value for amount
     setValue('departureTime', selectedTime); // Set form value for departureTime
     setSelectedRoute(route);
@@ -138,20 +110,9 @@ const Company = () => {
     setIsModalOpen(false);
   };
 
-
   const onSubmit = (data) => {
     alert(`Ticket Generated: \nName: ${data.name}\nSeat Number: ${data.seatNumber}\nAmount: ${data.amount}\nDeparture Time: ${data.departureTime}`);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`Ticket Generated: \nName: ${formData.name}\nSeat Number: ${formData.seatNumber}\nAmount: ${formData.amount}\nDeparture Time: ${formData.departureTime}`);
     setBookedRoutes([...bookedRoutes, selectedRoute.route]);
-
     handleCloseModal();
   };
 
@@ -175,7 +136,7 @@ const Company = () => {
         isOpen={isModalOpen}
         onRequestClose={handleCloseModal}
         contentLabel="Book a Bus"
-        className="max-w-md p-6 mx-auto mt-20 bg-white rounded-lg shadow-l"
+        className="max-w-md p-6 mx-auto mt-20 bg-white rounded-lg shadow-lg"
       >
         <h2 className="mb-4 text-2xl font-bold text-black">Book a Bus</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -211,8 +172,8 @@ const Company = () => {
               className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               id="amount"
               type="text"
-              {...register('amount')}
               readOnly
+              {...register('amount')}
             />
             {errors.amount && <p className="mt-2 text-xs text-red-500">{errors.amount.message}</p>}
           </div>
@@ -224,32 +185,24 @@ const Company = () => {
               className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               id="departureTime"
               type="text"
-              {...register('departureTime')}
               readOnly
+              {...register('departureTime')}
             />
             {errors.departureTime && <p className="mt-2 text-xs text-red-500">{errors.departureTime.message}</p>}
           </div>
-
           <div className="flex justify-end">
             <button
-              type="button"
-              onClick={handleCloseModal}
-              className="px-4 py-2 mr-2 font-bold text-white bg-red-600 border rounded hover:bg-red-700"
-
-          <div className="flex justify-end space-x-4">
-            <button
-              type="button"
-              onClick={handleCloseModal}
-              className="px-4 py-2 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition-all"
-
+              type="submit"
+              className="px-4 py-2 font-bold text-white transition-all rounded-lg shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
             >
-              Cancel
+              Book Now
             </button>
             <button
-              type="submit"
-              className="px-4 py-2 font-bold text-white bg-blue-600 border rounded hover:bg-blue-700"
+              type="button"
+              onClick={handleCloseModal}
+              className="px-4 py-2 ml-2 font-bold text-white transition-all bg-red-500 rounded-lg shadow-md hover:bg-red-600"
             >
-              Submit
+              Cancel
             </button>
           </div>
         </form>
