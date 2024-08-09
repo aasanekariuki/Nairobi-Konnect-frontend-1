@@ -8,10 +8,12 @@ import Login from './components/Login';
 import Navbar from './components/Navbar';
 import Company from './components/Company';
 import Seller from './components/Seller';
+import StallsPage from './components/Stalls'; 
+import SignUpUser from './components/SignupUser'; 
+import SignUpBusiness from './components/SignupBusiness'; 
 import StallsPage from './components/Jewellery '; 
 import SignUp from './components/Signup';
 import User from './components/User';
-
 
 function App() {
   return (
@@ -25,14 +27,13 @@ function App() {
           <Route path="/driver" element={<Driver />} />
           <Route path="/login" element={<Login />} />
           <Route path="/seller" element={<Seller />} />
-
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signupUser" element={<SignUpUser />} />  
+          <Route path="/signupBusiness" element={<SignUpBusiness />} /> 
           <Route path="/stalls" element={<StallsPage />} /> 
           <Route path="/user" element={<User />} />
-         
         </Routes>
       </div>
-      </Router>
+    </Router>
   );
 }
 
