@@ -1,33 +1,62 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom'; 
 import Modal from 'react-modal';
-import './Company.css'
+import './Company.css';
 
 Modal.setAppElement('#root');
 
-const RouteCard = ({ route, price, departureTime, arrivalTime, onBook }) => (
-  <div className="w-full p-5 transition-transform transform cursor-pointer lg:w-1/3 hover:scale-105">
-    <div className="overflow-hidden rounded-lg shadow-md bg-sky-100">
-      <div className="p-6">
-        <h2 className="mb-3 text-xl font-semibold text-center">{route}</h2>
-        <p className="mb-3 text-sm text-gray-700">Price: ${price}</p>
-        <p className="mb-3 text-sm text-gray-700">Departure Time: {departureTime}</p>
-        <p className="mb-3 text-sm text-gray-700">Arrival Time: {arrivalTime}</p>
-        <div className="flex justify-center">
-          <button
-            onClick={onBook}
-            className="btn"
-          >
-            Book Now
-          </button>
+const RouteCard = ({ route, price, departureTime, arrivalTime, onBook }) => {
+  const [selectedTime, setSelectedTime] = useState(departureTime);
+
+  const handleTimeChange = (e) => {
+    setSelectedTime(e.target.value);
+  };
+
+  const handleBook = () => {
+    onBook(selectedTime, price);
+  };
+
+  return (
+    <div className="w-full p-5 transition-transform transform cursor-pointer lg:w-1/3 hover:scale-105">
+      <div className="overflow-hidden rounded-lg shadow-md bg-sky-100">
+        <div className="p-6">
+          <h2 className="mb-3 text-xl font-semibold text-black text-center">{route}</h2>
+          <p className="mb-3 text-sm text-gray-700">Price: ${price}</p>
+          <p className="mb-3 text-sm text-gray-700">Departure Time: 
+            <select
+              value={selectedTime}
+              onChange={handleTimeChange}
+              className="ml-2 p-1 border rounded"
+            >
+              <option value="08:00 AM">08:00 AM</option>
+              <option value="09:00 AM">09:00 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:00 AM">11:00 AM</option>
+              <option value="12:00 PM">12:00 PM</option>
+              <option value="01:00 PM">01:00 PM</option>
+              <option value="02:00 PM">02:00 PM</option>
+              <option value="03:00 PM">03:00 PM</option>
+              <option value="04:00 PM">04:00 PM</option>
+              <option value="05:00 PM">05:00 PM</option>
+            </select>
+          </p>
+          <p className="mb-3 text-sm text-gray-700">Arrival Time: {arrivalTime}</p>
+          <div className="flex justify-center">
+            <button
+              onClick={handleBook}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition-all"
+            >
+              Book Now
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Company = () => {
-  const { companyId } = useParams();
+  const { companyId } = useParams(); // Use useParams to get the companyId from URL
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -35,6 +64,8 @@ const Company = () => {
     amount: '',
     departureTime: '',
   });
+
+  const [selectedRoute, setSelectedRoute] = useState(null);
 
   const routes = [
     { route: 'Route 1', price: 10, departureTime: '08:00 AM', arrivalTime: '10:00 AM' },
@@ -49,8 +80,14 @@ const Company = () => {
     { route: 'Route 10', price: 120, departureTime: '05:00 PM', arrivalTime: '06:00 PM' },
   ];
 
-  const handleOpenModal = (route) => {
-    setFormData((prevState) => ({ ...prevState, departureTime: route.departureTime, amount: route.price }));
+  const handleOpenModal = (route, selectedTime) => {
+    setFormData({
+      name: '',
+      seatNumber: '',
+      amount: route.price,
+      departureTime: selectedTime,
+    });
+    setSelectedRoute(route);
     setIsModalOpen(true);
   };
 
@@ -70,11 +107,17 @@ const Company = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-blue-600 to-purple-600">
-      <h1 className="mt-16 text-4xl font-medium text-center text-white lg:mt-0">Routes for Company {companyId}</h1>
+    <div className="flex flex-col items-center min-h-screen gradient-background p-6">
+      <h1 className="mt-24 mb-12 text-4xl font-bold text-center text-white px-6 py-3 bg-gray-900 bg-opacity-70 rounded-lg shadow-lg text-shadow-md">
+        Routes for Company {companyId}
+      </h1>
       <div className="flex flex-wrap justify-center gap-5 mt-14">
         {routes.map((route, index) => (
-          <RouteCard key={index} {...route} onBook={() => handleOpenModal(route)} />
+          <RouteCard
+            key={index}
+            {...route}
+            onBook={(selectedTime, price) => handleOpenModal(route, selectedTime)}
+          />
         ))}
       </div>
 
@@ -141,17 +184,17 @@ const Company = () => {
               readOnly
             />
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-4">
             <button
               type="button"
               onClick={handleCloseModal}
-              className="btn"
+              className="px-4 py-2 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-red-600 transition-all"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="btn"
+              className="px-4 py-2 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600 transition-all"
             >
               Submit
             </button>

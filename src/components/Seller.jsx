@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const images = [
-  'https://images.pexels.com/photos/135620/pexels-photo-135620.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/135620/pexels-photo-135620.jpeg',
-  'https://lh3.googleusercontent.com/UmleRgRVFO1XPWAuoIlmKTcODOx8rKKrPJksb2vejai-8SZzYpraCkLzV-57l3gZIbJ5YKd_NdSroma4kS4K0WoCqoIDTdIDgO4psV5EUtw=s750',
-  'https://coolmen.africa/wp-content/uploads/2024/01/Perfume-Shop.jpg',
+  '',
+  '',
+  '',
+  '',
 ];
 
 const Seller = () => {
@@ -54,7 +54,7 @@ const Seller = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-[#F4A460] to-white">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-[#8872eb]">
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
         {images.map((image, index) => (
           <div
@@ -68,10 +68,10 @@ const Seller = () => {
           />
         ))}
       </div>
-      <div className="relative bg-[#F4A460] text-dark p-6 rounded-3xl shadow-2xl w-full max-w-3xl"> {/* Increased max width */}
+      <div className="relative bg-[#070211] text-dark p-6 rounded-3xl shadow-2xl w-full max-w-3xl"> {/* Increased max width */}
         <div className="flex flex-col md:flex-row">
           <div className="flex-1 mr-0 md:mr-4">
-            <h2 className="text-center mb-4 font-bold text-[#3E2723] text-xl">Post a New Product</h2>
+            <h2 className="text-center mb-4 font-bold text-[#fdfcfc] text-xl">Post a New Product</h2>
             <form onSubmit={handleSubmit}>
               {[
                 { name: 'name', type: 'text', label: 'Product Name' },
@@ -82,13 +82,13 @@ const Seller = () => {
                 { name: 'location', type: 'text', label: 'Location' },
               ].map(({ name, type, label }) => (
                 <div key={name} className="mb-4">
-                  <label className="block text-[#3E2723] text-sm font-medium">{label}</label>
+                  <label className="block text-[#f3f0f0] text-sm font-medium">{label}</label>
                   {type === 'textarea' ? (
                     <textarea
                       name={name}
                       value={product[name]}
                       onChange={handleChange}
-                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[#FFF8E1] text-[#3E2723]"
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[##f5f2f2] text-[#3E2723]"
                       required
                     ></textarea>
                   ) : (
@@ -97,19 +97,19 @@ const Seller = () => {
                       name={name}
                       value={product[name]}
                       onChange={handleChange}
-                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[#FFF8E1] text-[#3E2723]"
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[##f5f2f2] text-[#3E2723]"
                       required
                     />
                   )}
                 </div>
               ))}
               <div className="mb-4">
-                <label className="block text-[#3E2723] text-sm font-medium">Product Image (Upload or URL)</label>
+                <label className="block text-[#f5f2f2] text-sm font-medium">Product Image (Upload or URL)</label>
                 <input
                   type="file"
                   name="image"
                   onChange={handleChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[#FFF8E1] text-[#3E2723]"
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[##f5f2f2] text-[#ffffff]"
                 />
                 <input
                   type="text"
@@ -117,18 +117,18 @@ const Seller = () => {
                   value={product.imageUrl}
                   onChange={handleChange}
                   placeholder="Or enter image URL"
-                  className="mt-2 block w-full p-2 border border-gray-300 rounded-lg bg-[#FFF8E1] text-[#3E2723]"
+                  className="mt-2 block w-full p-2 border border-gray-300 rounded-lg bg-[##f5f2f2] text-[#03030f]"
                 />
               </div>
               <div className="grid gap-2">
-                <button type="submit" className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-[#FF6F61] to-[#004D40] text-white font-bold rounded-full hover:scale-105 transition-transform">
+                <button type="submit" className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-[#8a6feb] to-[#030122] text-white font-bold rounded-full hover:scale-105 transition-transform">
                   Post Product
                 </button>
               </div>
             </form>
           </div>
           <img
-            src="https://img.pikbest.com/photo/20240716/orange-line-on-stock-graph-indicates-bearish-trend-and-global-issues_10670625.jpg!f305cw"
+            src="https://ilovenbo.com/wp-content/uploads/2023/12/pexels-antony-trivet-13348192.jpg"
             alt="Side Image"
             className="max-w-xs md:max-w-sm rounded-lg object-cover mt-4 md:mt-0"
             style={{ width: '350px', height: '750px' }} // Adjust width as needed
