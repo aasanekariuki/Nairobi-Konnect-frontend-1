@@ -174,6 +174,61 @@ const LandingPage = () => {
 
 
 
+<section id="services" className="services">
+    <div className="services-container">
+        <h2 className="services-title">Our Services</h2>
+        <div className="services-list">
+            <div className="service-card">
+                <div className="service-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3v9.27l6.72 4.09 1.28-2.18-7.52-4.5L12 3z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h3 className="service-title">Booking Buses</h3>
+                <p className="service-description">
+                    Easily book buses for your desired routes with our user-friendly interface. Enjoy seamless scheduling and real-time updates.
+                </p>
+                
+            </div>
+            <div className="service-card">
+                <div className="service-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2v6h4l-6 6-6-6h4V2h4z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h3 className="service-title">Driver Registration</h3>
+                <p className="service-description">
+                    Register your vehicle and start driving. Connect with passengers and manage your schedules efficiently through our platform.
+                </p>
+                
+            </div>
+            <div className="service-card">
+                <div className="service-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6h-8V4h8v2zm-2 8v2H4v-2h14zm0-8v2H4V6h14z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h3 className="service-title">Shopping</h3>
+                <p className="service-description">
+                    Shop from a variety of local stores with an easy and secure payment system. Discover unique products and support local businesses.
+                </p>
+                
+            </div>
+            <div className="service-card">
+                <div className="service-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L1 21h22L12 2zm0 3.27L17.64 18H6.36L12 5.27z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h3 className="service-title">Business Opportunities</h3>
+                <p className="service-description">
+                    Expand your business by reaching more customers. List your products and services, and grow your presence in the Nairobi market.
+                </p>
+               
+            </div>
+        </div>
+    </div>
+</section>
 
 
 
