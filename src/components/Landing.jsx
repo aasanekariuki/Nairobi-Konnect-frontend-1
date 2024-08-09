@@ -294,41 +294,22 @@ const LandingPage = () => {
 </section>
 
 <footer className="footer">
-    <div className="footer-content">
+    <div className="footer-container">
         <div className="social-media">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-instagram icon"></i> Instagram
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <i className="fab fa-facebook-f"></i>
             </a>
-            <a href="https://telegram.org" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-telegram-plane icon"></i> Telegram
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                <i className="fab fa-twitter"></i>
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-facebook-f icon"></i> Facebook
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <i className="fab fa-instagram"></i>
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-twitter icon"></i> Twitter
-            </a>
-            <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-whatsapp icon"></i> Whatsapp
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-youtube icon"></i> Youtube
-            </a>
+            {/* <!-- More social media links --> */}
         </div>
-        <div className="contact-info">
-            <p>Phone: 0712345678</p>
-            <p>OR</p>
-            <p>Phone: 0710602258</p>
-            <p>Email: support@yourwebsite.com</p>
-            <p>OR</p>
-            <p>Email: contact@yourwebsite.com</p>
-        </div>
-        <div className="footer-bottom">
-            <p>© 2024 Your Website. All rights reserved.</p>
-        </div>
+        <p>&copy; 2024 NairobiKonnect. All rights reserved.</p>
     </div>
 </footer>
-
 </div>
 
 
