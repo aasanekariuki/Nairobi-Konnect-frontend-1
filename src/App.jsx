@@ -8,7 +8,7 @@ import Login from './components/Login';
 import Navbar from './components/Navbar';
 import Company from './components/Company';
 import Seller from './components/Seller';
-import StallsPage from './components/Stalls'; 
+import StallsPage from './components/Jewellery '; 
 import SignUp from './components/Signup';
 import User from './components/User';
 
