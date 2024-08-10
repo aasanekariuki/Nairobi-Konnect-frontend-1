@@ -1,30 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SERVER_URL } from '../../utils';
 import { useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa'; // Importing icons
 
-const SignupUser = () => {
+const SignupBusiness = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for toggling confirm password visibility
 
-  // Zod schema for validation
   const schema = z.object({
     email: z.string().email('Invalid email address').nonempty('Email is required'),
     password: z.string().min(6, 'Password must be at least 6 characters long').nonempty('Password is required'),
+    confirmPassword: z.string().min(6, 'Password confirmation is required').nonempty('Password confirmation is required'),
     username: z.string().min(2, 'Username is required'),
-    phone: z.string().min(10, 'Phone number is required'),
+    phone: z.string().min(10, 'Phone number must be at least 10 digits').nonempty('Phone number is required'),
     role: z.string().nonempty('Role is required'),
+  }).refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Passwords do not match',
   });
 
-  const { register, handleSubmit, formState: { errors }, watch } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
   });
 
-  const role = watch('role'); // Watch the role field value
-
   const onSubmit = async (data) => {
-    console.log('Form data submitted:', data);
+    setLoading(true);
+    setErrorMessage('');
 
     try {
       const response = await fetch(`${SERVER_URL}/signup`, {
@@ -38,27 +45,50 @@ const SignupUser = () => {
       if (response.ok) {
         const result = await response.json();
         console.log('Signup successful:', result);
-        navigate('/home');
+        
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('userRole', data.role); 
+        
+     
+        switch (data.role) {
+          case 'buyer':
+          case 'passenger':
+            navigate('/user');
+            break;
+          default:
+            navigate('/home');
+            break;
+        }
       } else {
         const result = await response.json();
+        setErrorMessage(result.message || 'Signup failed. Please try again.');
         console.error('Signup failed:', result.message);
       }
     } catch (error) {
+      setErrorMessage('An error occurred. Please try again later.');
       console.error('Error during signup:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 md:flex-row gradient-background">
-      <div className="flex flex-col md:flex-row bg-[#0a0a0a] shadow-2xl rounded-3xl overflow-hidden w-full max-w-4xl">
+      <div className="flex bg-[#0a0a0a] shadow-2xl rounded-3xl overflow-hidden w-full max-w-4xl">
         <div
-          className="w-full transition-transform duration-500 ease-in-out bg-center bg-no-repeat bg-cover md:w-1/2 hover:scale-105 rounded-tl-3xl md:rounded-l-3xl"
+          className="w-full transition-transform duration-500 ease-in-out bg-center bg-no-repeat bg-cover md:w-1/2 hover:scale-105"
           style={{
             backgroundImage: 'url(https://plus.unsplash.com/premium_photo-1664302152991-d013ff125f3f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YnVzfGVufDB8fDB8fHww)',
           }}
         ></div>
-        <div className="w-full md:w-1/2 p-8 bg-opacity-90 bg-[#0a0a0a] rounded-tr-3xl md:rounded-r-3xl">
-          <h2 className="mb-6 text-2xl font-bold text-center text-[#f5f3f2]">Join Nairobi Konnect Community</h2>
+        <div className="w-full md:w-1/2 p-8 text-[#f5f3f2]">
+          <h2 className="mb-6 text-2xl font-bold text-center">Join Nairobi Konnect Community</h2>
+
+          {errorMessage && (
+            <p className="mb-4 text-sm text-red-400 text-center">
+              {errorMessage}
+            </p>
+          )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="bg-[#1c1a36] p-4 rounded-lg shadow-md">
@@ -108,22 +138,67 @@ const SignupUser = () => {
               {errors.role && <p className="mt-2 text-xs text-red-400">{errors.role.message}</p>}
             </div>
 
-            <div className="bg-[#1c1a36] p-4 rounded-lg shadow-md">
+            {/* Password Field */}
+            <div className="bg-[#1c1a36] p-4 rounded-lg shadow-md relative">
               <label className="block text-sm font-medium text-gray-300">Password</label>
-              <input
-                type="password"
-                className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg bg-[#faf9f8] text-[#3E2723] focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
-                placeholder="Password"
-                {...register('password')}
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-[#faf9f8] text-[#3E2723] focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                  placeholder="Password"
+                  {...register('password')}
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <FaEyeSlash className="text-blue-500 text-xl" />
+                  ) : (
+                    <FaEye className="text-blue-500 text-xl" />
+                  )}
+                </button>
+              </div>
               {errors.password && <p className="mt-2 text-xs text-red-400">{errors.password.message}</p>}
             </div>
 
-            <div className="mt-6">
-              <button type="submit" className="w-full h-12 font-semibold text-white transition-transform transform bg-blue-600 rounded-full shadow-lg hover:bg-blue-700 hover:scale-105 hover:shadow-xl">
-                Signup
-              </button>
+            {/* Confirm Password Field */}
+            <div className="bg-[#1c1a36] p-4 rounded-lg shadow-md relative">
+              <label className="block text-sm font-medium text-gray-300">Confirm Password</label>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-[#faf9f8] text-[#3E2723] focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                  placeholder="Confirm Password"
+                  {...register('confirmPassword')}
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? (
+                    <FaEyeSlash className="text-blue-500 text-xl" />
+                  ) : (
+                    <FaEye className="text-blue-500 text-xl" />
+                  )}
+                </button>
+              </div>
+              {errors.confirmPassword && <p className="mt-2 text-xs text-red-400">{errors.confirmPassword.message}</p>}
             </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full px-4 py-2 mt-4 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+            >
+              {loading ? (
+                <FaSpinner className="w-5 h-5 mr-2 animate-spin inline" />
+              ) : (
+                'Sign Up'
+              )}
+            </button>
           </form>
         </div>
       </div>
@@ -131,4 +206,4 @@ const SignupUser = () => {
   );
 };
 
-export default SignupUser;
+export default SignupBusiness;
