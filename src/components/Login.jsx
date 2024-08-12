@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { z, ZodError } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+
 import { useForm } from 'react-hook-form'; 
 import '@fortawesome/fontawesome-free/css/all.min.css'; 
+
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 import './Login.css';
 import { SERVER_URL } from '../../utils';
 import { useNavigate } from 'react-router-dom';
@@ -17,22 +23,24 @@ const loginSchema = z.object({
 const LoginPage = () => {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(loginSchema),
     });
 
-  const handleLogin = async (data) => {
-  try {
-    const loginResponse = await fetch(`${SERVER_URL}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    const handleLogin = async (data) => {
+        try {
+            const loginResponse = await fetch(`${SERVER_URL}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
 
-    const loginData = await loginResponse.json();
+            const loginData = await loginResponse.json();
+
 
     if (loginResponse.ok) {
       
@@ -54,6 +62,30 @@ const LoginPage = () => {
     console.error('Error during login:', error);
   }
 };
+
+            if (loginResponse.ok) {
+                // Handle successful login
+                console.log('Login successful:', loginData);
+                localStorage.setItem('token', loginData.access_token); // Store token if needed
+
+                // Redirect based on user role
+                if (loginData.role === 'admin') {
+                    navigate('/admin'); // Redirect to admin view
+                } else if (loginData.role == 'user') {
+                    navigate('./signupUser'); 
+                } else {
+                    navigate('/signupBusiness');
+                }
+            } else {
+                console.error('Login failed:', loginData.message);
+                setError(loginData.message); // Set error message
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
+            setError('An unexpected error occurred.'); // Set generic error message
+        }
+    };
+
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-custom-blue">
@@ -96,6 +128,24 @@ const LoginPage = () => {
                         {message && <p className="mt-6 text-xl font-medium text-green-400">{message}</p>}
                         {error && <p className="mt-6 text-xl font-medium text-red-500">{error}</p>}
                     </form>
+                    <div className="mt-6">
+                        <p className="text-white">
+                            Do you have an account? 
+                            <button 
+                                onClick={() => navigate('/signupUser')} 
+                                className="ml-2 text-blue-400 underline hover:text-blue-300"
+                            >
+                                Sign Up as User
+                            </button>
+                            or
+                            <button 
+                                onClick={() => navigate('/signupBusiness')} 
+                                className="ml-2 text-blue-400 underline hover:text-blue-300"
+                            >
+                                Sign Up as Business
+                            </button>
+                        </p>
+                    </div>
                     <button className="mt-6 text-blue-400 underline hover:text-blue-300">Forgot Password?</button>
                 </div>
                 <div className="w-full bg-center bg-cover rounded-r-lg md:w-1/3 lg:w-2/5 xl:w-1/3" style={{ backgroundImage: 'url(https://ilovenbo.com/wp-content/uploads/2023/12/pexels-antony-trivet-13348192.jpg)' }}>
