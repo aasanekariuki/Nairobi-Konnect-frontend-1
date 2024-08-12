@@ -1,19 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { z, ZodError } from 'zod';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { useForm } from 'react-hook-form'; 
-import '@fortawesome/fontawesome-free/css/all.min.css'; 
-
-import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
 import './Login.css';
 import { SERVER_URL } from '../../utils';
-import { useNavigate } from 'react-router-dom';
-
 
 const loginSchema = z.object({
     email: z.string().email("Invalid email address").nonempty("Email address is required"),
@@ -41,28 +33,6 @@ const LoginPage = () => {
 
             const loginData = await loginResponse.json();
 
-
-    if (loginResponse.ok) {
-      
-      console.log('Login successful:', loginData);
-      localStorage.setItem('token', loginData.access_token); 
-
-     
-      if (loginData.role === 'admin') {
-        navigate('/admin'); // Redirect to admin view
-      } else if (loginData.role === 'user') {
-        navigate('/user'); // Redirect to user view
-      } else {
-        navigate('/home'); // Default redirect if role is unknown
-      }
-    } else {
-      console.error('Login failed:', loginData.message);
-    }
-  } catch (error) {
-    console.error('Error during login:', error);
-  }
-};
-
             if (loginResponse.ok) {
                 // Handle successful login
                 console.log('Login successful:', loginData);
@@ -71,10 +41,10 @@ const LoginPage = () => {
                 // Redirect based on user role
                 if (loginData.role === 'admin') {
                     navigate('/admin'); // Redirect to admin view
-                } else if (loginData.role == 'user') {
-                    navigate('./signupUser'); 
+                } else if (loginData.role === 'user') {
+                    navigate('/signupUser'); // Redirect to user signup
                 } else {
-                    navigate('/signupBusiness');
+                    navigate('/signupBusiness'); // Redirect to business signup
                 }
             } else {
                 console.error('Login failed:', loginData.message);
@@ -85,7 +55,6 @@ const LoginPage = () => {
             setError('An unexpected error occurred.'); // Set generic error message
         }
     };
-
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-custom-blue">
