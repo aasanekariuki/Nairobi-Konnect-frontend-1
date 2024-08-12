@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { z, ZodError } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form'; // Import useForm
+import { useForm } from 'react-hook-form'; 
 import '@fortawesome/fontawesome-free/css/all.min.css'; 
 import './Login.css';
 import { SERVER_URL } from '../../utils';
+import { useNavigate } from 'react-router-dom';
+
 
 const loginSchema = z.object({
     email: z.string().email("Invalid email address").nonempty("Email address is required"),
@@ -33,11 +35,11 @@ const LoginPage = () => {
     const loginData = await loginResponse.json();
 
     if (loginResponse.ok) {
-      // Handle successful login
+      
       console.log('Login successful:', loginData);
-      localStorage.setItem('token', loginData.access_token); // Store token if needed
+      localStorage.setItem('token', loginData.access_token); 
 
-      // Redirect based on user role
+     
       if (loginData.role === 'admin') {
         navigate('/admin'); // Redirect to admin view
       } else if (loginData.role === 'user') {
