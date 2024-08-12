@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
 const images = [
   '',
@@ -8,25 +11,23 @@ const images = [
   '',
 ];
 
+// Define Zod schema
+const schema = z.object({
+  start_location: z.string().nonempty('Start Location is required'),
+  end_location: z.string().nonempty('End Location is required'),
+  departure_time: z.string().nonempty('Departure Time is required'),
+  arrival_time: z.string().nonempty('Arrival Time is required'),
+});
+
 const Driver = () => {
-  const [route, setRoute] = useState({
-    start_location: '',
-    end_location: '',
-    departure_time: '',
-    arrival_time: '',
+  const [tickets, setTickets] = useState([]);
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(schema),
   });
 
-  const [tickets, setTickets] = useState([]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRoute({ ...route, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmitForm = async (data) => {
     try {
-      const response = await axios.post('http://localhost:5000/routes', route);
+      const response = await axios.post('http://localhost:5000/routes', data);
       alert(response.data.message);
     } catch (error) {
       console.error(error);
@@ -65,7 +66,7 @@ const Driver = () => {
         <div className="flex flex-col md:flex-row">
           <div className="flex-1 mr-4">
             <h3 className="text-center mb-4 font-bold text-[#fdfdfd]">Add a New Route</h3>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(handleSubmitForm)}>
               {[
                 { name: 'start_location', type: 'text', label: 'Start Location' },
                 { name: 'end_location', type: 'text', label: 'End Location' },
@@ -77,11 +78,11 @@ const Driver = () => {
                   <input
                     type={type}
                     name={name}
-                    value={route[name]}
-                    onChange={handleChange}
+                    {...register(name)}
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[#faf9f8] text-[#3E2723]"
                     required
                   />
+                  {errors[name] && <p className="mt-2 text-xs text-red-400">{errors[name].message}</p>}
                 </div>
               ))}
               <div className="d-grid gap-2">

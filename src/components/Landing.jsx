@@ -5,6 +5,7 @@ import { z } from 'zod';
 import Navbar from '../components/Navbar';
 import './Landing.css';
 
+
 const LandingPage = () => {
     const [currentImage, setCurrentImage] = useState(0);
 
