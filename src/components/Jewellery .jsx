@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faSearch } from '@fortawesome/free-solid-svg-icons';
 
@@ -49,7 +49,7 @@ const products = [
     price: 199.99,
     description: 'elegant shirt.',
     image: productImages[2],
-    category: 'clothes'
+    category: 'Clothes'
   },
   {
     id: 4,
@@ -91,7 +91,6 @@ const products = [
     image: productImages[7],
     category: 'Clothes'
   },
-  
 ];
 
 const ProductCard = ({ product, addToCart }) => {
@@ -133,7 +132,8 @@ const ProductCard = ({ product, addToCart }) => {
   );
 };
 
-  const StallsPage = () => {
+const JewelleryPage = () => {
+  const navigate = useNavigate();
   const [cart, setCart] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -158,7 +158,7 @@ const ProductCard = ({ product, addToCart }) => {
 
   return (
     <div className="gradient-background p-8 min-h-screen">
-      <h1 className="text-4xl font-bold mb-6 text-center text-white">Stalls Page</h1>
+      <h1 className="text-4xl font-bold mb-6 text-center text-white">Jewellery Page</h1>
 
       <div className="mb-8 text-center relative">
         <div className="relative inline-block">
@@ -194,7 +194,6 @@ const ProductCard = ({ product, addToCart }) => {
         ))}
       </div>
 
-     
       <div className="flex justify-center mt-8">
         <button
           onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
@@ -226,11 +225,15 @@ const ProductCard = ({ product, addToCart }) => {
           Total: ${cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}
         </p>
       </div>
+
+      <button
+        onClick={() => navigate('/')}
+        className="mt-8 bg-blue-700 text-white py-2 px-4 rounded hover:bg-blue-800 transition duration-300"
+      >
+        Go to Home
+      </button>
     </div>
   );
 };
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<StallsPage />);
-
-export default StallsPage
+export default JewelleryPage;
