@@ -17,6 +17,9 @@ import SignUpBusiness from './components/SignupBusiness';
 import SignUpUser from './components/SignupUser';
 import Stalls from './components/Stalls';
 import User from './components/User';
+import Profile from './components/Profile';
+import EditProfile from './components/EditProfile';
+
 
 
 function App() {
@@ -41,6 +44,8 @@ function App() {
           <Route path="/signupUser" element={<SignUpUser />} />  
           <Route path="/stalls" element={<Stalls />} />
           <Route path="/user" element={<User />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Routes>
       </div>
     </Router>

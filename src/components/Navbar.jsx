@@ -1,10 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Navbar.css'; 
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faEnvelope, faInfoCircle, faCogs, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faEnvelope, faCogs, faSignInAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import './Navbar.css'
 
 const Navbar = () => {
+    const [user, setUser] = useState({
+        name: 'User',
+        profilePhoto: null,
+    });
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Retrieve user data from localStorage on mount
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        if (storedUser) {
+            setUser(storedUser);
+        }
+    }, []);
+
+    const getInitials = (name) => {
+        return name
+            .split(' ')
+            .map((n) => n[0])
+            .join('');
+    };
+
     const handleNavClick = (id) => {
         document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
     };
@@ -13,13 +35,17 @@ const Navbar = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    const goToProfile = () => {
+        navigate('/profile');
+    };
+
     return (
         <nav className="navbar">
-            <div className="navbar-container">
+            <div className="navbar-container flex items-center justify-between px-4 py-2">
                 <Link to="/" className="navbar-brand" onClick={scrollToTop}>
                     NairobiKonnect
                 </Link>
-                <ul className="navbar-menu">
+                <ul className="navbar-menu flex space-x-4">
                     <li>
                         <a href="#home" className="navbar-item" onClick={scrollToTop}>
                             <FontAwesomeIcon icon={faHome} className="icon" /> Home
@@ -35,13 +61,31 @@ const Navbar = () => {
                             <FontAwesomeIcon icon={faEnvelope} className="icon" /> Contact
                         </a>
                     </li>
-                
                     <li>
                         <Link to="/login" className="navbar-item login-button">
                             <FontAwesomeIcon icon={faSignInAlt} className="icon" /> Login
                         </Link>
                     </li>
                 </ul>
+                {/* Profile Section */}
+                <div className="flex items-center space-x-2 cursor-pointer" onClick={goToProfile}>
+                    <div className="flex flex-col items-center">
+                        {user.profilePhoto ? (
+                            <img
+                                src={user.profilePhoto}
+                                alt="Profile"
+                                className="h-12 w-12 rounded-full object-cover border border-gray-300"
+                            />
+                        ) : (
+                            <div className="bg-gray-200 h-12 w-12 rounded-full flex items-center justify-center text-gray-700 text-lg border border-gray-300">
+                                {getInitials(user.name)}
+                            </div>
+                        )}
+                        <div className="text-sm font-medium text-gray-700 mt-1">
+                            {getInitials(user.name)}
+                        </div>
+                    </div>
+                </div>
             </div>
         </nav>
     );
