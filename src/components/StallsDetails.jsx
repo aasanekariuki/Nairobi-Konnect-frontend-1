@@ -1,54 +1,96 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom/client';
 
-const stallData = {
-  clothes: {
-    img: 'https://basildonmarket.co.uk/wp-content/uploads/2021/06/ClothesShop-2.jpg',
-    description: 'Discover a wide range of stylish and affordable clothing at our Clothes stall. From casual wear to formal attire, we have something for everyone.',
-  },
-  electronics: {
-    img: 'https://c8.alamy.com/comp/KE4MYN/electronics-outlet-in-tottenham-court-road-london-uk-KE4MYN.jpg',
-    description: 'Explore the latest gadgets and electronic devices at our Electronics stall. Find top-quality products from leading brands.',
-  },
-  food: {
-    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-RJI8NetYBMOO0Uyk05mklNxST2zwHwSboA&s',
-    description: 'Savor delicious and fresh food items at our Food stall. We offer a variety of snacks, meals, and beverages to satisfy your cravings.',
-  },
-  jewellery: {
-    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtLR5F84bq9F1OnOhCP2_er4nu0xl02OsKJw&s',
-    description: 'Find exquisite and elegant jewellery pieces at our Jewellery stall. Whether you’re looking for gold, silver, or diamond, we have it all.',
-  },
-  perfumes: {
-    img: 'https://pictures-kenya.jijistatic.com/51888523_NjIwLTQ2NS1hMzA3NDkyOWZj.webp',
-    description: 'Indulge in luxurious fragrances at our Perfumes stall. Discover a variety of scents that suit every occasion and personality.',
-  },
-  shoes: {
-    img: 'https://i.ytimg.com/vi/iqY7K-LqQSQ/maxresdefault.jpg',
-    description: 'Step into style with our collection of shoes at the Shoes stall. From casual sneakers to formal shoes, we have the perfect pair for you.',
-  },
+// Sample image URLs (you can replace these with your actual image URLs)
+const productImages = [
+  'https://media-afr-cdn.oriflame.com/contentImage?externalMediaId=201bc7b3-c2f8-4578-af70-2dfe9523f20f&name=perfumes-1&inputFormat=png',
+  'https://ke.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/16/360454/1.jpg?1646',
+  'https://via.placeholder.com/300x200?text=Product+3',
+  'https://via.placeholder.com/300x200?text=Product+4',
+  'https://via.placeholder.com/300x200?text=Product+5',
+  'https://via.placeholder.com/300x200?text=Product+6',
+  'https://via.placeholder.com/300x200?text=Product+7',
+  'https://via.placeholder.com/300x200?text=Product+8',
+  'https://via.placeholder.com/300x200?text=Product+9',
+  'https://via.placeholder.com/300x200?text=Product+10',
+  'https://via.placeholder.com/300x200?text=Product+11',
+  'https://via.placeholder.com/300x200?text=Product+12',
+  'https://via.placeholder.com/300x200?text=Product+13',
+  'https://via.placeholder.com/300x200?text=Product+14',
+  'https://via.placeholder.com/300x200?text=Product+15',
+  'https://via.placeholder.com/300x200?text=Product+16',
+  'https://via.placeholder.com/300x200?text=Product+17',
+  'https://via.placeholder.com/300x200?text=Product+18',
+  'https://via.placeholder.com/300x200?text=Product+19',
+  'https://via.placeholder.com/300x200?text=Product+20',
+];
+
+// ProductCard Component
+const ProductCard = ({ product, addToCart }) => {
+  return (
+    <div className="p-4 border border-gray-700 rounded-lg shadow-lg m-4 w-64 text-center bg-gray-800 hover:bg-gray-700 transition duration-300">
+      <img
+        src={product.image}
+        alt={product.name}
+        className="w-full h-32 object-cover rounded-md mb-4 shadow-md"
+      />
+      <h2 className="text-xl font-semibold mb-2 text-white">{product.name}</h2>
+      <p className="mb-2 text-gray-300">{product.description}</p>
+      <p className="text-lg font-bold mb-4 text-gray-100">${product.price.toFixed(2)}</p>
+      <button
+        onClick={() => addToCart(product)}
+        className="bg-blue-700 text-white py-2 px-4 rounded hover:bg-blue-800 transition duration-300"
+      >
+        Add to Cart
+      </button>
+    </div>
+  );
 };
 
-const StallDetails = () => {
-  const { stallName } = useParams();
+// StallsPage Component
+const StallsPage = () => {
+  const [cart, setCart] = useState([]);
 
-  // Retrieve the details for the current stall
-  const stall = stallData[stallName.toLowerCase()];
+  // Expanded list of products with unique images
+  const products = Array.from({ length: 20 }, (_, i) => ({
+    id: i + 1,
+    name: `Product ${i + 1}`,
+    price: (i + 1) * 10.0,
+    description: `This is a description of Product ${i + 1}`,
+    image: productImages[i], // Assign unique image URLs from the array
+  }));
 
-  if (!stall) {
-    return <div>Stall not found</div>;
-  }
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+  };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-custom-blue p-8">
-      <h1 className="text-5xl font-bold text-center text-white mb-16 mt-12">
-        {stallName.charAt(0).toUpperCase() + stallName.slice(1)} Stall
-      </h1>
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <img src={stall.img} alt={stallName} className="w-full h-96 object-cover rounded-lg mb-6" />
-        <p className="text-lg text-gray-700">{stall.description}</p>
+    <div className="p-8 bg-gradient-to-r from-blue-900 to-blue-700 min-h-screen">
+      <h1 className="text-4xl font-bold mb-6 text-center text-white">Stalls Page</h1>
+      <div className="flex flex-wrap -m-4 justify-center">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} addToCart={addToCart} />
+        ))}
+      </div>
+      <div className="mt-8 p-6 border border-gray-600 rounded-lg bg-gray-900 shadow-lg">
+        <h2 className="text-2xl font-semibold mb-4 text-white">Cart</h2>
+        <ul className="list-disc pl-5 mb-4 text-gray-300">
+          {cart.map((item, index) => (
+            <li key={index} className="text-lg text-gray-200">
+              {item.name} - ${item.price.toFixed(2)}
+            </li>
+          ))}
+        </ul>
+        <p className="text-xl font-semibold text-white">
+          Total: ${cart.reduce((total, item) => total + item.price, 0).toFixed(2)}
+        </p>
       </div>
     </div>
   );
 };
 
-export default StallDetails;
+// Render the StallsPage Component
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<StallsPage />);
+
+export default StallsPage;

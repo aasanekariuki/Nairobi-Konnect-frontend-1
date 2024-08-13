@@ -8,7 +8,7 @@ import './Company.css';
 
 Modal.setAppElement('#root');
 
-// Define the Zod schema directly in this file
+
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
   seatNumber: z.string().min(1, 'Seat Number is required'),
@@ -100,8 +100,8 @@ const Company = () => {
   ];
 
   const handleOpenModal = (route, selectedTime) => {
-    setValue('amount', route.price); // Set form value for amount
-    setValue('departureTime', selectedTime); // Set form value for departureTime
+    setValue('amount', route.price); 
+    setValue('departureTime', selectedTime); 
     setSelectedRoute(route);
     setIsModalOpen(true);
   };

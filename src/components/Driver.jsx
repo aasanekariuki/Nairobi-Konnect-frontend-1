@@ -60,7 +60,7 @@ const Driver = () => {
           />
         ))}
       </div>
-      <div className="relative bg-[#0a0a0a] text-dark p-8 rounded-3xl shadow-2xl w-full max-w-2xl">
+      <div className="relative bg-[#111111] text-dark p-8 rounded-3xl shadow-2xl w-full max-w-2xl">
         <img src="https://cdn.pixabay.com/photo/2019/02/06/10/09/driver-3978839_1280.jpg" alt="Logo" className="mb-4 w-24 h-24 rounded-full mx-auto transition-transform hover:scale-110" />
         <h2 className="text-center mb-4 font-bold text-[#f5f3f2] text-xl">Welcome, Driver</h2>
         <div className="flex flex-col md:flex-row">
