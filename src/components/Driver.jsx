@@ -46,7 +46,7 @@ const Driver = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-[#1c1a36] to-dark-blue">
+    <div className="relative min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--primary-color)' }}>
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
         {images.map((image, index) => (
           <div
@@ -75,18 +75,21 @@ const Driver = () => {
               ].map(({ name, type, label }) => (
                 <div key={name} className="mb-4">
                   <label className="block text-[#f3f2f1] text-sm font-medium">{label}</label>
-                  <input
-                    type={type}
-                    name={name}
-                    {...register(name)}
-                    className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[#faf9f8] text-[#3E2723]"
-                    required
-                  />
+                  <div className="flex items-center bg-gray-900 border-2 border-gray-600 rounded-lg">
+                    <input
+                      type={type}
+                      name={name}
+                      {...register(name)}
+                      placeholder={label}
+                      className="flex-1 p-4 text-lg text-white placeholder-gray-400 bg-transparent outline-none"
+                      required
+                    />
+                  </div>
                   {errors[name] && <p className="mt-2 text-xs text-red-400">{errors[name].message}</p>}
                 </div>
               ))}
               <div className="d-grid gap-2">
-                <button type="submit" className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-[#252138] to-[#004D40] text-white font-bold rounded-full hover:scale-105 transition-transform">
+                <button type="submit" className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold rounded-full hover:scale-105 transition-transform">
                   Add Route
                 </button>
               </div>
@@ -94,7 +97,7 @@ const Driver = () => {
           </div>
           <div className="flex-1">
             <h3 className="text-center mb-4 font-bold text-[#f7f5f5]">View Booked Seats & Tickets</h3>
-            <button onClick={fetchTickets} className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-[#7c70e6] to-[#004D40] text-white font-bold rounded-full hover:scale-105 transition-transform mb-4">
+            <button onClick={fetchTickets} className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold rounded-full hover:scale-105 transition-transform mb-4">
               Fetch Tickets
             </button>
             {tickets.length > 0 ? (

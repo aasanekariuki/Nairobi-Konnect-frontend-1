@@ -68,7 +68,7 @@ const Seller = () => {
           />
         ))}
       </div>
-      <div className="relative bg-[#070211] text-dark p-6 rounded-3xl shadow-2xl w-full max-w-3xl" style={{ height: '780px' }}> {/* Adjust the height here */}
+      <div className="relative bg-[#070211] text-dark p-6 rounded-3xl shadow-2xl w-full max-w-3xl" style={{ height: '780px' }}>
         <div className="flex flex-col md:flex-row h-full">
           <div className="flex-1 mr-0 md:mr-4">
             <h2 className="text-center mb-4 font-bold text-[#fdfcfc] text-xl">Post a New Product</h2>
@@ -88,7 +88,7 @@ const Seller = () => {
                       name={name}
                       value={product[name]}
                       onChange={handleChange}
-                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-800 text-white"
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-900 text-white placeholder-gray-400"
                       required
                     ></textarea>
                   ) : (
@@ -97,7 +97,7 @@ const Seller = () => {
                       name={name}
                       value={product[name]}
                       onChange={handleChange}
-                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-800 text-white"
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-900 text-white placeholder-gray-400"
                       required
                     />
                   )}
@@ -109,7 +109,7 @@ const Seller = () => {
                   type="file"
                   name="image"
                   onChange={handleChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-800 text-white"
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-900 text-white placeholder-gray-400"
                 />
                 <input
                   type="text"
@@ -117,7 +117,7 @@ const Seller = () => {
                   value={product.imageUrl}
                   onChange={handleChange}
                   placeholder="Or enter image URL"
-                  className="mt-2 block w-full p-2 border border-gray-300 rounded-lg bg-gray-800 text-white"
+                  className="mt-2 block w-full p-2 border border-gray-300 rounded-lg bg-gray-900 text-white placeholder-gray-400"
                 />
               </div>
               <div className="grid gap-2">
