@@ -24,7 +24,6 @@ function App() {
         <Routes>
           <Route path="/bus" element={<Bus />} />
           <Route path="/company/:companyId" element={<Company />} />
-          <Route path="/stalls/:stallsId" element={<company/>} />
           <Route path="/driver" element={<Driver />} />
           <Route path="/stallspage" element={<Stalls />} />
           <Route path="/stalls/:stallName" element={<StallDetails />} />
