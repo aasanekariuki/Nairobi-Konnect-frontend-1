@@ -1,12 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Stalls.css';
 
 const StallsCompanyCard = ({ img, name }) => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    // Navigate to a dynamic route based on the stall name
+    // Navigate to the stall details page
     navigate(`/stalls/${encodeURIComponent(name.toLowerCase())}`);
   };
 
@@ -15,12 +14,7 @@ const StallsCompanyCard = ({ img, name }) => {
       <div className="overflow-hidden bg-white rounded-lg shadow-lg">
         <img className="object-cover w-full h-60 rounded-t-lg" src={img} alt={name} />
         <div className="p-6 flex flex-col justify-between">
-          <div>
-            <h2 className="mb-3 text-2xl font-semibold text-center text-black">{name}</h2>
-            <p className="text-sm text-gray-700 mb-4 text-center">
-              Explore our stalls and products for the best buyer experience.
-            </p>
-          </div>
+          <h2 className="mb-3 text-2xl font-semibold text-center text-black">{name}</h2>
           <div className="flex justify-center">
             <button
               onClick={handleNavigation}
