@@ -1,75 +1,71 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
-
-// Sample image URLs (you can replace these with your actual image URLs)
-const productImages = [
-  'https://media-afr-cdn.oriflame.com/contentImage?externalMediaId=201bc7b3-c2f8-4578-af70-2dfe9523f20f&name=perfumes-1&inputFormat=png',
-  'https://ke.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/16/360454/1.jpg?1646',
-  'https://via.placeholder.com/300x200?text=Product+3',
-  'https://via.placeholder.com/300x200?text=Product+4',
-  'https://via.placeholder.com/300x200?text=Product+5',
-  'https://via.placeholder.com/300x200?text=Product+6',
-  'https://via.placeholder.com/300x200?text=Product+7',
-  'https://via.placeholder.com/300x200?text=Product+8',
-  'https://via.placeholder.com/300x200?text=Product+9',
-  'https://via.placeholder.com/300x200?text=Product+10',
-  'https://via.placeholder.com/300x200?text=Product+11',
-  'https://via.placeholder.com/300x200?text=Product+12',
-  'https://via.placeholder.com/300x200?text=Product+13',
-  'https://via.placeholder.com/300x200?text=Product+14',
-  'https://via.placeholder.com/300x200?text=Product+15',
-  'https://via.placeholder.com/300x200?text=Product+16',
-  'https://via.placeholder.com/300x200?text=Product+17',
-  'https://via.placeholder.com/300x200?text=Product+18',
-  'https://via.placeholder.com/300x200?text=Product+19',
-  'https://via.placeholder.com/300x200?text=Product+20',
-];
-
-// ProductCard Component
-const ProductCard = ({ product, addToCart }) => {
-  return (
-    <div className="p-4 border border-gray-700 rounded-lg shadow-lg m-4 w-64 text-center bg-gray-800 hover:bg-gray-700 transition duration-300">
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-full h-32 object-cover rounded-md mb-4 shadow-md"
-      />
-      <h2 className="text-xl font-semibold mb-2 text-white">{product.name}</h2>
-      <p className="mb-2 text-gray-300">{product.description}</p>
-      <p className="text-lg font-bold mb-4 text-gray-100">${product.price.toFixed(2)}</p>
-      <button
-        onClick={() => addToCart(product)}
-        className="bg-blue-700 text-white py-2 px-4 rounded hover:bg-blue-800 transition duration-300"
-      >
-        Add to Cart
-      </button>
-    </div>
-  );
-};
-
-// StallsPage Component
-const StallsPage = () => {
+import { useParams } from 'react-router-dom';
+import { FaCartPlus } from 'react-icons/fa'; 
+const StallsDetails = () => {
+  const { stallName } = useParams();
   const [cart, setCart] = useState([]);
 
-  // Expanded list of products with unique images
-  const products = Array.from({ length: 20 }, (_, i) => ({
-    id: i + 1,
-    name: `Product ${i + 1}`,
-    price: (i + 1) * 10.0,
-    description: `This is a description of Product ${i + 1}`,
-    image: productImages[i], // Assign unique image URLs from the array
-  }));
+  const products = {
+    clothes: [
+      { id: 1, name: 'T-Shirt', price: 25, image: 'https://via.placeholder.com/300x200?text=T-Shirt' },
+      { id: 2, name: 'Jeans', price: 40, image: 'https://via.placeholder.com/300x200?text=Jeans' },
+     
+    ],
+    electronics: [
+      { id: 1, name: 'Smartphone', price: 699, image: 'https://via.placeholder.com/300x200?text=Smartphone' },
+      { id: 2, name: 'Laptop', price: 1200, image: 'https://via.placeholder.com/300x200?text=Laptop' },
+      
+    ],
+    food: [
+      { id: 1, name: 'Apple', price: 1, image: 'https://via.placeholder.com/300x200?text=Apple' },
+      { id: 2, name: 'Bread', price: 2, image: 'https://via.placeholder.com/300x200?text=Bread' },
+      
+    ],
+    jewellery: [
+      { id: 1, name: 'Necklace', price: 150, image: 'https://via.placeholder.com/300x200?text=Necklace' },
+      { id: 2, name: 'Ring', price: 200, image: 'https://via.placeholder.com/300x200?text=Ring' },
+      
+    ],
+    perfumes: [
+      { id: 1, name: 'Eau de Parfum', price: 80, image: 'https://via.placeholder.com/300x200?text=Eau+de+Parfum' },
+      { id: 2, name: 'Cologne', price: 50, image: 'https://via.placeholder.com/300x200?text=Cologne' },
+     
+    ],
+    shoes: [
+      { id: 1, name: 'Sneakers', price: 60, image: 'https://via.placeholder.com/300x200?text=Sneakers' },
+      { id: 2, name: 'Boots', price: 100, image: 'https://via.placeholder.com/300x200?text=Boots' },
+      
+    ],
+  };
 
+  
+  const selectedProducts = products[stallName.toLowerCase()] || [];
+
+  
   const addToCart = (product) => {
     setCart([...cart, product]);
   };
 
   return (
     <div className="p-8 bg-gradient-to-r from-blue-900 to-blue-700 min-h-screen">
-      <h1 className="text-4xl font-bold mb-6 text-center text-white">Stalls Page</h1>
+      <h1 className="text-4xl font-bold mb-6 text-center text-white">{stallName} Products</h1>
       <div className="flex flex-wrap -m-4 justify-center">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} addToCart={addToCart} />
+        {selectedProducts.map((product) => (
+          <div key={product.id} className="p-4 border border-gray-700 rounded-lg shadow-lg m-4 w-64 text-center bg-gray-800 hover:bg-gray-700 transition duration-300">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-32 object-cover rounded-md mb-4 shadow-md"
+            />
+            <h2 className="text-xl font-semibold mb-2 text-white">{product.name}</h2>
+            <p className="text-lg font-bold mb-4 text-gray-100">${product.price.toFixed(2)}</p>
+            <button
+              onClick={() => addToCart(product)}
+              className="bg-green-600 text-white py-2 px-4 rounded-lg flex items-center justify-center hover:bg-green-700 transition duration-300"
+            >
+              <FaCartPlus className="mr-2" /> Add to Cart
+            </button>
+          </div>
         ))}
       </div>
       <div className="mt-8 p-6 border border-gray-600 rounded-lg bg-gray-900 shadow-lg">
@@ -89,8 +85,4 @@ const StallsPage = () => {
   );
 };
 
-// Render the StallsPage Component
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<StallsPage />);
-
-export default StallsPage;
+export default StallsDetails;
