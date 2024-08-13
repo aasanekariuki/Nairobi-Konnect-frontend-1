@@ -2,11 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Stalls.css';
 
-const StallsCompanyCard = ({ img, name, route }) => {
+const StallsCompanyCard = ({ img, name }) => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    navigate(route);
+    // Navigate to a dynamic route based on the stall name
+    navigate(`/stalls/${encodeURIComponent(name.toLowerCase())}`);
   };
 
   return (
@@ -36,12 +37,12 @@ const StallsCompanyCard = ({ img, name, route }) => {
 
 const Stalls = () => {
   const companies = [
-    { img: 'https://basildonmarket.co.uk/wp-content/uploads/2021/06/ClothesShop-2.jpg', name: 'Clothes', route: '/clothes' },
-    { img: 'https://c8.alamy.com/comp/KE4MYN/electronics-outlet-in-tottenham-court-road-london-uk-KE4MYN.jpg', name: 'Electronics', route: '/electronics' },
-    { img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-RJI8NetYBMOO0Uyk05mklNxST2zwHwSboA&s', name: 'Food', route: '/food' },
-    { img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtLR5F84bq9F1OnOhCP2_er4nu0xl02OsKJw&s', name: 'Jewellery', route: '/jewellery' },
-    { img: 'https://pictures-kenya.jijistatic.com/51888523_NjIwLTQ2NS1hMzA3NDkyOWZj.webp', name: 'Perfumes', route: '/perfumes' },
-    { img: 'https://i.ytimg.com/vi/iqY7K-LqQSQ/maxresdefault.jpg', name: 'Shoes', route: '/shoes' },
+    { img: 'https://basildonmarket.co.uk/wp-content/uploads/2021/06/ClothesShop-2.jpg', name: 'Clothes' },
+    { img: 'https://c8.alamy.com/comp/KE4MYN/electronics-outlet-in-tottenham-court-road-london-uk-KE4MYN.jpg', name: 'Electronics' },
+    { img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-RJI8NetYBMOO0Uyk05mklNxST2zwHwSboA&s', name: 'Food' },
+    { img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtLR5F84bq9F1OnOhCP2_er4nu0xl02OsKJw&s', name: 'Jewellery' },
+    { img: 'https://pictures-kenya.jijistatic.com/51888523_NjIwLTQ2NS1hMzA3NDkyOWZj.webp', name: 'Perfumes' },
+    { img: 'https://i.ytimg.com/vi/iqY7K-LqQSQ/maxresdefault.jpg', name: 'Shoes' },
   ];
 
   return (
