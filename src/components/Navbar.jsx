@@ -13,7 +13,7 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Retrieve user data from localStorage on mount
+        
         const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedUser) {
             setUser(storedUser);

@@ -31,6 +31,7 @@ function App() {
           <Route path="/bus" element={<Bus />} />
           <Route path="/clothes" element={<Clothes />} />
           <Route path="/company/:companyId" element={<Company />} />
+          <Route path="/stalls/:stallsId" element={<company/>} />
           <Route path="/driver" element={<Driver />} />
           <Route path="/electronics" element={<Electronics />} />
           <Route path="/food" element={<Food />} />
@@ -43,6 +44,7 @@ function App() {
           <Route path="/signupBusiness" element={<SignUpBusiness />} /> 
           <Route path="/signupUser" element={<SignUpUser />} />  
           <Route path="/stalls" element={<Stalls />} />
+          <Route path="/stalls/:stallsId" element={<Stalls />} />
           <Route path="/user" element={<User />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
