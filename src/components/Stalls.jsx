@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import "./Login.css"
 
 const StallsCompanyCard = ({ img, name }) => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const Stalls = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-custom-blue p-8">
+    <div className="flex flex-col items-center min-h-screen p-8 gradient-background">
       <h1 className="text-5xl font-bold text-center text-white mb-16 mt-12">
         Available Stalls
       </h1>
