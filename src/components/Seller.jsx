@@ -40,9 +40,9 @@ const Seller = () => {
       formData.append('shop_name', product.shop_name);
       formData.append('location', product.location);
       if (product.image) {
-        formData.append('image', product.image); // Append file if provided
+        formData.append('image', product.image);
       } else {
-        formData.append('imageUrl', product.imageUrl); // Append URL if provided
+        formData.append('imageUrl', product.imageUrl);
       }
 
       const response = await axios.post('http://localhost:5000/products', formData);
@@ -54,7 +54,7 @@ const Seller = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-[#8872eb]">
+    <div className="relative min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--primary-color)' }}>
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
         {images.map((image, index) => (
           <div
@@ -68,8 +68,8 @@ const Seller = () => {
           />
         ))}
       </div>
-      <div className="relative bg-[#070211] text-dark p-6 rounded-3xl shadow-2xl w-full max-w-3xl"> {/* Increased max width */}
-        <div className="flex flex-col md:flex-row">
+      <div className="relative bg-[#070211] text-dark p-6 rounded-3xl shadow-2xl w-full max-w-3xl" style={{ height: '780px' }}> {/* Adjust the height here */}
+        <div className="flex flex-col md:flex-row h-full">
           <div className="flex-1 mr-0 md:mr-4">
             <h2 className="text-center mb-4 font-bold text-[#fdfcfc] text-xl">Post a New Product</h2>
             <form onSubmit={handleSubmit}>
@@ -88,7 +88,7 @@ const Seller = () => {
                       name={name}
                       value={product[name]}
                       onChange={handleChange}
-                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[##f5f2f2] text-[#3E2723]"
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-800 text-white"
                       required
                     ></textarea>
                   ) : (
@@ -97,7 +97,7 @@ const Seller = () => {
                       name={name}
                       value={product[name]}
                       onChange={handleChange}
-                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[##f5f2f2] text-[#3E2723]"
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-800 text-white"
                       required
                     />
                   )}
@@ -109,7 +109,7 @@ const Seller = () => {
                   type="file"
                   name="image"
                   onChange={handleChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-[##f5f2f2] text-[#ffffff]"
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-800 text-white"
                 />
                 <input
                   type="text"
@@ -117,11 +117,11 @@ const Seller = () => {
                   value={product.imageUrl}
                   onChange={handleChange}
                   placeholder="Or enter image URL"
-                  className="mt-2 block w-full p-2 border border-gray-300 rounded-lg bg-[##f5f2f2] text-[#03030f]"
+                  className="mt-2 block w-full p-2 border border-gray-300 rounded-lg bg-gray-800 text-white"
                 />
               </div>
               <div className="grid gap-2">
-                <button type="submit" className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-[#8a6feb] to-[#030122] text-white font-bold rounded-full hover:scale-105 transition-transform">
+                <button type="submit" className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold rounded-full hover:scale-105 transition-transform">
                   Post Product
                 </button>
               </div>
@@ -131,7 +131,7 @@ const Seller = () => {
             src="https://ilovenbo.com/wp-content/uploads/2023/12/pexels-antony-trivet-13348192.jpg"
             alt="Side Image"
             className="max-w-xs md:max-w-sm rounded-lg object-cover mt-4 md:mt-0"
-            style={{ width: '350px', height: '750px' }} // Adjust width as needed
+            style={{ width: '350px', height: '750px' }}
           />
         </div>
       </div>
@@ -145,6 +145,6 @@ const Seller = () => {
       </style>
     </div>
   );
-}
+};
 
 export default Seller;
