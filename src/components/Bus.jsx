@@ -11,12 +11,12 @@ const BusCompanyCard = ({ img, name, route }) => {
 
   return (
     <div className="w-full p-6 transition-transform transform cursor-pointer lg:w-1/3 hover:scale-105 hover:shadow-lg rounded-lg">
-      <div className="overflow-hidden bg-white rounded-lg shadow-lg">
+      <div className="overflow-hidden bg-black rounded-lg shadow-lg">
         <img className="object-cover w-full h-60 rounded-t-lg" src={img} alt="Bus Company" />
         <div className="p-6 flex flex-col justify-between">
           <div>
-            <h2 className="mb-3 text-2xl font-semibold text-center text-black">{name}</h2>
-            <p className="text-sm text-gray-700 mb-4 text-center">
+            <h2 className="mb-3 text-2xl font-semibold text-center text-blue-500">{name}</h2>
+            <p className="text-white sm text- mb-4 text-center">
               Explore our routes and services for the best travel experience.
             </p>
           </div>
