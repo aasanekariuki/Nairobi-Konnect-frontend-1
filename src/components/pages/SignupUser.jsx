@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SERVER_URL } from '../../utils';
+import { SERVER_URL } from '../../../utils';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa';
-import "./User.css"
+import "../styles/User.css"
 
 const SignupBusiness = () => {
   const navigate = useNavigate();

@@ -64,7 +64,7 @@ const Profile = () => {
   if (!user) return <div>No user data available</div>;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#1E1E2F] via-[#2F2F4F] to-[#4D4D87] bg-[length:400%_400%] animate-gradientShift">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#001f3f] via-[#001f3f] to-[#001f3f] bg-[length:400%_400%] animate-gradientShift">
       {/* Profile Picture */}
       <div className="relative">
         {user.profilePhoto ? (

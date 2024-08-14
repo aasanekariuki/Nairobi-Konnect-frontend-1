@@ -4,8 +4,9 @@ import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import './styles/Login.css';
 import { FaCheckCircle } from 'react-icons/fa';
-import './Company.css';
+import './styles/Company.css';
 
 Modal.setAppElement('#root');
 
@@ -32,6 +33,7 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked 
 
   return (
     <div className={`w-full p-5 transition-transform transform cursor-pointer lg:w-1/3 hover:scale-105 ${isBooked ? 'opacity-50 cursor-not-allowed' : ''}`}>
+      <div className="overflow-hidden rounded-lg shadow-md bg-black">
       <div className="overflow-hidden rounded-lg shadow-md bg-black">
         <div className="p-6">
           <h2 className="mb-3 text-xl font-semibold text-center text-white">{route}</h2>
@@ -156,89 +158,87 @@ const Company = () => {
         contentLabel="Book a Bus"
         className="max-w-md p-6 mx-auto mt-20 bg-black rounded-lg shadow-lg"
       >
-        {isSuccess ? (
-          <div className="mb-4 flex items-center text-green-500">
-            <FaCheckCircle size={24} className="mr-2" />
-            <p className="text-lg font-semibold">Ticket generated successfully!</p>
+        <h2 className="mb-4 text-2xl font-bold text-white">Book a Bus</h2>
+
+        {isSuccess && (
+          <div className="mb-4 text-center text-green-500">
+            <FaCheckCircle size={24} />
+            <p className="text-lg font-semibold">Booking Successful!</p>
           </div>
-        ) : (
-          <>
-            <h2 className="mb-4 text-2xl font-bold text-white">Book a Bus</h2>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4">
-                <label className="block mb-2 text-sm font-bold text-white" htmlFor="name">
-                  Name
-                </label>
-                <input
-                  className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="name"
-                  type="text"
-                  {...register('name')}
-                />
-                {errors.name && <p className="mt-2 text-xs text-red-500">{errors.name.message}</p>}
-              </div>
-              <div className="mb-4">
-                <label className="block mb-2 text-sm font-bold text-white" htmlFor="seatNumber">
-                  Seat Number
-                </label>
-                <input
-                  className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="seatNumber"
-                  type="text"
-                  {...register('seatNumber')}
-                  readOnly
-                />
-                {errors.seatNumber && <p className="mt-2 text-xs text-red-500">{errors.seatNumber.message}</p>}
-              </div>
-              <div className="mb-4">
-                <label className="block mb-2 text-sm font-bold text-white" htmlFor="amount">
-                  Amount
-                </label>
-                <input
-                  className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="amount"
-                  type="text"
-                  {...register('amount')}
-                  readOnly
-                />
-                {errors.amount && <p className="mt-2 text-xs text-red-500">{errors.amount.message}</p>}
-              </div>
-              <div className="mb-4">
-                <label className="block mb-2 text-sm font-bold text-white" htmlFor="departureTime">
-                  Departure Time
-                </label>
-                <input
-                  className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="departureTime"
-                  type="text"
-                  {...register('departureTime')}
-                  readOnly
-                />
-                {errors.departureTime && <p className="mt-2 text-xs text-red-500">{errors.departureTime.message}</p>}
-              </div>
-              <div className="mb-6">
-                <label className="block mb-2 text-sm font-bold text-white" htmlFor="mpesaNumber">
-                  M-Pesa Number
-                </label>
-                <input
-                  className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="mpesaNumber"
-                  type="text"
-                  {...register('mpesaNumber')}
-                />
-                {errors.mpesaNumber && <p className="mt-2 text-xs text-red-500">{errors.mpesaNumber.message}</p>}
-              </div>
-              <div className="flex justify-center">
-                <button
-                  type="submit"
-                  className="px-4 py-2 font-bold text-white transition-all rounded-lg shadow-md bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
-                >
-                  Confirm Booking
-                </button>
-              </div>
-            </form>
-          </>
         )}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-white" htmlFor="name">
+              Name
+            </label>
+            <input
+              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              id="name"
+              type="text"
+              {...register('name')}
+            />
+            {errors.name && <p className="mt-2 text-xs text-red-500">{errors.name.message}</p>}
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-white" htmlFor="seatNumber">
+              Seat Number
+            </label>
+            <input
+              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              id="seatNumber"
+              type="text"
+              {...register('seatNumber')}
+              disabled
+            />
+            {errors.seatNumber && <p className="mt-2 text-xs text-red-500">{errors.seatNumber.message}</p>}
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-white" htmlFor="amount">
+              Amount
+            </label>
+            <input
+              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              id="amount"
+              type="text"
+              {...register('amount')}
+              disabled
+            />
+            {errors.amount && <p className="mt-2 text-xs text-red-500">{errors.amount.message}</p>}
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-white" htmlFor="departureTime">
+              Departure Time
+            </label>
+            <input
+              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              id="departureTime"
+              type="text"
+              {...register('departureTime')}
+              disabled
+            />
+            {errors.departureTime && <p className="mt-2 text-xs text-red-500">{errors.departureTime.message}</p>}
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-white" htmlFor="mpesaNumber">
+              M-Pesa Number
+            </label>
+            <input
+              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              id="mpesaNumber"
+              type="text"
+              {...register('mpesaNumber')}
+            />
+            {errors.mpesaNumber && <p className="mt-2 text-xs text-red-500">{errors.mpesaNumber.message}</p>}
+          </div>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="px-4 py-2 font-bold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:shadow-outline"
+            >
+              Confirm Booking
+            </button>
+          </div>
+        </form>
       </Modal>
     </div>
   );

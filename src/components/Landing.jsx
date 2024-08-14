@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Navbar from '../components/Navbar';
-import './Landing.css';
+import './styles/Landing.css';
 
 
 const LandingPage = () => {

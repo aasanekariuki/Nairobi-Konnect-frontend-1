@@ -4,9 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form'; 
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import './Login.css';
-import { SERVER_URL } from '../../utils';
-
+import '../styles/Login.css';
+import { SERVER_URL } from '../../../utils';
 const loginSchema = z.object({
     email: z.string().email("Invalid email address").nonempty("Email address is required"),
     password: z.string().min(6, "Password must be at least 6 characters long").nonempty("Password is required"),
