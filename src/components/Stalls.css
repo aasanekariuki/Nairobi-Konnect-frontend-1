@@ -1,33 +1,33 @@
 body {
-    font-family: 'Inter', sans-serif;
-  }
-  
-  .modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-  }
-  
-  
-  .gradient-background {
-    background: linear-gradient(135deg, #1E1E2F, #2F2F4F, #3A3A6C, #4D4D87);
-    animation: gradientShift 30s ease infinite;
-    background-size: 400% 400%;
-  }
-  
-  @keyframes gradientShift {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
+	font-family: 'Inter', sans-serif;
+}
+
+.modal {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	right: auto;
+	bottom: auto;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+}
+
+.gradient-background {
+	background: linear-gradient(135deg, #1e1e2f, #2f2f4f, #3a3a6c, #4d4d87);
+	animation: gradientShift 30s ease infinite;
+	background-size: 400% 400%;
+}
+
+@keyframes gradientShift {
+	0%,
+	100% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+}
