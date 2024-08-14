@@ -1,26 +1,30 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Stalls.css';
+import "./Login.css"
 
 const StallsCompanyCard = ({ img, name }) => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    // Navigate to a dynamic route based on the stall name
+    // Navigate to the stall details page
     navigate(`/stalls/${encodeURIComponent(name.toLowerCase())}`);
   };
 
   return (
     <div className="w-full p-6 transition-transform transform cursor-pointer hover:scale-105 hover:shadow-lg rounded-lg">
-      <div className="overflow-hidden bg-white rounded-lg shadow-lg">
+      <div className="overflow-hidden bg-black rounded-lg shadow-lg">
         <img className="object-cover w-full h-60 rounded-t-lg" src={img} alt={name} />
         <div className="p-6 flex flex-col justify-between">
+
           <div>
-            <h2 className="mb-3 text-2xl font-semibold text-center text-black">{name}</h2>
-            <p className="text-sm text-gray-700 mb-4 text-center">
+            <h2 className="mb-3 text-2xl font-semibold text-center text-blue-500">{name}</h2>
+            <p className="text-sm text-white mb-4 text-center">
               Explore our stalls and products for the best buyer experience.
             </p>
           </div>
+
+          <h2 className="mb-3 text-2xl font-semibold text-center text-black">{name}</h2>
+
           <div className="flex justify-center">
             <button
               onClick={handleNavigation}
@@ -46,7 +50,7 @@ const Stalls = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-custom-blue p-8">
+    <div className="flex flex-col items-center min-h-screen p-8 gradient-background">
       <h1 className="text-5xl font-bold text-center text-white mb-16 mt-12">
         Available Stalls
       </h1>

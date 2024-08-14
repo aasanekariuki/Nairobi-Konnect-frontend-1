@@ -1,11 +1,11 @@
-/* Navbar.css */
+/* Navbar.css
 
-:root {
+/* :root {
     --dark-blue: #1a237e; 
     --blue: #3949ab; 
     --white: #ffffff; 
     --black: #000000; /* Black text */
-}
+
 
 .navbar {
     position: fixed;
@@ -395,4 +395,4 @@
         margin: 10px 0; /* Space between vertical items */
     }
 }
-
+ 
