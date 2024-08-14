@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z, ZodError } from 'zod';
 
-// Define Zod schema for validation
+
 const profileSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email address'),
@@ -24,7 +24,7 @@ const EditProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Load user data from local storage
+  
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser) {
       setEmail(storedUser.email);
@@ -54,12 +54,12 @@ const EditProfile = () => {
         confirmPassword,
       });
 
-      // Save updated user data to local storage
+     
       const updatedUser = {
         name,
         email,
         profilePhoto: previewPhoto,
-        following: 12800000, // This is hardcoded, you can update based on your logic
+        following: 12800000,
       };
 
       localStorage.setItem('user', JSON.stringify(updatedUser));

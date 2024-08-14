@@ -1,23 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SERVER_URL } from '../../utils';
 
 const Profile = () => {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem('user')) || {
-      name: 'Cross Joseph',
-      following: 12800000,
-      email: 'cross.joseph@example.com',
-      profilePhoto: null,
-    }
-  );
-
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-    if (storedUser) {
-      setUser(storedUser);
-    }
+    const fetchUserProfile = async () => {
+      try {
+       
+        const token = localStorage.getItem('token');
+        
+       
+        const response = await fetch(`${SERVER_URL}/user`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setUser(data.profile);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching user profile:', err);
+        setError('Failed to load profile');
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
   }, []);
 
   const handleShare = () => {
@@ -38,6 +58,10 @@ const Profile = () => {
   const handleEditProfile = () => {
     navigate('/edit-profile');
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!user) return <div>No user data available</div>;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#001f3f] via-[#001f3f] to-[#001f3f] bg-[length:400%_400%] animate-gradientShift">
@@ -80,16 +104,16 @@ const Profile = () => {
 
       {/* Additional Profile Details */}
       <div className="mt-6 text-white text-center">
-        <p className="text-lg font-medium">Location: Nairobi, Kenya</p>
-        <p className="text-lg font-medium">Bio: Passionate traveler and photographer</p>
+        <p className="text-lg font-medium">Location: {user.location || 'Nairobi, Kenya'}</p>
+        <p className="text-lg font-medium">Bio: {user.bio || 'Passionate traveler and photographer'}</p>
         <div className="flex justify-center space-x-4 mt-4">
-          <a href="#" className="text-blue-400 hover:text-blue-600">
+          <a href={user.facebook || '#'} className="text-blue-400 hover:text-blue-600">
             <i className="fab fa-facebook"></i> Facebook
           </a>
-          <a href="#" className="text-blue-400 hover:text-blue-600">
+          <a href={user.twitter || '#'} className="text-blue-400 hover:text-blue-600">
             <i className="fab fa-twitter"></i> Twitter
           </a>
-          <a href="#" className="text-blue-400 hover:text-blue-600">
+          <a href={user.instagram || '#'} className="text-blue-400 hover:text-blue-600">
             <i className="fab fa-instagram"></i> Instagram
           </a>
         </div>
