@@ -20,7 +20,8 @@
 
 body {
 	font-family: 'Poppins', sans-serif;
-	background-color: var(--bg-color);
+	/* background-color: var(--bg-color); */
+	background-color: #001f3f;
 	color: var(--text-color);
 	line-height: 1.6;
 }
