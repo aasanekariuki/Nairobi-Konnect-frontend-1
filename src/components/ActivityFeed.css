@@ -1,0 +1,33 @@
+.activity-feed {
+    background-color: #f7fafc;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.activity-feed-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #2d3748;
+}
+
+.activity-feed-content {
+    border-bottom: 1px solid #e2e8f0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: #4a5568;
+}
+
+.activity-feed-button {
+    color: #FF6247;
+    text-decoration: underline;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.activity-feed-button:hover {
+    color: #e0553c;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import "./Login.css"
+import './styles/Stalls.css';
+import './styles/Login.css';
 
 const StallsCompanyCard = ({ img, name }) => {
   const navigate = useNavigate();

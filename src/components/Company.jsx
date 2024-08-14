@@ -4,8 +4,9 @@ import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import './styles/Login.css';
 import { FaCheckCircle } from 'react-icons/fa';
-import './Company.css';
+import './styles/Company.css';
 
 Modal.setAppElement('#root');
 
@@ -36,7 +37,7 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked 
         <div className="p-6">
           <h2 className="mb-3 text-xl font-semibold text-center text-white">{route}</h2>
           <p className="mb-3 text-sm text-white">Price: ${price}</p>
-          <p className="mb-3 text-sm text-white">Departure Time: 
+          <p className="mb-3 text-sm text-white">Departure Time:
             <select
               value={selectedTime}
               onChange={handleTimeChange}
@@ -164,20 +165,11 @@ const Company = () => {
         )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-white-700" htmlFor="name">
-              Name
-            </label>
-            <input
-              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-4">
             <label className="block mb-2 text-sm font-bold text-white" htmlFor="name">
               Name
             </label>
             <input
-              className="w-full px-3 py-2 leading-tight text-gray-900 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-
+              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
               {...register('name')}
@@ -185,11 +177,7 @@ const Company = () => {
             {errors.name && <p className="mt-2 text-xs text-red-500">{errors.name.message}</p>}
           </div>
           <div className="mb-4">
-
-            <label className="block mb-2 text-sm font-bold text-white-700" htmlFor="seatNumber">
-
             <label className="block mb-2 text-sm font-bold text-white" htmlFor="seatNumber">
-
               Seat Number
             </label>
             <input
@@ -202,12 +190,7 @@ const Company = () => {
             {errors.seatNumber && <p className="mt-2 text-xs text-red-500">{errors.seatNumber.message}</p>}
           </div>
           <div className="mb-4">
-
-            <label className="block mb-2 text-sm font-bold text-white-700" htmlFor="amount">
-
             <label className="block mb-2 text-sm font-bold text-white" htmlFor="amount">
-
-
               Amount
             </label>
             <input
@@ -220,14 +203,7 @@ const Company = () => {
             {errors.amount && <p className="mt-2 text-xs text-red-500">{errors.amount.message}</p>}
           </div>
           <div className="mb-4">
-
-
-            <label className="block mb-2 text-sm font-bold text-white-700" htmlFor="departureTime">
-
-
             <label className="block mb-2 text-sm font-bold text-white" htmlFor="departureTime">
-
-
               Departure Time
             </label>
             <input
@@ -240,7 +216,7 @@ const Company = () => {
             {errors.departureTime && <p className="mt-2 text-xs text-red-500">{errors.departureTime.message}</p>}
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-white-700" htmlFor="mpesaNumber">
+            <label className="block mb-2 text-sm font-bold text-white" htmlFor="mpesaNumber">
               M-Pesa Number
             </label>
             <input
