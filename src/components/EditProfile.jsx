@@ -77,7 +77,7 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#1E1E2F] via-[#2F2F4F] to-[#4D4D87] animate-gradientShift">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#001f3f] via-[#001f3f] to-[#001f3f animate-gradientShift">
       <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
         <form onSubmit={handleSubmit}>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faEnvelope, faCogs, faSignInAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import './Navbar.css'
+import './styles/Navbar.css'
 
 const Navbar = () => {
     const [user, setUser] = useState({

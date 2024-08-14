@@ -8,18 +8,18 @@ import Electronics from './components/Electronics';
 import Food from './components/Food';
 import StallsPage from './components/Jewellery ';
 import Landing from './components/Landing';
-import Login from './components/Login';
+import Login from './components/pages/Login';
 import Navbar from './components/Navbar';
 import Perfumes from './components/Perfumes';
 import Seller from './components/Seller';
 import Shoes from './components/Shoes';
 import SignUpBusiness from './components/SignupBusiness';
-import SignUpUser from './components/SignupUser';
+import SignUpUser from './components/pages/SignupUser';
 import Stalls from './components/Stalls';
 import User from './components/User';
 import Profile from './components/Profile';
 import EditProfile from './components/EditProfile';
-
+// import ActivityFeed from './components/admin/ActivityFeed';
 
 
 function App() {
@@ -46,6 +46,7 @@ function App() {
           <Route path="/user" element={<User />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+          
         </Routes>
       </div>
     </Router>
