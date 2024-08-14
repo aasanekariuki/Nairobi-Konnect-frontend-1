@@ -123,7 +123,7 @@ const Company = () => {
   };
 
   const onSubmit = (data) => {
-    // Manually validate the mpesaNumber to ensure it's numeric
+    
     if (!/^\d{10}$/.test(data.mpesaNumber)) {
       console.error('M-Pesa number must be exactly 10 digits.');
       return;
