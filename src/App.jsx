@@ -1,30 +1,36 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Bus from './components/Bus';
-import Clothes from './components/Clothes';
 import Company from './components/Company';
 import Driver from './components/Driver';
-import Electronics from './components/Electronics';
-import Food from './components/Food';
-import StallsPage from './components/Jewellery ';
 import Landing from './components/Landing';
 import Login from './components/Login';
 import Navbar from './components/Navbar';
-import Perfumes from './components/Perfumes';
 import Seller from './components/Seller';
-import Shoes from './components/Shoes';
 import SignUpBusiness from './components/SignupBusiness';
 import SignUpUser from './components/SignupUser';
 import Stalls from './components/Stalls';
 import User from './components/User';
 import Profile from './components/Profile';
 import EditProfile from './components/EditProfile';
+import StallDetails from './components/StallsDetails';
+import AdminDashboard from './components/admin/AdminDashboard';
+import AdminUsers from './components/admin/AdminUsers';
+import AdminActivity from './components/admin/AdminActivity';
+
+const ProtectedRoute = ({ children, role }) => {
+	const userRole = localStorage.getItem('role');
+	if (userRole !== role) {
+		return <Navigate to="/login" />;
+	}
+	return children;
+};
 
 function App() {
 	return (
 		<Router>
 			<Navbar />
-			<div className="app-content mt-8">
+			<div className="p-4 app-content">
 				<Routes>
 					<Route path="/bus" element={<Bus />} />
 					<Route path="/clothes" element={<Clothes />} />
