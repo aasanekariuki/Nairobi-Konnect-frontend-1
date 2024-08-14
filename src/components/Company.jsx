@@ -4,16 +4,17 @@ import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { FaCheckCircle } from 'react-icons/fa';
 import './Company.css';
 
 Modal.setAppElement('#root');
-
 
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
   seatNumber: z.string().min(1, 'Seat Number is required'),
   amount: z.string().min(1, 'Amount is required').regex(/^\d+$/, 'Amount must be a number'),
   departureTime: z.string().min(1, 'Departure Time is required'),
+  mpesaNumber: z.string().length(10, 'M-Pesa number must be exactly 10 digits'),
 });
 
 const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked }) => {
@@ -25,7 +26,7 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked 
 
   const handleBook = () => {
     if (!isBooked) {
-      onBook(selectedTime, price);
+      onBook(route, selectedTime, price);
     }
   };
 
@@ -75,6 +76,7 @@ const Company = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState(null);
   const [bookedRoutes, setBookedRoutes] = useState([]);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm({
     resolver: zodResolver(schema),
@@ -83,6 +85,7 @@ const Company = () => {
       seatNumber: '',
       amount: '',
       departureTime: '',
+      mpesaNumber: '',
     },
   });
 
@@ -99,20 +102,33 @@ const Company = () => {
     { route: 'Route 10', price: 120, departureTime: '05:00 PM', arrivalTime: '06:00 PM' },
   ];
 
-  const handleOpenModal = (route, selectedTime) => {
-    setValue('amount', route.price); 
-    setValue('departureTime', selectedTime); 
+  const generateSeatNumber = () => {
+    // Generate seat number based on the booked routes
+    return bookedRoutes.length + 1;
+  };
+
+  const handleOpenModal = (route, selectedTime, price) => {
+    setValue('amount', price);
+    setValue('departureTime', selectedTime);
+    setValue('seatNumber', generateSeatNumber());
     setSelectedRoute(route);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    if (isSuccess) {
+      setIsSuccess(false);
+    }
   };
 
   const onSubmit = (data) => {
-    alert(`Ticket Generated: \nName: ${data.name}\nSeat Number: ${data.seatNumber}\nAmount: ${data.amount}\nDeparture Time: ${data.departureTime}`);
+    // Log booking details for debugging
+    console.log('Booking data:', data);
+
+    // Update state and show success message
     setBookedRoutes([...bookedRoutes, selectedRoute.route]);
+    setIsSuccess(true);
     handleCloseModal();
   };
 
@@ -126,7 +142,7 @@ const Company = () => {
           <RouteCard
             key={index}
             {...route}
-            onBook={(selectedTime, price) => handleOpenModal(route, selectedTime)}
+            onBook={(route, selectedTime, price) => handleOpenModal(route, selectedTime, price)}
             isBooked={bookedRoutes.includes(route.route)}
           />
         ))}
@@ -136,16 +152,22 @@ const Company = () => {
         isOpen={isModalOpen}
         onRequestClose={handleCloseModal}
         contentLabel="Book a Bus"
-        className="max-w-md p-6 mx-auto mt-20 bg-white rounded-lg shadow-lg"
+        className="max-w-md p-6 mx-auto mt-20 bg-black rounded-lg shadow-lg"
       >
-        <h2 className="mb-4 text-2xl font-bold text-black">Book a Bus</h2>
+        <h2 className="mb-4 text-2xl font-bold text-white">Book a Bus</h2>
+        {isSuccess && (
+          <div className="mb-4 text-center text-green-500">
+            <FaCheckCircle size={24} />
+            <p className="text-lg font-semibold">Booking Successful!</p>
+          </div>
+        )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="name">
+            <label className="block mb-2 text-sm font-bold text-white-700" htmlFor="name">
               Name
             </label>
             <input
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
               {...register('name')}
@@ -153,56 +175,62 @@ const Company = () => {
             {errors.name && <p className="mt-2 text-xs text-red-500">{errors.name.message}</p>}
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="seatNumber">
+            <label className="block mb-2 text-sm font-bold text-white-700" htmlFor="seatNumber">
               Seat Number
             </label>
             <input
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               id="seatNumber"
               type="text"
               {...register('seatNumber')}
+              disabled
             />
             {errors.seatNumber && <p className="mt-2 text-xs text-red-500">{errors.seatNumber.message}</p>}
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="amount">
+            <label className="block mb-2 text-sm font-bold text-white-700" htmlFor="amount">
               Amount
             </label>
             <input
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               id="amount"
               type="text"
-              readOnly
               {...register('amount')}
+              disabled
             />
             {errors.amount && <p className="mt-2 text-xs text-red-500">{errors.amount.message}</p>}
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="departureTime">
+            <label className="block mb-2 text-sm font-bold text-white-700" htmlFor="departureTime">
               Departure Time
             </label>
             <input
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               id="departureTime"
               type="text"
-              readOnly
               {...register('departureTime')}
+              disabled
             />
             {errors.departureTime && <p className="mt-2 text-xs text-red-500">{errors.departureTime.message}</p>}
           </div>
-          <div className="flex justify-end">
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-white-700" htmlFor="mpesaNumber">
+              M-Pesa Number
+            </label>
+            <input
+              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              id="mpesaNumber"
+              type="text"
+              {...register('mpesaNumber')}
+            />
+            {errors.mpesaNumber && <p className="mt-2 text-xs text-red-500">{errors.mpesaNumber.message}</p>}
+          </div>
+          <div className="flex justify-center">
             <button
               type="submit"
-              className="px-4 py-2 font-bold text-white transition-all rounded-lg shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+              className="px-4 py-2 font-bold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:shadow-outline"
             >
-              Book Now
-            </button>
-            <button
-              type="button"
-              onClick={handleCloseModal}
-              className="px-4 py-2 ml-2 font-bold text-white transition-all bg-red-500 rounded-lg shadow-md hover:bg-red-600"
-            >
-              Cancel
+              Confirm Booking
             </button>
           </div>
         </form>

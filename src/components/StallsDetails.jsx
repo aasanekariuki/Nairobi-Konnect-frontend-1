@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 
 
 const paymentSchema = z.object({
-  mpesaNumber: z.string().length(10, { message: 'M-Pesa number must be exactly 10 digits' }),
+  mpesaNumber: z.string().length(10, { message: 'Invalid Number' }),
 });
 
 const StallsDetails = () => {
@@ -60,10 +60,12 @@ const StallsDetails = () => {
   const removeFromCart = (id) => {
     setCart((prevCart) => {
       const updatedCart = { ...prevCart };
-      if (updatedCart[id].quantity > 1) {
-        updatedCart[id].quantity -= 1;
-      } else {
-        delete updatedCart[id];
+      if (updatedCart[id]) {
+        if (updatedCart[id].quantity > 1) {
+          updatedCart[id].quantity -= 1;
+        } else {
+          delete updatedCart[id];
+        }
       }
       return updatedCart;
     });
