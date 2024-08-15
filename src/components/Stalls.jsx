@@ -13,18 +13,16 @@ const StallsCompanyCard = ({ img, name }) => {
 
   return (
     <div className="w-full p-6 transition-transform transform cursor-pointer hover:scale-105 hover:shadow-lg rounded-lg">
-      <div className="overflow-hidden bg-black rounded-lg shadow-lg">
+      <div className="overflow-hidden bg-white rounded-lg shadow-lg">
         <img className="object-cover w-full h-60 rounded-t-lg" src={img} alt={name} />
         <div className="p-6 flex flex-col justify-between">
 
           <div>
-            <h2 className="mb-3 text-2xl font-semibold text-center text-blue-500">{name}</h2>
-            <p className="text-sm text-white mb-4 text-center">
+            <h2 className="mb-3 text-2xl font-semibold text-center text-black">{name}</h2>
+            <p className="text-sm text-gray-600 mb-4 text-center">
               Explore our stalls and products for the best buyer experience.
             </p>
           </div>
-
-          <h2 className="mb-3 text-2xl font-semibold text-center text-black">{name}</h2>
 
           <div className="flex justify-center">
             <button
