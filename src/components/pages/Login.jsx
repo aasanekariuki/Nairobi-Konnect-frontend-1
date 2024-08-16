@@ -29,14 +29,14 @@ const LoginPage = () => {
                 },
                 body: JSON.stringify(data),
             });
-
+    
             const loginData = await loginResponse.json();
-
+    
             if (loginResponse.ok) {
                 // Handle successful login
                 console.log('Login successful:', loginData);
                 localStorage.setItem('token', loginData.access_token); // Store token if needed
-
+    
                 // Redirect based on user role
                 if (loginData.role === 'admin') {
                     navigate('/admin'); // Redirect to admin view
@@ -45,16 +45,19 @@ const LoginPage = () => {
                 } else {
                     navigate('/signupBusiness'); // Redirect to business signup
                 }
+            } else if (loginResponse.status === 401) {
+                console.error('Login failed: Invalid credentials');
+                setError('Invalid email or password. Please try again.');
             } else {
                 console.error('Login failed:', loginData.message);
-                setError(loginData.message); // Set error message
+                setError('An error occurred during login. Please try again.');
             }
-        } catch (error) {
-            console.error('Error during login:', error);
-            setError('An unexpected error occurred.'); // Set generic error message
+        } catch (err) {
+            console.error('Error during login:', err);
+            setError('An unexpected error occurred. Please try again later.');
         }
     };
-
+    
     return (
         <div className="flex items-center justify-center min-h-screen bg-custom-blue">
             <div className="relative flex w-full max-w-7xl h-screen md:h-4/5 lg:h-[80vh] xl:h-[85vh] bg-black bg-opacity-50 rounded-lg shadow-lg overflow-hidden">

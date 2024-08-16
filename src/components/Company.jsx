@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
@@ -7,6 +7,7 @@ import { z } from 'zod';
 import './styles/Login.css';
 import { FaCheckCircle } from 'react-icons/fa';
 import './styles/Company.css';
+import { SERVER_URL } from '../../utils';
 
 Modal.setAppElement('#root');
 
@@ -18,7 +19,7 @@ const schema = z.object({
   mpesaNumber: z.string().length(10, 'M-Pesa number must be exactly 10 digits'),
 });
 
-const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked }) => {
+const RouteCard = ({ route, origin, destination, description, price, departureTime, arrivalTime, onBook, isBooked }) => {
   const [selectedTime, setSelectedTime] = useState(departureTime);
 
   const handleTimeChange = (e) => {
@@ -36,7 +37,10 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked 
       <div className="overflow-hidden rounded-lg shadow-md bg-white">
         <div className="p-6">
           <h2 className="mb-3 text-xl font-semibold text-center text-black">{route}</h2>
-          <p className="mb-3 text-sm text-black">Price: ${price}</p>
+          <p className="mb-2 text-sm text-black">Origin: {origin}</p>
+          <p className="mb-2 text-sm text-black">Destination: {destination}</p>
+          <p className="mb-3 text-sm text-black">Description: {description}</p>
+          <p className="mb-3 text-sm text-black">Price: Ksh {price}</p>
           <p className="mb-3 text-sm text-black">Departure Time:
             <select
               value={selectedTime}
@@ -78,8 +82,9 @@ const Company = () => {
   const [selectedRoute, setSelectedRoute] = useState(null);
   const [bookedRoutes, setBookedRoutes] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [routes, setRoutes] = useState([]);
 
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm({
+  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
@@ -90,21 +95,22 @@ const Company = () => {
     },
   });
 
-  const routes = [
-    { route: 'Route 1', price: 10, departureTime: '08:00 AM', arrivalTime: '10:00 AM' },
-    { route: 'Route 2', price: 15, departureTime: '09:00 AM', arrivalTime: '11:00 AM' },
-    { route: 'Route 3', price: 20, departureTime: '10:00 AM', arrivalTime: '12:00 PM' },
-    { route: 'Route 4', price: 25, departureTime: '11:00 AM', arrivalTime: '01:00 PM' },
-    { route: 'Route 5', price: 30, departureTime: '12:00 PM', arrivalTime: '02:00 PM' },
-    { route: 'Route 6', price: 35, departureTime: '01:00 PM', arrivalTime: '03:00 PM' },
-    { route: 'Route 7', price: 40, departureTime: '02:00 PM', arrivalTime: '04:00 PM' },
-    { route: 'Route 8', price: 100, departureTime: '03:00 PM', arrivalTime: '04:00 PM' },
-    { route: 'Route 9', price: 110, departureTime: '04:00 PM', arrivalTime: '05:00 PM' },
-    { route: 'Route 10', price: 120, departureTime: '05:00 PM', arrivalTime: '06:00 PM' },
-  ];
+  useEffect(() => {
+    // Fetch routes from backend
+    const fetchRoutes = async () => {
+      try {
+        const response = await fetch(`${SERVER_URL}/routes`);  // Update this URL as needed
+        const data = await response.json();
+        setRoutes(data);
+      } catch (error) {
+        console.error('Error fetching routes:', error);
+      }
+    };
+
+    fetchRoutes();
+  }, []);
 
   const generateSeatNumber = () => {
-    // Generate seat number based on the booked routes
     return bookedRoutes.length + 1;
   };
 
@@ -118,19 +124,35 @@ const Company = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    reset();
     if (isSuccess) {
       setIsSuccess(false);
     }
   };
 
   const onSubmit = (data) => {
-    // Log booking details for debugging
     console.log('Booking data:', data);
 
     // Update state and show success message
-    setBookedRoutes([...bookedRoutes, selectedRoute.route]);
+    setBookedRoutes([...bookedRoutes, selectedRoute]);
     setIsSuccess(true);
-    handleCloseModal();
+
+    // Generate ticket details
+    const ticket = {
+      name: data.name,
+      seatNumber: data.seatNumber,
+      route: selectedRoute.route,
+      departureTime: data.departureTime,
+      arrivalTime: selectedRoute.arrivalTime,
+      price: data.amount,
+    };
+
+    console.log('Ticket generated:', ticket);
+
+    // Automatically close modal after a short delay
+    setTimeout(() => {
+      handleCloseModal();
+    }, 2000);
   };
 
   return (
@@ -142,9 +164,12 @@ const Company = () => {
         {routes.map((route, index) => (
           <RouteCard
             key={index}
-            {...route}
+            route={route.origin + ' to ' + route.destination}
+            price={route.price}  // Assumes price is provided by backend
+            departureTime={route.departure_time}  // Assumes departure_time is provided by backend
+            arrivalTime={route.arrival_time}  // Assumes arrival_time is provided by backend
             onBook={(route, selectedTime, price) => handleOpenModal(route, selectedTime, price)}
-            isBooked={bookedRoutes.includes(route.route)}
+            isBooked={bookedRoutes.includes(route.origin + ' to ' + route.destination)}
           />
         ))}
       </div>
@@ -160,79 +185,66 @@ const Company = () => {
         {isSuccess && (
           <div className="mb-4 text-center text-green-500">
             <FaCheckCircle size={24} />
-            <p className="text-lg font-semibold">Booking Successful!</p>
+            <p className="text-lg font-semibold">Ticket Successfully Booked!</p>
           </div>
         )}
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-black" htmlFor="name">
-              Name
-            </label>
+            <label className="block text-sm font-bold text-gray-700">Name</label>
             <input
-              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              id="name"
               type="text"
               {...register('name')}
+              className="w-full p-2 mt-1 border rounded-lg text-black"
             />
-            {errors.name && <p className="mt-2 text-xs text-red-500">{errors.name.message}</p>}
+            {errors.name && <p className="text-red-500 text-xs italic">{errors.name.message}</p>}
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-black" htmlFor="seatNumber">
-              Seat Number
-            </label>
+            <label className="block text-sm font-bold text-gray-700">Seat Number</label>
             <input
-              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              id="seatNumber"
               type="text"
               {...register('seatNumber')}
-              disabled
+              className="w-full p-2 mt-1 border rounded-lg text-black"
+              readOnly
             />
-            {errors.seatNumber && <p className="mt-2 text-xs text-red-500">{errors.seatNumber.message}</p>}
+            {errors.seatNumber && <p className="text-red-500 text-xs italic">{errors.seatNumber.message}</p>}
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-black" htmlFor="amount">
-              Amount
-            </label>
+            <label className="block text-sm font-bold text-gray-700">Amount (Ksh)</label>
             <input
-              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              id="amount"
               type="text"
               {...register('amount')}
-              disabled
+              className="w-full p-2 mt-1 border rounded-lg text-black"
+              readOnly
             />
-            {errors.amount && <p className="mt-2 text-xs text-red-500">{errors.amount.message}</p>}
+            {errors.amount && <p className="text-red-500 text-xs italic">{errors.amount.message}</p>}
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-black" htmlFor="departureTime">
-              Departure Time
-            </label>
+            <label className="block text-sm font-bold text-gray-700">Departure Time</label>
             <input
-              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              id="departureTime"
               type="text"
               {...register('departureTime')}
-              disabled
+              className="w-full p-2 mt-1 border rounded-lg text-black"
+              readOnly
             />
-            {errors.departureTime && <p className="mt-2 text-xs text-red-500">{errors.departureTime.message}</p>}
+            {errors.departureTime && <p className="text-red-500 text-xs italic">{errors.departureTime.message}</p>}
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-black" htmlFor="mpesaNumber">
-              M-Pesa Number
-            </label>
+            <label className="block text-sm font-bold text-gray-700">M-Pesa Number</label>
             <input
-              className="w-full px-3 py-2 leading-tight text-black bg-gray-300 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              id="mpesaNumber"
               type="text"
               {...register('mpesaNumber')}
+              className="w-full p-2 mt-1 border rounded-lg text-black"
             />
-            {errors.mpesaNumber && <p className="mt-2 text-xs text-red-500">{errors.mpesaNumber.message}</p>}
+            {errors.mpesaNumber && <p className="text-red-500 text-xs italic">{errors.mpesaNumber.message}</p>}
           </div>
+
           <div className="flex justify-center">
             <button
               type="submit"
-              className="px-4 py-2 font-bold text-black bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:shadow-outline"
+              className="px-4 py-2 font-bold text-white transition-all rounded-lg shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
             >
-              Confirm Booking
+              Pay & Book
             </button>
           </div>
         </form>
