@@ -7,6 +7,7 @@ import { z } from 'zod';
 import './styles/Login.css';
 import { FaCheckCircle } from 'react-icons/fa';
 import './styles/Company.css';
+import { SERVER_URL } from '../../utils';
 
 Modal.setAppElement('#root');
 
@@ -98,7 +99,7 @@ const Company = () => {
     // Fetch routes from backend
     const fetchRoutes = async () => {
       try {
-        const response = await fetch('http://localhost:5000/routes');  // Update this URL as needed
+        const response = await fetch(`${SERVER_URL}/routes`);  // Update this URL as needed
         const data = await response.json();
         setRoutes(data);
       } catch (error) {

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaCartPlus, FaTrash } from 'react-icons/fa';
+import { SERVER_URL } from '../../utils';
 import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from 'react-hook-form';
 
 const paymentSchema = z.object({
@@ -14,6 +15,7 @@ const StallsDetails = () => {
   const [cart, setCart] = useState({});
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(paymentSchema),
@@ -22,8 +24,9 @@ const StallsDetails = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const encodedStallName = encodeURIComponent(stallName);
-        const response = await fetch(`http://localhost:5000/products/${encodedStallName}`);
+        const response = await fetch(`${SERVER_URL}/products`);
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
@@ -31,12 +34,15 @@ const StallsDetails = () => {
         setProducts(data);
       } catch (error) {
         console.error('Error fetching products:', error.message);
+        setProducts([]);  // Ensure products is set to an empty array on error
+      } finally {
+        setLoading(false);
       }
     };
-  
+
     fetchProducts();
   }, [stallName]);
-  
+
   const addToCart = (product) => {
     setCart((prevCart) => {
       const existingQuantity = prevCart[product.id]?.quantity || 0;
@@ -66,10 +72,38 @@ const StallsDetails = () => {
 
   const totalAmount = Object.values(cart).reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
 
-  const handlePaymentSubmit = (data) => {
-    console.log('Payment details:', data);
-    // Handle payment logic here
+  const handlePaymentSubmit = async (data) => {
+    const paymentData = {
+      mpesaNumber: data.mpesaNumber,
+      amount: totalAmount,
+      cart: cart,
+    };
+
+    try {
+      const response = await fetch(`${SERVER_URL}/payment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Payment failed: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('Payment successful:', result);
+      // Additional success handling (e.g., redirect, confirmation, etc.)
+    } catch (error) {
+      console.error('Payment error:', error.message);
+      // Handle error (e.g., show error message, retry, etc.)
+    }
   };
+
+  if (loading) {
+    return <p className="text-center text-white">Loading...</p>;
+  }
 
   return (
     <div className="p-8 gradient-background min-h-screen">
@@ -121,7 +155,6 @@ const StallsDetails = () => {
         </button>
       </div>
 
-      {/* Payment Form Popup */}
       {showPaymentForm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
           <div className="bg-black text-white p-6 rounded-lg shadow-lg w-full max-w-md">
