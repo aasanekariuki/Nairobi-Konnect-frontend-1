@@ -61,8 +61,14 @@ const SignupBusiness = () => {
           case 'seller':
             navigate('/seller');
             break;
-          default:
-            navigate('/home');
+          case 'admin':
+            navigate('/admin');
+            break;
+          case 'home':
+              navigate('/home');
+            break;
+
+
             break;
         }
       } else {
