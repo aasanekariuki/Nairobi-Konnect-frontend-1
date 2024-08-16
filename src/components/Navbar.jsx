@@ -47,17 +47,17 @@ const Navbar = () => {
                 </Link>
                 <ul className="navbar-menu flex space-x-4">
                     <li>
-                        <a href="#home" className="navbar-item" onClick={scrollToTop}>
+                        <a href="/#home" className="navbar-item" onClick={scrollToTop}>
                             <FontAwesomeIcon icon={faHome} className="icon" /> Home
                         </a>
                     </li>
                     <li>
-                        <a href="#services" className="navbar-item" onClick={() => handleNavClick('services')}>
+                        <a href="/#services" className="navbar-item" onClick={() => handleNavClick('services')}>
                             <FontAwesomeIcon icon={faCogs} className="icon" /> Services
                         </a>
                     </li>
                     <li>
-                        <a href="#contact" className="navbar-item" onClick={() => handleNavClick('contact')}>
+                        <a href="/#contact" className="navbar-item" onClick={() => handleNavClick('contact')}>
                             <FontAwesomeIcon icon={faEnvelope} className="icon" /> Contact
                         </a>
                     </li>
