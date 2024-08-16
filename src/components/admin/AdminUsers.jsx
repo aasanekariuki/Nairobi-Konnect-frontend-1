@@ -133,7 +133,7 @@ const AdminUsers = ({ updateActivities }) => {
 
       {showModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+          <div className="bg-black p-6 rounded-lg shadow-lg w-full max-w-md">
             <h3 className="text-xl font-bold mb-4">Add New User</h3>
             <input
               type="text"
