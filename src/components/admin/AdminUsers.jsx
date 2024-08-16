@@ -116,7 +116,7 @@ const AdminUsers = () => {
     setExpanded(expanded === id ? null : id);
   };
 
-  return (
+ return (
     <div className="min-h-screen bg-[var(--primary-color)] p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-white">Manage Users</h2>
@@ -128,10 +128,7 @@ const AdminUsers = () => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {users.map((user) => (
-          <div
-            key={user.id}
-            className="bg-white p-6 rounded-lg shadow-lg relative hover:shadow-xl transition-shadow duration-300"
-          >
+          <div key={user.id} className="bg-white p-6 rounded-lg shadow-lg relative hover:shadow-xl transition-shadow duration-300">
             <div className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 cursor-pointer">
               <FaEllipsisV />
             </div>
@@ -142,26 +139,14 @@ const AdminUsers = () => {
               <div>
                 <h3 className="text-xl font-bold text-gray-800">{user.name}</h3>
                 <p className="text-gray-600">{user.email}</p>
-                <span
-                  className={`text-sm font-semibold inline-block py-1 px-2 rounded-full ${
-                    user.role === "Driver"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-yellow-100 text-yellow-800"
-                  }`}
-                >
+                <span className={`text-sm font-semibold inline-block py-1 px-2 rounded-full ${user.role === "Driver" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>
                   {user.role}
                 </span>
               </div>
             </div>
             <div className="mt-4">
-              <h4
-                className="text-md font-bold text-blue-500 cursor-pointer"
-                onClick={() => toggleExpand(user.id)}
-              >
-                Recent Activity{" "}
-                <span className="text-gray-500 text-sm">
-                  {expanded === user.id ? "▲" : "▼"}
-                </span>
+              <h4 className="text-md font-bold text-blue-500 cursor-pointer" onClick={() => toggleExpand(user.id)}>
+                Recent Activity <span className="text-gray-500 text-sm">{expanded === user.id ? "▲" : "▼"}</span>
               </h4>
               {expanded === user.id && (
                 <ul className="list-disc ml-5 mt-2 text-gray-700 max-h-24 overflow-y-auto custom-scrollbar">
@@ -174,6 +159,13 @@ const AdminUsers = () => {
           </div>
         ))}
       </div>
+
+      <button
+        className="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        onClick={() => navigate("/admin")} // Navigate to AdminDashboard
+      >
+        Back to Dashboard
+      </button>
     </div>
   );
 };

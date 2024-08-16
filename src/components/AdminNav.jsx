@@ -30,42 +30,6 @@ export const AdminNav = () => {
     };
 
     return (
-        <div style={navStyle}>
-            <h1 style={titleStyle}>Admin Dashboard</h1>
-            <nav>
-                <ul style={navListStyle}>
-                    <li>
-                        <Link 
-                            to="/admin" 
-                            style={navLinkStyle} 
-                            onMouseOver={(e) => e.currentTarget.style.color = navLinkHoverStyle.color}
-                            onMouseOut={(e) => e.currentTarget.style.color = navLinkStyle.color}
-                        >
-                            Dashboard
-                        </Link>
-                    </li>
-                    <li>
-                        <Link 
-                            to="/admin/users" 
-                            style={navLinkStyle} 
-                            onMouseOver={(e) => e.currentTarget.style.color = navLinkHoverStyle.color}
-                            onMouseOut={(e) => e.currentTarget.style.color = navLinkStyle.color}
-                        >
-                            Manage Users
-                        </Link>
-                    </li>
-                    <li>
-                        <Link 
-                            to="/admin/activity" 
-                            style={navLinkStyle} 
-                            onMouseOver={(e) => e.currentTarget.style.color = navLinkHoverStyle.color}
-                            onMouseOut={(e) => e.currentTarget.style.color = navLinkStyle.color}
-                        >
-                            View Activity
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+     <nav className="flex justify-between items-center" style={navStyle}></nav>
     );
 };

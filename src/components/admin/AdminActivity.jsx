@@ -56,6 +56,7 @@ const AdminActivity = () => {
     setVisibleCount((prevCount) => prevCount + 5); // Load 5 more activities
   };
 
+  
   return (
     <div className="admin-activity p-6 min-h-screen" style={{ backgroundColor: "var(--primary-color)" }}>
       <div className="header mb-8">
@@ -99,11 +100,18 @@ const AdminActivity = () => {
         )}
       </div>
 
-      {visibleActivities.length < filteredActivities.length && ( // Only show Load More if there are more activities to load
+      {visibleActivities.length < filteredActivities.length && (
         <button className="mt-6 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" onClick={loadMore}>
           Load More
         </button>
       )}
+
+      <button
+        className="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        onClick={() => navigate("/admin")} // Navigate to AdminDashboard
+      >
+        Back to Dashboard
+      </button>
     </div>
   );
 };
