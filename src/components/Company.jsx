@@ -33,12 +33,11 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked 
 
   return (
     <div className={`w-full p-5 transition-transform transform cursor-pointer lg:w-1/3 hover:scale-105 ${isBooked ? 'opacity-50 cursor-not-allowed' : ''}`}>
-      <div className="overflow-hidden rounded-lg shadow-md bg-black">
+      <div className="overflow-hidden rounded-lg shadow-md bg-white">
         <div className="p-6">
-          <h2 className="mb-3 text-xl font-semibold text-center text-white">{route}</h2>
-          <p className="mb-3 text-sm text-white">Price: ${price}</p>
-          <p className="mb-3 text-sm text-white">
-            Departure Time: 
+          <h2 className="mb-3 text-xl font-semibold text-center text-black">{route}</h2>
+          <p className="mb-3 text-sm text-black">Price: ${price}</p>
+          <p className="mb-3 text-sm text-black">Departure Time:
             <select
               value={selectedTime}
               onChange={handleTimeChange}
@@ -57,7 +56,7 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked 
               <option value="05:00 PM">05:00 PM</option>
             </select>
           </p>
-          <p className="mb-3 text-sm text-white">Arrival Time: {arrivalTime}</p>
+          <p className="mb-3 text-sm text-black">Arrival Time: {arrivalTime}</p>
           <div className="flex justify-center">
             <button
               onClick={handleBook}
@@ -137,7 +136,7 @@ const Company = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen p-6 gradient-background">
-      <h1 className="px-6 py-3 mt-24 mb-12 text-4xl font-bold text-center text-white bg-gray-900 rounded-lg shadow-lg bg-opacity-70 text-shadow-md">
+      <h1 className="px-6 py-3 mt-24 mb-12 text-4xl font-bold text-center text-black bg-gray-900 rounded-lg shadow-lg bg-opacity-70 text-shadow-md">
         Routes for Company {companyId}
       </h1>
       <div className="flex flex-wrap justify-center gap-5 mt-14">
@@ -155,9 +154,9 @@ const Company = () => {
         isOpen={isModalOpen}
         onRequestClose={handleCloseModal}
         contentLabel="Book a Bus"
-        className="max-w-md p-6 mx-auto mt-20 bg-black rounded-lg shadow-lg"
+        className="max-w-md p-6 mx-auto mt-20 bg-white rounded-lg shadow-lg"
       >
-        <h2 className="mb-4 text-2xl font-bold text-white">Book a Bus</h2>
+        <h2 className="mb-4 text-2xl font-bold text-black">Book a Bus</h2>
 
         {isSuccess && (
           <div className="mb-4 text-center text-green-500">
@@ -167,7 +166,7 @@ const Company = () => {
         )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-white" htmlFor="name">
+            <label className="block mb-2 text-sm font-bold text-black" htmlFor="name">
               Name
             </label>
             <input
@@ -179,7 +178,7 @@ const Company = () => {
             {errors.name && <p className="mt-2 text-xs text-red-500">{errors.name.message}</p>}
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-white" htmlFor="seatNumber">
+            <label className="block mb-2 text-sm font-bold text-black" htmlFor="seatNumber">
               Seat Number
             </label>
             <input
@@ -192,7 +191,7 @@ const Company = () => {
             {errors.seatNumber && <p className="mt-2 text-xs text-red-500">{errors.seatNumber.message}</p>}
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-white" htmlFor="amount">
+            <label className="block mb-2 text-sm font-bold text-black" htmlFor="amount">
               Amount
             </label>
             <input
@@ -205,7 +204,7 @@ const Company = () => {
             {errors.amount && <p className="mt-2 text-xs text-red-500">{errors.amount.message}</p>}
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-white" htmlFor="departureTime">
+            <label className="block mb-2 text-sm font-bold text-black" htmlFor="departureTime">
               Departure Time
             </label>
             <input
@@ -217,8 +216,8 @@ const Company = () => {
             />
             {errors.departureTime && <p className="mt-2 text-xs text-red-500">{errors.departureTime.message}</p>}
           </div>
-          <div className="mb-6">
-            <label className="block mb-2 text-sm font-bold text-white" htmlFor="mpesaNumber">
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-black" htmlFor="mpesaNumber">
               M-Pesa Number
             </label>
             <input
@@ -233,7 +232,7 @@ const Company = () => {
             <button
               className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
               type="submit"
-              disabled={isSuccess}
+              className="px-4 py-2 font-bold text-black bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:shadow-outline"
             >
               Confirm Booking
             </button>
