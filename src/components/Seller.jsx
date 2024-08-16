@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import { SERVER_URL } from '../../utils';
 
-const images = [
-  '',
-  '',
-  '',
-  '',
-];
-
 const Seller = () => {
   const [product, setProduct] = useState({
     name: '',
@@ -44,43 +37,27 @@ const Seller = () => {
       formData.append('imageUrl', product.imageUrl);
     }
 
-    try {
       const response = await fetch(`${SERVER_URL}/products`, {
         method: 'POST',
         body: formData,
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-        }
       });
 
-      const data = await response.json();
-
       if (response.ok) {
-        alert(data.message);
+        const data = await response.json();
+        alert('Product posted successfully');
+        // Handle any further actions like redirecting or resetting form fields
       } else {
-        throw new Error(data.message || 'Error posting product');
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`);
       }
     } catch (error) {
-      console.error(error);
-      alert('Error posting product');
+      console.error('Error:', error);
+      alert('An error occurred while posting the product.');
     }
   };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--primary-color)' }}>
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className="absolute top-0 left-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-1000"
-            style={{
-              backgroundImage: `url(${image})`,
-              animation: `fade ${images.length * 10}s infinite`,
-              animationDelay: `${index * (10 / images.length)}s`,
-            }}
-          />
-        ))}
-      </div>
       <div className="relative bg-[#070211] text-dark p-6 rounded-3xl shadow-2xl w-full max-w-3xl" style={{ height: '780px' }}>
         <div className="flex flex-col md:flex-row h-full">
           <div className="flex-1 mr-0 md:mr-4">
@@ -140,6 +117,7 @@ const Seller = () => {
               </div>
             </form>
           </div>
+          {/** Ensure this image only renders when the source exists **/}
           <img
             src="https://ilovenbo.com/wp-content/uploads/2023/12/pexels-antony-trivet-13348192.jpg"
             alt="Side Image"
@@ -148,14 +126,6 @@ const Seller = () => {
           />
         </div>
       </div>
-      <style>
-        {`
-          @keyframes fade {
-            0%, 20%, 100% { opacity: 0; }
-            25%, 95% { opacity: 1; }
-          }
-        `}
-      </style>
     </div>
   );
 };

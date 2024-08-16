@@ -1,198 +1,10 @@
-// import React, { useState, useEffect } from "react"; 
-// import { SERVER_URL } from '../../../utils';
-
-// const AdminUsers = () => {
-//   const [users, setUsers] = useState([]);
-//   const [showModal, setShowModal] = useState(false);
-//   const [newUser, setNewUser] = useState({
-//     username: "",
-//     email: "",
-//     role: "",
-//     password: "",
-//   });
-//   const [token, setToken] = useState(localStorage.getItem("token"));
-
-//   useEffect(() => {
-//     const fetchUsers = async () => {
-//       try {
-//         const response = await fetch(`${SERVER_URL}/admin`, {
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-
-//         if (!response.ok) {
-//           throw new Error("Failed to fetch users");
-//         }
-
-//         const data = await response.json();
-//         setUsers(data.users || []);
-//       } catch (error) {
-//         console.error("Error fetching users:", error);
-//       }
-//     };
-
-//     fetchUsers();
-//   }, [token]);
-
-//   const handleAddUser = async () => {
-//     try {
-//       const response = await fetch(`${SERVER_URL}/admin`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//         body: JSON.stringify(newUser),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error("Failed to add user");
-//       }
-
-//       const data = await response.json();
-//       setUsers([...users, data.user]);
-//       setShowModal(false);
-//       setNewUser({ username: "", email: "", role: "", password: "" });
-//     } catch (error) {
-//       console.error("Error adding user:", error);
-//     }
-//   };
-
-//   const handleDeleteUser = async (userId) => {
-//     if (window.confirm("Are you sure you want to delete the user?")) {
-//       try {
-//         const response = await fetch(`${SERVER_URL}/admin/${userId}`, {
-//           method: "DELETE",
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-
-//         if (!response.ok) {
-//           throw new Error("Failed to delete user");
-//         }
-
-//         setUsers(users.filter((user) => user.id !== userId));
-//       } catch (error) {
-//         console.error("Error deleting user:", error);
-//       }
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gray-100 p-6">
-//       <h2 className="text-2xl font-bold text-blue-600 mb-6">Manage Users</h2>
-
-//       <button
-//         className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-//         onClick={() => setShowModal(true)}
-//       >
-//         Add User
-//       </button>
-
-//       {/* Modal for adding a new user */}
-//       {showModal && (
-//         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-//           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-//             <h3 className="text-lg font-semibold mb-4">Add a New User</h3>
-//             <input
-//               type="text"
-//               placeholder="Username"
-//               value={newUser.username}
-//               onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
-//               className="w-full mb-2 px-4 py-2 border rounded"
-//             />
-//             <input
-//               type="email"
-//               placeholder="Email"
-//               value={newUser.email}
-//               onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-//               className="w-full mb-2 px-4 py-2 border rounded"
-//             />
-//             <input
-//               type="password"
-//               placeholder="Password"
-//               value={newUser.password}
-//               onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-//               className="w-full mb-2 px-4 py-2 border rounded"
-//             />
-//             <select
-//               value={newUser.role}
-//               onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-//               className="w-full mb-2 px-4 py-2 border rounded"
-//             >
-//               <option value="">Select Role</option>
-//               <option value="Driver">Driver</option>
-//               <option value="Seller">Seller</option>
-//               <option value="Buyer">Buyer</option>
-//               <option value="Passenger">Passenger</option>
-//             </select>
-//             <button
-//               className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-//               onClick={handleAddUser}
-//             >
-//               Add User
-//             </button>
-//             <button
-//               className="w-full mt-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-//               onClick={() => setShowModal(false)}
-//             >
-//               Close
-//             </button>
-//           </div>
-//         </div>
-//       )}
-
-//       {/* Display users */}
-//       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-//         {users.map((user) => (
-//           <div key={user.id} className="bg-white p-4 rounded-lg shadow-md">
-//             <h3 className="text-lg font-semibold text-gray-800">{user.username}</h3>
-//             <p className="text-gray-600">{user.email}</p>
-//             <p className="text-gray-600 font-semibold">Role: {user.role}</p>
-//             <div className="mt-4">
-//               <button
-//                 className="text-red-600 hover:text-red-800"
-//                 onClick={() => handleDeleteUser(user.id)}
-//               >
-//                 Delete User
-//               </button>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdminUsers;
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
-import { z } from "zod";
-
-// Zod Schema for validation
-const userSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  role: z.enum(["Driver", "Buyer", "Seller", "Passenger"]),
-});
+import { FaEllipsisV } from "react-icons/fa";
 
 const AdminUsers = () => {
-  const [users, setUsers] = useState([
+  const [expanded, setExpanded] = useState(null);
+
+  const users = [
     {
       id: 1,
       name: "John Doe",
@@ -207,72 +19,158 @@ const AdminUsers = () => {
       role: "Passenger",
       activity: ["Signed up", "Booked a bus ticket", "Posted a review"],
     },
-  ]);
+    {
+      id: 3,
+      name: "Alice Johnson",
+      email: "alice@example.com",
+      role: "Driver",
+      activity: ["Completed a trip", "Earned a bonus", "Requested time off"],
+    },
+    {
+      id: 4,
+      name: "Bob Brown",
+      email: "bob@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Canceled a trip", "Reported an issue"],
+    },
+    {
+      id: 5,
+      name: "Charlie Green",
+      email: "charlie@example.com",
+      role: "Driver",
+      activity: ["Accepted a trip", "Rated a passenger", "Earned a badge"],
+    },
+    {
+      id: 6,
+      name: "Diana Prince",
+      email: "diana@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Wrote a review", "Referred a friend"],
+    },
+    {
+      id: 7,
+      name: "Ethan Hunt",
+      email: "ethan@example.com",
+      role: "Driver",
+      activity: ["Completed a trip", "Received a compliment", "Updated availability"],
+    },
+    {
+      id: 8,
+      name: "Fiona Apple",
+      email: "fiona@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Gave feedback", "Joined a group"],
+    },
+    {
+      id: 9,
+      name: "George Clooney",
+      email: "george@example.com",
+      role: "Driver",
+      activity: ["Completed a trip", "Earned a bonus", "Reviewed a passenger"],
+    },
+    {
+      id: 10,
+      name: "Hannah Montana",
+      email: "hannah@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Changed preferences", "Rated a driver"],
+    },
+    {
+      id: 11,
+      name: "Ian Malcolm",
+      email: "ian@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Reported an issue", "Updated profile"],
+    },
+    {
+      id: 12,
+      name: "Jack Sparrow",
+      email: "jack@example.com",
+      role: "Driver",
+      activity: ["Completed a trip", "Received a rating", "Updated vehicle info"],
+    },
+    {
+      id: 13,
+      name: "Katy Perry",
+      email: "katy@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Wrote a review", "Shared a trip"],
+    },
+    {
+      id: 14,
+      name: "Leonardo DiCaprio",
+      email: "leo@example.com",
+      role: "Driver",
+      activity: ["Completed a trip", "Earned a badge", "Updated schedule"],
+    },
+    {
+      id: 15,
+      name: "Miley Cyrus",
+      email: "miley@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Joined a group", "Rated a driver"],
+    },
+  ];
 
-  const [showModal, setShowModal] = useState(false);
-  const [newUser, setNewUser] = useState({ name: "", email: "", role: "Driver" });
-  const [errors, setErrors] = useState({});
-
-  const handleAddUser = () => {
-    try {
-      userSchema.parse(newUser); // Validate user data
-      setUsers([...users, { ...newUser, id: users.length + 1, activity: [] }]);
-      setNewUser({ name: "", email: "", role: "Driver" });
-      setShowModal(false);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const errorMessages = error.errors.reduce((acc, curr) => {
-          acc[curr.path[0]] = curr.message;
-          return acc;
-        }, {});
-        setErrors(errorMessages);
-      }
-    }
-  };
-
-  const handleDeleteUser = (userId) => {
-    if (window.confirm("Are you sure you want to delete the user?")) {
-      setUsers(users.filter(user => user.id !== userId));
-    }
+  const toggleExpand = (id) => {
+    setExpanded(expanded === id ? null : id);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h2 className="text-2xl font-bold text-blue-600 mb-6">Manage Users</h2>
-
-      <button
-        className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        onClick={() => setShowModal(true)}
-      >
-        Add User
-      </button>
-
-      {/* User List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="min-h-screen bg-[var(--primary-color)] p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold text-white">Manage Users</h2>
+        <input
+          type="text"
+          placeholder="Search users..."
+          className="p-2 rounded-lg shadow-md border border-gray-300"
+        />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {users.map((user) => (
           <div
             key={user.id}
-            className="bg-white p-4 rounded-lg shadow-md flex justify-between items-center"
+            className="bg-white p-6 rounded-lg shadow-lg relative hover:shadow-xl transition-shadow duration-300"
           >
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800">{user.name}</h3>
-              <p className="text-gray-600">{user.email}</p>
-              <p className="text-gray-600 font-semibold">Role: {user.role}</p>
-              <div className="mt-2">
-                <h4 className="text-md font-bold text-blue-500">Activity:</h4>
-                <ul className="list-disc ml-5 mt-2">
-                  {user.activity.map((item, index) => (
-                    <li key={index} className="text-gray-700">{item}</li>
-                  ))}
-                </ul>
+            <div className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 cursor-pointer">
+              <FaEllipsisV />
+            </div>
+            <div className="flex items-center mb-4">
+              <div className="bg-blue-600 text-white w-16 h-16 flex items-center justify-center rounded-full mr-4 text-2xl font-semibold">
+                {user.name[0]}
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-800">{user.name}</h3>
+                <p className="text-gray-600">{user.email}</p>
+                <span
+                  className={`text-sm font-semibold inline-block py-1 px-2 rounded-full ${
+                    user.role === "Driver"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  }`}
+                >
+                  {user.role}
+                </span>
               </div>
             </div>
-            <button
-              className="ml-4 px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700"
-              onClick={() => handleDeleteUser(user.id)}
-            >
-              Delete
-            </button>
+            <div className="mt-4">
+              <h4
+                className="text-md font-bold text-blue-500 cursor-pointer"
+                onClick={() => toggleExpand(user.id)}
+              >
+                Recent Activity{" "}
+                <span className="text-gray-500 text-sm">
+                  {expanded === user.id ? "▲" : "▼"}
+                </span>
+              </h4>
+              {expanded === user.id && (
+                <ul className="list-disc ml-5 mt-2 text-gray-700 max-h-24 overflow-y-auto custom-scrollbar">
+                  {user.activity.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         ))}
       </div>

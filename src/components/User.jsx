@@ -15,6 +15,8 @@ function UserCard(props) {
         <img className="object-cover w-full h-60" src={props.img} alt="img" />
         <div className="p-6 flex flex-col justify-between flex-1">
           <div>
+            <h2 className="text-xl font-semibold mb-2 text-blue">{props.title}</h2>
+            <p className="text-sm text-white mb-4">{props.para}</p>
             <h2 className="text-xl font-semibold mb-2 text-black">{props.title}</h2>
             <p className="text-sm text-black mb-4">{props.para}</p>
           </div>
