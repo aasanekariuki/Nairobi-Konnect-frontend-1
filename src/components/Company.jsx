@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
@@ -78,6 +78,7 @@ const Company = () => {
   const [selectedRoute, setSelectedRoute] = useState(null);
   const [bookedRoutes, setBookedRoutes] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [routes, setRoutes] = useState([]);
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm({
     resolver: zodResolver(schema),
@@ -90,18 +91,20 @@ const Company = () => {
     },
   });
 
-  const routes = [
-    { route: 'Route 1', price: 10, departureTime: '08:00 AM', arrivalTime: '10:00 AM' },
-    { route: 'Route 2', price: 15, departureTime: '09:00 AM', arrivalTime: '11:00 AM' },
-    { route: 'Route 3', price: 20, departureTime: '10:00 AM', arrivalTime: '12:00 PM' },
-    { route: 'Route 4', price: 25, departureTime: '11:00 AM', arrivalTime: '01:00 PM' },
-    { route: 'Route 5', price: 30, departureTime: '12:00 PM', arrivalTime: '02:00 PM' },
-    { route: 'Route 6', price: 35, departureTime: '01:00 PM', arrivalTime: '03:00 PM' },
-    { route: 'Route 7', price: 40, departureTime: '02:00 PM', arrivalTime: '04:00 PM' },
-    { route: 'Route 8', price: 100, departureTime: '03:00 PM', arrivalTime: '04:00 PM' },
-    { route: 'Route 9', price: 110, departureTime: '04:00 PM', arrivalTime: '05:00 PM' },
-    { route: 'Route 10', price: 120, departureTime: '05:00 PM', arrivalTime: '06:00 PM' },
-  ];
+  useEffect(() => {
+    // Fetch routes from backend
+    const fetchRoutes = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/routes');  // Update this URL as needed
+        const data = await response.json();
+        setRoutes(data);
+      } catch (error) {
+        console.error('Error fetching routes:', error);
+      }
+    };
+
+    fetchRoutes();
+  }, []);
 
   const generateSeatNumber = () => {
     // Generate seat number based on the booked routes
@@ -128,7 +131,7 @@ const Company = () => {
     console.log('Booking data:', data);
 
     // Update state and show success message
-    setBookedRoutes([...bookedRoutes, selectedRoute.route]);
+    setBookedRoutes([...bookedRoutes, selectedRoute]);
     setIsSuccess(true);
     handleCloseModal();
   };
@@ -142,9 +145,12 @@ const Company = () => {
         {routes.map((route, index) => (
           <RouteCard
             key={index}
-            {...route}
+            route={route.origin + ' to ' + route.destination}
+            price={route.price}  // Assumes price is provided by backend
+            departureTime={route.departure_time}  // Assumes departure_time is provided by backend
+            arrivalTime={route.arrival_time}  // Assumes arrival_time is provided by backend
             onBook={(route, selectedTime, price) => handleOpenModal(route, selectedTime, price)}
-            isBooked={bookedRoutes.includes(route.route)}
+            isBooked={bookedRoutes.includes(route.origin + ' to ' + route.destination)}
           />
         ))}
       </div>
@@ -230,7 +236,7 @@ const Company = () => {
           <div className="flex justify-center">
             <button
               type="submit"
-              className="px-4 py-2 font-bold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:shadow-outline"
+              className="px-4 py-2 font-bold text-white transition-all rounded-lg shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
             >
               Confirm Booking
             </button>

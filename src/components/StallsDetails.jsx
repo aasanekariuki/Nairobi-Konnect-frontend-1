@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaCartPlus, FaTrash } from 'react-icons/fa';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-
 
 const paymentSchema = z.object({
   mpesaNumber: z.string().length(10, { message: 'Invalid Number' }),
@@ -14,36 +13,30 @@ const StallsDetails = () => {
   const { stallName } = useParams();
   const [cart, setCart] = useState({});
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [products, setProducts] = useState([]);
 
-  const products = {
-    clothes: [
-      { id: 1, name: 'T-Shirt', price: 25, image: 'https://via.placeholder.com/300x200?text=T-Shirt' },
-      { id: 2, name: 'Jeans', price: 40, image: 'https://via.placeholder.com/300x200?text=Jeans' },
-    ],
-    electronics: [
-      { id: 1, name: 'Smartphone', price: 699, image: 'https://via.placeholder.com/300x200?text=Smartphone' },
-      { id: 2, name: 'Laptop', price: 1200, image: 'https://via.placeholder.com/300x200?text=Laptop' },
-    ],
-    food: [
-      { id: 1, name: 'Apple', price: 1, image: 'https://via.placeholder.com/300x200?text=Apple' },
-      { id: 2, name: 'Bread', price: 2, image: 'https://via.placeholder.com/300x200?text=Bread' },
-    ],
-    jewellery: [
-      { id: 1, name: 'Necklace', price: 150, image: 'https://via.placeholder.com/300x200?text=Necklace' },
-      { id: 2, name: 'Ring', price: 200, image: 'https://via.placeholder.com/300x200?text=Ring' },
-    ],
-    perfumes: [
-      { id: 1, name: 'Eau de Parfum', price: 80, image: 'https://via.placeholder.com/300x200?text=Eau+de+Parfum' },
-      { id: 2, name: 'Cologne', price: 50, image: 'https://via.placeholder.com/300x200?text=Cologne' },
-    ],
-    shoes: [
-      { id: 1, name: 'Sneakers', price: 60, image: 'https://via.placeholder.com/300x200?text=Sneakers' },
-      { id: 2, name: 'Boots', price: 100, image: 'https://via.placeholder.com/300x200?text=Boots' },
-    ],
-  };
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(paymentSchema),
+  });
 
-  const selectedProducts = products[stallName.toLowerCase()] || [];
-
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const encodedStallName = encodeURIComponent(stallName);
+        const response = await fetch(`http://localhost:5000/products/${encodedStallName}`);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error.message);
+      }
+    };
+  
+    fetchProducts();
+  }, [stallName]);
+  
   const addToCart = (product) => {
     setCart((prevCart) => {
       const existingQuantity = prevCart[product.id]?.quantity || 0;
@@ -73,10 +66,6 @@ const StallsDetails = () => {
 
   const totalAmount = Object.values(cart).reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(paymentSchema),
-  });
-
   const handlePaymentSubmit = (data) => {
     console.log('Payment details:', data);
     // Handle payment logic here
@@ -86,10 +75,10 @@ const StallsDetails = () => {
     <div className="p-8 gradient-background min-h-screen">
       <h1 className="text-4xl font-bold mb-6 text-center text-white">{stallName} Products</h1>
       <div className="flex flex-wrap -m-4 justify-center">
-        {selectedProducts.map((product) => (
+        {products.length > 0 ? products.map((product) => (
           <div key={product.id} className="p-4 border border-gray-700 rounded-lg shadow-lg m-4 w-64 text-center bg-gray-800 hover:bg-gray-700 transition duration-300">
             <img
-              src={product.image}
+              src={product.image_url}
               alt={product.name}
               className="w-full h-32 object-cover rounded-md mb-4 shadow-md"
             />
@@ -102,7 +91,9 @@ const StallsDetails = () => {
               <FaCartPlus className="mr-2" /> Add to Cart
             </button>
           </div>
-        ))}
+        )) : (
+          <p className="text-white text-center">No products found.</p>
+        )}
       </div>
       <div className="mt-8 p-6 border border-gray-600 rounded-lg bg-gray-900 shadow-lg">
         <h2 className="text-2xl font-semibold mb-4 text-white">Cart</h2>
