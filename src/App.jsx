@@ -93,6 +93,7 @@ function App() {
 								<AdminActivity />
 							</ProtectedRoute>
 						}
+						
 					/>
 				</Route>
 			</Routes>
