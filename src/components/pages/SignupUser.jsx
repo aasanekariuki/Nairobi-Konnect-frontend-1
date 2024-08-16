@@ -48,12 +48,14 @@ const SignupBusiness = () => {
         console.log('Signup successful:', result);
         
         localStorage.setItem('token', result.token);
-        localStorage.setItem('userRole', data.role);
+        localStorage.setItem('userRole', data.role.toLowerCase());
 
-        switch (data.role) {
+        switch (data.role.toLowerCase()) {
           case 'buyer':
-          case 'passenger':
             navigate('/user');
+            break;
+          case 'passenger':
+            navigate('/passenger');
             break;
           case 'driver':
             navigate('/driver');
@@ -64,11 +66,8 @@ const SignupBusiness = () => {
           case 'admin':
             navigate('/admin');
             break;
-          case 'home':
-              navigate('/home');
-            break;
-
-
+          default:
+            navigate('/home');
             break;
         }
       } else {
@@ -145,72 +144,64 @@ const SignupBusiness = () => {
                 {...register('role')}
               >
                 <option value="">Select your role</option>
-                <option value="Buyer">Buyer</option>
-                <option value="Passenger">Passenger</option>
+                <option value="buyer">Buyer</option>
+                <option value="passenger">Passenger</option>
+                <option value="driver">Driver</option>
+                <option value="seller">Seller</option>
+                <option value="admin">Admin</option>
               </select>
               {errors.role && <p className="mt-1 text-xs text-red-500">{errors.role.message}</p>}
             </div>
 
             <div className="p-3 bg-gray-50 rounded-lg shadow-md relative">
               <label className="block text-sm font-medium text-gray-700">Password</label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  className="w-full px-3 py-1.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
-                  placeholder="Password"
-                  {...register('password')}
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-2 flex items-center text-gray-500"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <FaEyeSlash className="text-blue-500 text-lg" />
-                  ) : (
-                    <FaEye className="text-blue-500 text-lg" />
-                  )}
-                </button>
-              </div>
+              <input
+                type={showPassword ? "text" : "password"}
+                className="w-full mt-1 px-3 py-1.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                placeholder="Enter your password"
+                {...register('password')}
+              />
+              <span
+                className="absolute top-3 right-3 cursor-pointer text-gray-600"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
               {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
             </div>
 
             <div className="p-3 bg-gray-50 rounded-lg shadow-md relative">
               <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  className="w-full px-3 py-1.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
-                  placeholder="Confirm Password"
-                  {...register('confirmPassword')}
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-2 flex items-center text-gray-500"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? (
-                    <FaEyeSlash className="text-blue-500 text-lg" />
-                  ) : (
-                    <FaEye className="text-blue-500 text-lg" />
-                  )}
-                </button>
-              </div>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                className="w-full mt-1 px-3 py-1.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                placeholder="Confirm your password"
+                {...register('confirmPassword')}
+              />
+              <span
+                className="absolute top-3 right-3 cursor-pointer text-gray-600"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
               {errors.confirmPassword && <p className="mt-1 text-xs text-red-500">{errors.confirmPassword.message}</p>}
             </div>
 
             <button
               type="submit"
+              className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300"
               disabled={loading}
-              className="w-full px-4 py-2 mt-4 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-300 flex items-center justify-center"
             >
-              {loading ? (
-                <FaSpinner className="w-5 h-5 mr-2 animate-spin" />
-              ) : (
-                'Sign Up'
-              )}
+              {loading ? <FaSpinner className="animate-spin mx-auto" /> : "Sign Up"}
             </button>
           </form>
+
+          <p className="mt-4 text-center text-white">
+            Already have an account?{' '}
+            <a href="/login" className="text-blue-300 hover:text-blue-500 transition duration-300">
+              Log In
+            </a>
+          </p>
         </div>
       </div>
     </div>
