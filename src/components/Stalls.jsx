@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/Stalls.css';
 import './styles/Login.css';
@@ -7,7 +7,6 @@ const StallsCompanyCard = ({ img, name }) => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    // Navigate to the stall details page
     navigate(`/stalls/${encodeURIComponent(name.toLowerCase())}`);
   };
 
@@ -16,14 +15,12 @@ const StallsCompanyCard = ({ img, name }) => {
       <div className="overflow-hidden bg-white rounded-lg shadow-lg">
         <img className="object-cover w-full h-60 rounded-t-lg" src={img} alt={name} />
         <div className="p-6 flex flex-col justify-between">
-
           <div>
             <h2 className="mb-3 text-2xl font-semibold text-center text-black">{name}</h2>
             <p className="text-sm text-gray-600 mb-4 text-center">
               Explore our stalls and products for the best buyer experience.
             </p>
           </div>
-
           <div className="flex justify-center">
             <button
               onClick={handleNavigation}
@@ -39,14 +36,24 @@ const StallsCompanyCard = ({ img, name }) => {
 };
 
 const Stalls = () => {
-  const companies = [
-    { img: 'https://basildonmarket.co.uk/wp-content/uploads/2021/06/ClothesShop-2.jpg', name: 'Clothes' },
-    { img: 'https://c8.alamy.com/comp/KE4MYN/electronics-outlet-in-tottenham-court-road-london-uk-KE4MYN.jpg', name: 'Electronics' },
-    { img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-RJI8NetYBMOO0Uyk05mklNxST2zwHwSboA&s', name: 'Food' },
-    { img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtLR5F84bq9F1OnOhCP2_er4nu0xl02OsKJw&s', name: 'Jewellery' },
-    { img: 'https://pictures-kenya.jijistatic.com/51888523_NjIwLTQ2NS1hMzA3NDkyOWZj.webp', name: 'Perfumes' },
-    { img: 'https://i.ytimg.com/vi/iqY7K-LqQSQ/maxresdefault.jpg', name: 'Shoes' },
-  ];
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    const fetchStalls = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/stalls'); // Adjust URL as necessary
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setCompanies(data);
+      } catch (error) {
+        console.error('Error fetching stalls:', error);
+      }
+    };
+
+    fetchStalls();
+  }, []);
 
   return (
     <div className="flex flex-col items-center min-h-screen p-8 gradient-background">
@@ -55,7 +62,7 @@ const Stalls = () => {
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {companies.map((company, index) => (
-          <StallsCompanyCard key={index} {...company} />
+          <StallsCompanyCard key={index} img={company.image_url} name={company.stall_name} />
         ))}
       </div>
     </div>

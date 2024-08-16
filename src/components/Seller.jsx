@@ -41,6 +41,10 @@ const Seller = () => {
       const response = await fetch(`${SERVER_URL}/products`, {
         method: 'POST',
         body: formData,
+        headers: {
+          // Important to set 'Accept' header, but do not set Content-Type when using FormData
+          'Accept': 'application/json',
+        },
       });
 
       if (response.ok) {

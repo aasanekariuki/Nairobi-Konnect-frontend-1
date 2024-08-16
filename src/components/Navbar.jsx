@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faEnvelope, faCogs, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import logoutIcon from '../assets/logout.png'; // Adjust this path if necessary
 import './styles/Navbar.css'
+import { faUser, faHome, faEnvelope, faCogs, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import './styles/Navbar.css';
 
 const Navbar = () => {
     const [user, setUser] = useState({
@@ -67,6 +69,11 @@ const Navbar = () => {
                         </a>
                     </li>
                     <li>
+                        <Link to="/user" className="navbar-item">
+                            <FontAwesomeIcon icon={faUser} className="icon" /> User
+                        </Link>
+                    </li>
+                    <li>
                         <Link to="/login" className="navbar-item login-button">
                             <FontAwesomeIcon icon={faSignInAlt} className="icon" /> Login
                         </Link>
@@ -77,6 +84,7 @@ const Navbar = () => {
                     </div>
                     </li>
                 </ul>
+                
                 {/* Profile Section */}
                 <div className="flex items-center space-x-2 cursor-pointer">
                     <div className="flex flex-col items-center mr-24" onClick={goToProfile}>
