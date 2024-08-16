@@ -12,8 +12,8 @@ Modal.setAppElement('#root');
 
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
-  seatNumber: z.number().min(1, 'Seat Number is required'),
-  amount: z.number().positive('Amount must be a positive number').min(1, 'Amount is required'),
+  seatNumber: z.number().min(1, 'Seat Number is required').transform((val) => val.toString()), // Ensures seatNumber is a string in the form
+  amount: z.number().positive('Amount must be a positive number').min(1, 'Amount is required').transform((val) => val.toString()), // Ensures amount is a string in the form
   departureTime: z.string().min(1, 'Departure Time is required'),
   mpesaNumber: z.string().length(10, 'M-Pesa number must be exactly 10 digits'),
 });
@@ -33,7 +33,6 @@ const RouteCard = ({ route, price, departureTime, arrivalTime, onBook, isBooked 
 
   return (
     <div className={`w-full p-5 transition-transform transform cursor-pointer lg:w-1/3 hover:scale-105 ${isBooked ? 'opacity-50 cursor-not-allowed' : ''}`}>
-      <div className="overflow-hidden rounded-lg shadow-md bg-black">
       <div className="overflow-hidden rounded-lg shadow-md bg-black">
         <div className="p-6">
           <h2 className="mb-3 text-xl font-semibold text-center text-white">{route}</h2>
@@ -218,7 +217,7 @@ const Company = () => {
             />
             {errors.departureTime && <p className="mt-2 text-xs text-red-500">{errors.departureTime.message}</p>}
           </div>
-          <div className="mb-4">
+          <div className="mb-6">
             <label className="block mb-2 text-sm font-bold text-white" htmlFor="mpesaNumber">
               M-Pesa Number
             </label>
@@ -230,12 +229,20 @@ const Company = () => {
             />
             {errors.mpesaNumber && <p className="mt-2 text-xs text-red-500">{errors.mpesaNumber.message}</p>}
           </div>
-          <div className="flex justify-center">
+          <div className="flex items-center justify-between">
             <button
+              className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
               type="submit"
-              className="px-4 py-2 font-bold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:shadow-outline"
+              disabled={isSuccess}
             >
               Confirm Booking
+            </button>
+            <button
+              className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline"
+              type="button"
+              onClick={handleCloseModal}
+            >
+              Cancel
             </button>
           </div>
         </form>
