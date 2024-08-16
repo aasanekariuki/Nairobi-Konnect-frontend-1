@@ -19,6 +19,97 @@ const AdminUsers = () => {
       role: "Passenger",
       activity: ["Signed up", "Booked a bus ticket", "Posted a review"],
     },
+    {
+      id: 3,
+      name: "Alice Johnson",
+      email: "alice@example.com",
+      role: "Driver",
+      activity: ["Completed a trip", "Earned a bonus", "Requested time off"],
+    },
+    {
+      id: 4,
+      name: "Bob Brown",
+      email: "bob@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Canceled a trip", "Reported an issue"],
+    },
+    {
+      id: 5,
+      name: "Charlie Green",
+      email: "charlie@example.com",
+      role: "Driver",
+      activity: ["Accepted a trip", "Rated a passenger", "Earned a badge"],
+    },
+    {
+      id: 6,
+      name: "Diana Prince",
+      email: "diana@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Wrote a review", "Referred a friend"],
+    },
+    {
+      id: 7,
+      name: "Ethan Hunt",
+      email: "ethan@example.com",
+      role: "Driver",
+      activity: ["Completed a trip", "Received a compliment", "Updated availability"],
+    },
+    {
+      id: 8,
+      name: "Fiona Apple",
+      email: "fiona@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Gave feedback", "Joined a group"],
+    },
+    {
+      id: 9,
+      name: "George Clooney",
+      email: "george@example.com",
+      role: "Driver",
+      activity: ["Completed a trip", "Earned a bonus", "Reviewed a passenger"],
+    },
+    {
+      id: 10,
+      name: "Hannah Montana",
+      email: "hannah@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Changed preferences", "Rated a driver"],
+    },
+    {
+      id: 11,
+      name: "Ian Malcolm",
+      email: "ian@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Reported an issue", "Updated profile"],
+    },
+    {
+      id: 12,
+      name: "Jack Sparrow",
+      email: "jack@example.com",
+      role: "Driver",
+      activity: ["Completed a trip", "Received a rating", "Updated vehicle info"],
+    },
+    {
+      id: 13,
+      name: "Katy Perry",
+      email: "katy@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Wrote a review", "Shared a trip"],
+    },
+    {
+      id: 14,
+      name: "Leonardo DiCaprio",
+      email: "leo@example.com",
+      role: "Driver",
+      activity: ["Completed a trip", "Earned a badge", "Updated schedule"],
+    },
+    {
+      id: 15,
+      name: "Miley Cyrus",
+      email: "miley@example.com",
+      role: "Passenger",
+      activity: ["Booked a bus ticket", "Joined a group", "Rated a driver"],
+    },
   ];
 
   const toggleExpand = (id) => {
@@ -26,7 +117,7 @@ const AdminUsers = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-green-400 to-blue-500 p-6">
+    <div className="min-h-screen bg-[var(--primary-color)] p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-white">Manage Users</h2>
         <input
