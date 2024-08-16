@@ -27,7 +27,7 @@ const Driver = () => {
 
   const handleSubmitForm = async (data) => {
     try {
-      const response = await axios.post('http://localhost:5000/routes', data);
+      const response = await axios.post(`${SERVER_URL}/driver`, data);
       alert(response.data.message);
     } catch (error) {
       console.error(error);
