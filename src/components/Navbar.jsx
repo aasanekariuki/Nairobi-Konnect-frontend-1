@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faEnvelope, faCogs, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faHome, faEnvelope, faCogs, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import logoutIcon from '../assets/logout.png'; // Adjust this path if necessary
 import './styles/Navbar.css'
-import { faUser, faHome, faEnvelope, faCogs, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
-import './styles/Navbar.css';
 
 const Navbar = () => {
     const [user, setUser] = useState({
@@ -86,7 +84,7 @@ const Navbar = () => {
                 </ul>
                 
                 {/* Profile Section */}
-                <div className="flex items-center space-x-2 cursor-pointer">
+                {/* <div className="flex items-center space-x-2 cursor-pointer">
                     <div className="flex flex-col items-center mr-24" onClick={goToProfile}>
                         {user.profilePhoto ? (
                             <img
@@ -104,7 +102,7 @@ const Navbar = () => {
                         </div>
                     </div>
                     
-                </div>
+                </div> */}
             </div>
         </nav>
     );
