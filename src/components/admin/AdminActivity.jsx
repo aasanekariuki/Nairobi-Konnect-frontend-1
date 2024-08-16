@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const AdminActivity = () => {
   const [activities, setActivities] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
-  const [visibleCount, setVisibleCount] = useState(5); 
+  const [visibleCount, setVisibleCount] = useState(5);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchData = async () => {
-    
       const data = [
         { id: 1, user: "John Doe", action: "Created a new post", time: "2 mins ago" },
         { id: 2, user: "Jane Smith", action: "Updated profile picture", time: "10 mins ago" },
@@ -35,6 +36,7 @@ const AdminActivity = () => {
         { id: 23, user: "Uma Patel", action: "Reported a user", time: "19 hours ago" },
         { id: 24, user: "Victor Lee", action: "Posted a review", time: "20 hours ago" },
         { id: 25, user: "Wendy Martinez", action: "Participated in a poll", time: "21 hours ago" },
+        
       ];
       setActivities(data);
     };
@@ -49,14 +51,12 @@ const AdminActivity = () => {
     )
     .sort((a, b) => (sortOrder === "asc" ? a.id - b.id : b.id - a.id));
 
-  // Get only the visible activities based on the visibleCount
   const visibleActivities = filteredActivities.slice(0, visibleCount);
 
   const loadMore = () => {
     setVisibleCount((prevCount) => prevCount + 5); // Load 5 more activities
   };
 
-  
   return (
     <div className="admin-activity p-6 min-h-screen" style={{ backgroundColor: "var(--primary-color)" }}>
       <div className="header mb-8">
@@ -100,18 +100,20 @@ const AdminActivity = () => {
         )}
       </div>
 
-      {visibleActivities.length < filteredActivities.length && (
-        <button className="mt-6 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" onClick={loadMore}>
-          Load More
-        </button>
-      )}
+      <div className="flex justify-between mt-6">
+        {visibleActivities.length < filteredActivities.length && (
+          <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" onClick={loadMore}>
+            Load More
+          </button>
+        )}
 
-      <button
-        className="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-        onClick={() => navigate("/admin")} // Navigate to AdminDashboard
-      >
-        Back to Dashboard
-      </button>
+        <button
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+          onClick={() => navigate("/admin")} // Navigate to AdminDashboard
+        >
+          Back to Dashboard
+        </button>
+      </div>
     </div>
   );
 };
