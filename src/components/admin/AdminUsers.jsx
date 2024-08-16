@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { FaEllipsisV, FaUserPlus, FaUserMinus } from "react-icons/fa";
 import { SERVER_URL } from '../../../utils';
 
-const AdminUsers = () => {
+const AdminUsers = ({ updateActivities }) => {
   const [expanded, setExpanded] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [newUser, setNewUser] = useState({ name: "", email: "", role: "" });
@@ -52,6 +52,9 @@ const AdminUsers = () => {
       setUsers([...users, addedUser]); // Add the new user to the state
       setNewUser({ name: "", email: "", role: "" }); // Clear the input fields
       setShowModal(false); // Close the modal
+
+      // Update activities in AdminActivity
+      updateActivities(addedUser);
     } catch (error) {
       console.error("Error adding user:", error);
     }
@@ -130,7 +133,7 @@ const AdminUsers = () => {
 
       {showModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-black p-6 rounded-lg shadow-lg w-full max-w-md">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h3 className="text-xl font-bold mb-4">Add New User</h3>
             <input
               type="text"
