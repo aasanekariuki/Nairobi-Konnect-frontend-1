@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { SERVER_URL } from '../../utils';
 
 const images = [
   '',
@@ -31,22 +31,35 @@ const Seller = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append('name', product.name);
-      formData.append('description', product.description);
-      formData.append('price', product.price);
-      formData.append('available_quantity', product.available_quantity);
-      formData.append('shop_name', product.shop_name);
-      formData.append('location', product.location);
-      if (product.image) {
-        formData.append('image', product.image);
-      } else {
-        formData.append('imageUrl', product.imageUrl);
-      }
+    const formData = new FormData();
+    formData.append('name', product.name);
+    formData.append('description', product.description);
+    formData.append('price', product.price);
+    formData.append('available_quantity', product.available_quantity);
+    formData.append('shop_name', product.shop_name);
+    formData.append('location', product.location);
+    if (product.image) {
+      formData.append('image', product.image);
+    } else {
+      formData.append('imageUrl', product.imageUrl);
+    }
 
-      const response = await axios.post('http://localhost:5000/products', formData);
-      alert(response.data.message);
+    try {
+      const response = await fetch(`${SERVER_URL}/products`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message);
+      } else {
+        throw new Error(data.message || 'Error posting product');
+      }
     } catch (error) {
       console.error(error);
       alert('Error posting product');

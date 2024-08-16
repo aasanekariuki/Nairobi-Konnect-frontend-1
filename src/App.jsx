@@ -22,7 +22,7 @@ import AdminDashboard from './components/admin/AdminDashboard';
 import AdminUsers from './components/admin/AdminUsers';
 import AdminActivity from './components/admin/AdminActivity';
 import { Layout } from './components/Layout';
-import { AdminLayout } from './components/AdminLayout';
+import AdminLayout from './components/AdminLayout';
 
 const ProtectedRoute = ({ children, role }) => {
 	const userRole = localStorage.getItem('role');

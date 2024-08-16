@@ -6,12 +6,10 @@ const AdminDashboard = () => {
 	const [users, setUsers] = useState([]);
 
 	useEffect(() => {
-		// Fetch users from the backend API
 		const fetchUsers = async () => {
 			try {
-				const response = await axios.get('/api/users'); // Adjust the URL as needed
+				const response = await axios.get('/api/users'); 
 				console.log(response);
-				// setUsers(response.data);
 			} catch (error) {
 				console.error('Error fetching users', error);
 			}

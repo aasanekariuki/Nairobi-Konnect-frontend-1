@@ -15,7 +15,7 @@ const Profile = () => {
         const token = localStorage.getItem('token');
         
        
-        const response = await fetch(`${SERVER_URL}/user`, {
+        const response = await fetch(``, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
