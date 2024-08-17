@@ -117,7 +117,7 @@ const StallsDetails = () => {
               className="w-full h-32 object-cover rounded-md mb-4 shadow-md"
             />
             <h2 className="text-xl font-semibold mb-2 text-white">{product.name}</h2>
-            <p className="text-lg font-bold mb-4 text-gray-100">ksh{product.price.toFixed(2)}</p>
+            <p className="text-lg font-bold mb-4 text-gray-100">Ksh {product.price.toFixed(2)}</p>
             <button
               onClick={() => addToCart(product)}
               className="bg-green-600 text-white py-2 px-4 rounded-lg flex items-center justify-center hover:bg-green-700 transition duration-300"
@@ -134,7 +134,7 @@ const StallsDetails = () => {
         <ul className="list-disc pl-5 mb-4 text-gray-300">
           {Object.values(cart).map((item) => (
             <li key={item.id} className="text-lg text-gray-200 flex items-center justify-between">
-              {item.name} - ${item.price.toFixed(2)} x {item.quantity}
+              {item.name} - Ksh {item.price.toFixed(2)} x {item.quantity}
               <button
                 onClick={() => removeFromCart(item.id)}
                 className="text-red-500 hover:text-red-700"
