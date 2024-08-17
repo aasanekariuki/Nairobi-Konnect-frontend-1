@@ -145,7 +145,7 @@ const StallsDetails = () => {
           ))}
         </ul>
         <p className="text-xl font-semibold text-white mb-4">
-          Total: ${totalAmount}
+          Total: Ksh {totalAmount}
         </p>
         <button
           onClick={() => setShowPaymentForm(true)}
