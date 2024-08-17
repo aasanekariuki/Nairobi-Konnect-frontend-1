@@ -110,8 +110,8 @@ const StallsDetails = () => {
       <h1 className="text-4xl font-bold mb-6 text-center text-white">{stallName} Products</h1>
       <div className="flex flex-wrap -m-4 justify-center">
         {products.length > 0 ? products.map((product) => (
-          <div key={product.id} className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
-          <div className="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96">
+          <div key={product.id} className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-76">
+          <div className="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-76">
             <img
               src={product.image_url}
               alt={product.name} className="object-cover w-full h-full" />
@@ -182,7 +182,7 @@ const StallsDetails = () => {
                   <p className="mt-1 text-red-500 text-sm">{errors.mpesaNumber.message}</p>
                 )}
               </div>
-              <p className="text-lg mb-4">Total Amount: ${totalAmount}</p>
+              <p className="text-lg mb-4">Total Amount: Ksh -{totalAmount}</p>
               <button
                 type="submit"
                 className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300"
