@@ -36,7 +36,7 @@ const AdminUsers = ({ updateActivities }) => {
 
   const addUser = async () => {
     try {
-      const response = await fetch(`${SERVER_URL}/user`, {
+      const response = await fetch(`${SERVER_URL}/admin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
