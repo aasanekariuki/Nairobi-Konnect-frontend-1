@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/Stalls.css';
 import './styles/Login.css';
+import { SERVER_URL } from '../../utils';
 
 const StallsCompanyCard = ({ img, name }) => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const Stalls = () => {
   useEffect(() => {
     const fetchStalls = async () => {
       try {
-        const response = await fetch('http://localhost:5000/stalls'); // Adjust URL as necessary
+        const response = await fetch(`${SERVER_URL}/stalls`); // Adjust URL as necessary
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
