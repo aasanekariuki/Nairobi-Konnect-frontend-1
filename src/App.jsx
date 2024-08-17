@@ -15,8 +15,8 @@ import SignUpBusiness from './components/SignupBusiness';
 import SignUpUser from './components/pages/SignupUser';
 import Stalls from './components/Stalls';
 import User from './components/User';
-import Profile from './components/Profile';
-import EditProfile from './components/EditProfile';
+// import Profile from './components/Profile';
+// import EditProfile from './components/EditProfile';
 import StallDetails from './components/StallsDetails';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminUsers from './components/admin/AdminUsers';
@@ -64,8 +64,8 @@ function App() {
 					<Route path="/stalls" element={<Stalls />} />
 					<Route path="/stalls/:stallsId" element={<Stalls />} />
 					<Route path="/user" element={<User />} />
-					<Route path="/profile" element={<Profile />} />
-					<Route path="/edit-profile" element={<EditProfile />} />
+					{/* <Route path="/profile" element={<Profile />} />
+					<Route path="/edit-profile" element={<EditProfile />} /> */}
 				</Route>
 
 				{/* Protected Routes for Admin */}

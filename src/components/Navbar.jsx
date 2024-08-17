@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faEnvelope, faCogs, faSignInAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faHome, faEnvelope, faCogs, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import logoutIcon from '../assets/logout.png'; // Adjust this path if necessary
-import './styles/Navbar.css';
+import './styles/Navbar.css'
 
 const Navbar = () => {
     const [user, setUser] = useState({
@@ -90,26 +90,25 @@ const Navbar = () => {
                 </ul>
                 
                 {/* Profile Section */}
-                {user && (
-                    <div className="flex items-center space-x-2 cursor-pointer">
-                        <div className="flex flex-col items-center mr-24" onClick={goToProfile}>
-                            {user.profilePhoto ? (
-                                <img
-                                    src={user.profilePhoto}
-                                    alt="Profile"
-                                    className="h-12 w-12 rounded-full object-cover border border-gray-300"
-                                />
-                            ) : (
-                                <div className="bg-gray-200 h-12 w-12 rounded-full flex items-center justify-center text-gray-700 text-lg border border-gray-300">
-                                    {getInitials(user.name)}
-                                </div>
-                            )}
-                            <div className="text-sm font-medium text-gray-700 mt-1">
+                {/* <div className="flex items-center space-x-2 cursor-pointer">
+                    <div className="flex flex-col items-center mr-24" onClick={goToProfile}>
+                        {user.profilePhoto ? (
+                            <img
+                                src={user.profilePhoto}
+                                alt="Profile"
+                                className="h-12 w-12 rounded-full object-cover border border-gray-300"
+                            />
+                        ) : (
+                            <div className="bg-gray-200 h-12 w-12 rounded-full flex items-center justify-center text-gray-700 text-lg border border-gray-300">
                                 {getInitials(user.name)}
                             </div>
+                        )}
+                        <div className="text-sm font-medium text-gray-700 mt-1">
+                            {getInitials(user.name)}
                         </div>
                     </div>
-                )}
+                    
+                </div> */}
             </div>
         </nav>
     );
