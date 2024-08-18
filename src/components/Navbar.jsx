@@ -3,17 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHome, faEnvelope, faCogs, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import logoutIcon from '../assets/logout.png'; // Adjust this path if necessary
-import './styles/Navbar.css'
+import './styles/Navbar.css';
 
 const Navbar = () => {
-    const [user, setUser] = useState({
-        name: 'User',
-        profilePhoto: null,
-    });
+    const [user, setUser] = useState(null); // Set initial user state to null
 
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Check if the user is logged in by retrieving the user from localStorage
         const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedUser) {
             setUser(storedUser);
@@ -35,11 +33,8 @@ const Navbar = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const goToProfile = () => {
-        navigate('/profile');
-    };
-
     const handleLogout = () => {
+        // Clear the user from localStorage and update state
         localStorage.removeItem('user');
         setUser(null);
         navigate('/login');
@@ -76,7 +71,11 @@ const Navbar = () => {
                             </li>
                             <li>
                                 <div onClick={handleLogout} className="cursor-pointer">
-                                    <img src={logoutIcon} alt="Logout" className="h-11 w-11 ml-4 transition-transform duration-200 hover:scale-110" />
+                                    <img
+                                        src={logoutIcon}
+                                        alt="Logout"
+                                        className="h-11 w-11 ml-4 transition-transform duration-200 hover:scale-110"
+                                    />
                                 </div>
                             </li>
                         </>
@@ -88,27 +87,6 @@ const Navbar = () => {
                         </li>
                     )}
                 </ul>
-                
-                {/* Profile Section */}
-                {/* <div className="flex items-center space-x-2 cursor-pointer">
-                    <div className="flex flex-col items-center mr-24" onClick={goToProfile}>
-                        {user.profilePhoto ? (
-                            <img
-                                src={user.profilePhoto}
-                                alt="Profile"
-                                className="h-12 w-12 rounded-full object-cover border border-gray-300"
-                            />
-                        ) : (
-                            <div className="bg-gray-200 h-12 w-12 rounded-full flex items-center justify-center text-gray-700 text-lg border border-gray-300">
-                                {getInitials(user.name)}
-                            </div>
-                        )}
-                        <div className="text-sm font-medium text-gray-700 mt-1">
-                            {getInitials(user.name)}
-                        </div>
-                    </div>
-                    
-                </div> */}
             </div>
         </nav>
     );

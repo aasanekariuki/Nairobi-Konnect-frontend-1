@@ -14,8 +14,6 @@ Modal.setAppElement('#root');
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
   seatNumber: z.string().min(1, 'Seat Number is required'),
-  amount: z.string().min(1, 'Amount is required').regex(/^\d+$/, 'Amount must be a number'),
-  departureTime: z.string().min(1, 'Departure Time is required'),
   mpesaNumber: z.string().length(10, 'M-Pesa number must be exactly 10 digits'),
 });
 
@@ -48,6 +46,7 @@ const RouteCard = ({ route, origin, destination, description, price, departureTi
               className="p-1 ml-2 border rounded mb-3 text-sm text-black"
               disabled={isBooked}
             >
+              {/* Departure times */}
               <option value="08:00 AM">08:00 AM</option>
               <option value="09:00 AM">09:00 AM</option>
               <option value="10:00 AM">10:00 AM</option>
@@ -83,14 +82,13 @@ const Company = () => {
   const [bookedRoutes, setBookedRoutes] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
   const [routes, setRoutes] = useState([]);
+  const [availableSeats, setAvailableSeats] = useState([1, 2, 3, 4, 5]); // Example available seats
 
   const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
       seatNumber: '',
-      amount: '',
-      departureTime: '',
       mpesaNumber: '',
     },
   });
@@ -113,81 +111,61 @@ const Company = () => {
     fetchRoutes();
   }, []);
 
-  const generateSeatNumber = () => {
-    return bookedRoutes.length + 1;
-  };
-
   const handleOpenModal = (route, selectedTime, price, arrivalTime) => {
     console.log('Opening modal with:', { route, selectedTime, price, arrivalTime }); // Debugging
 
-    setValue('amount', price); // Set the price in the form
-    setValue('departureTime', selectedTime); // Set the departure time in the form
-    setValue('seatNumber', generateSeatNumber()); // Generate and set the seat number
-    
-    // Check if values are correctly set (Debugging)
-    console.log('Form values set:', {
-        amount: price,
-        departureTime: selectedTime,
-        seatNumber: generateSeatNumber(),
-    });
-
-    setSelectedRoute({ route, departureTime: selectedTime, arrivalTime });
+    setValue('seatNumber', availableSeats[0]); // Automatically select the first available seat
+    setSelectedRoute({ route, selectedTime, price, arrivalTime });
     setIsModalOpen(true);
-};
+  };
 
-const handleCloseModal = () => {
+  const handleCloseModal = () => {
     setIsModalOpen(false);
     reset();
     if (isSuccess) {
       setIsSuccess(false);
     }
-};
+  };
 
-const onSubmit = async (data) => {
+  const onSubmit = async (data) => {
     try {
-        const response = await fetch(`${SERVER_URL}/bookings`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                ...data,
-                route: selectedRoute.route,
-                arrivalTime: selectedRoute.arrivalTime,
-            }),
-        });
+      const response = await fetch(`${SERVER_URL}/bookings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...data,
+          route: selectedRoute.route,
+          price: selectedRoute.price,
+          arrivalTime: selectedRoute.arrivalTime,
+        }),
+      });
 
-        if (!response.ok) {
-            throw new Error('Failed to book ticket');
-        }
+      if (!response.ok) {
+        throw new Error('Failed to book ticket');
+      }
 
-        setBookedRoutes([...bookedRoutes, selectedRoute.route]);
-        setIsSuccess(true);
+      setBookedRoutes([...bookedRoutes, selectedRoute.route]);
+      setIsSuccess(true);
 
-        const ticket = {
-            name: data.name,
-            seatNumber: data.seatNumber,
-            route: selectedRoute.route,
-            departureTime: data.departureTime,
-            arrivalTime: selectedRoute.arrivalTime,
-            price: data.amount,
-        };
+      // Remove the selected seat from available seats
+      setAvailableSeats(availableSeats.filter(seat => seat !== parseInt(data.seatNumber)));
 
-        console.log('Ticket generated:', ticket);
+      console.log('Booking successful:', data);
 
-        setTimeout(() => {
-            handleCloseModal();
-        }, 2000);
+      setTimeout(() => {
+        handleCloseModal();
+      }, 2000);
 
     } catch (error) {
-        console.error('Error during booking:', error);
+      console.error('Error during booking:', error);
     }
-};
-
+  };
 
   return (
     <div className="flex flex-col items-center min-h-screen p-6 gradient-background">
-      <h1 className="px-6 py-3 mt-24 mb-12 text-4xl font-bold text-center text-black bg-gray-900 rounded-lg shadow-lg bg-opacity-70 text-shadow-md">
+      <h1 className="px-6 py-3 mt-24 mb-12 text-4xl font-bold text-center text-white bg-gray-900 rounded-lg shadow-lg bg-opacity-70 text-shadow-md">
         Routes for Company {companyId}
       </h1>
       <div className="flex flex-wrap justify-center gap-5 mt-14">
@@ -212,78 +190,65 @@ const onSubmit = async (data) => {
       </div>
 
       <Modal
-    isOpen={isModalOpen}
-    onRequestClose={handleCloseModal}
-    contentLabel="Book a Bus"
-    className="max-w-md p-6 mx-auto mt-20 bg-white rounded-lg shadow-lg"
->
-    <h2 className="mb-4 text-2xl font-bold text-black">Book a Bus</h2>
+        isOpen={isModalOpen}
+        onRequestClose={handleCloseModal}
+        contentLabel="Book a Bus"
+        className="max-w-md p-6 mx-auto mt-20 bg-white rounded-lg shadow-lg"
+      >
+        <h2 className="mb-4 text-2xl font-bold text-black">Book a Bus</h2>
 
-    {isSuccess && (
-        <div className="mb-4 text-center text-green-500">
+        {isSuccess && (
+          <div className="mb-4 text-center text-green-500">
             <FaCheckCircle size={24} />
             <p className="text-lg font-semibold">Ticket Successfully Booked!</p>
-        </div>
-    )}
+          </div>
+        )}
 
-    <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-4">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="mb-4">
             <label className="block mb-1 font-bold text-black">Name</label>
             <input
-                {...register('name')}
-                className={`w-full px-4 py-2 border rounded-lg shadow-md text-black focus:outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+              {...register('name')}
+              className={`w-full px-4 py-2 border rounded-lg shadow-md text-black focus:outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
             />
-            {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>}
-        </div>
+            {errors.name && <span className="text-red-500">{errors.name.message}</span>}
+          </div>
 
-        <div className="mb-4">
+          <div className="mb-4">
             <label className="block mb-1 font-bold text-black">Seat Number</label>
-            <input
-                {...register('seatNumber')}
-                className={`w-full px-4 py-2 border rounded-lg shadow-md text-black focus:outline-none ${errors.seatNumber ? 'border-red-500' : 'border-gray-300'}`}
-                readOnly
-            />
-            {errors.seatNumber && <p className="mt-1 text-sm text-red-500">{errors.seatNumber.message}</p>}
-        </div>
+            <select
+              {...register('seatNumber')}
+              className={`w-full px-4 py-2 border rounded-lg shadow-md text-black focus:outline-none ${errors.seatNumber ? 'border-red-500' : 'border-gray-300'}`}
+            >
+              {availableSeats.map((seat) => (
+                <option key={seat} value={seat}>
+                  {seat}
+                </option>
+              ))}
+            </select>
+            {errors.seatNumber && <span className="text-red-500">{errors.seatNumber.message}</span>}
+          </div>
 
-        <div className="mb-4">
-            <label className="block mb-1 font-bold text-black">Amount</label>
-            <input
-                {...register('amount')}
-                className={`w-full px-4 py-2 border rounded-lg shadow-md text-black focus:outline-none ${errors.amount ? 'border-red-500' : 'border-gray-300'}`}
-                readOnly
-            />
-            {errors.amount && <p className="mt-1 text-sm text-red-500">{errors.amount.message}</p>}
-        </div>
-
-        <div className="mb-4">
-            <label className="block mb-1 font-bold text-black">Departure Time</label>
-            <input
-                {...register('departureTime')}
-                className={`w-full px-4 py-2 border rounded-lg shadow-md text-black focus:outline-none ${errors.departureTime ? 'border-red-500' : 'border-gray-300'}`}
-                readOnly
-            />
-            {errors.departureTime && <p className="mt-1 text-sm text-red-500">{errors.departureTime.message}</p>}
-        </div>
-
-        <div className="mb-4">
+          <div className="mb-4">
             <label className="block mb-1 font-bold text-black">M-Pesa Number</label>
             <input
-                {...register('mpesaNumber')}
-                className={`w-full px-4 py-2 border rounded-lg shadow-md text-black focus:outline-none ${errors.mpesaNumber ? 'border-red-500' : 'border-gray-300'}`}
+              {...register('mpesaNumber')}
+              className={`w-full px-4 py-2 border rounded-lg shadow-md text-black focus:outline-none ${errors.mpesaNumber ? 'border-red-500' : 'border-gray-300'}`}
             />
-            {errors.mpesaNumber && <p className="mt-1 text-sm text-red-500">{errors.mpesaNumber.message}</p>}
-        </div>
+            {errors.mpesaNumber && <span className="text-red-500">{errors.mpesaNumber.message}</span>}
+          </div>
 
-        <button
-            type="submit"
-            className="w-full px-4 py-2 font-bold text-white transition-all bg-blue-600 rounded-lg shadow-md hover:bg-blue-700"
-        >
-            Book Ticket
-        </button>
-    </form>
-</Modal>
-
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className={`px-4 py-2 font-bold text-white transition-all rounded-lg shadow-md bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 ${isSuccess ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={isSuccess}
+            >
+              {isSuccess ? 'Booked' : 'Confirm Booking'}
+            </button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };
