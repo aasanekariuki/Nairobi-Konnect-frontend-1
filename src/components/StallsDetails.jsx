@@ -34,7 +34,7 @@ const StallsDetails = () => {
         setProducts(data);
       } catch (error) {
         console.error('Error fetching products:', error.message);
-        setProducts([]);
+        setProducts([]);  // Ensure products is set to an empty array on error
       } finally {
         setLoading(false);
       }
@@ -94,8 +94,10 @@ const StallsDetails = () => {
 
       const result = await response.json();
       console.log('Payment successful:', result);
+      // Additional success handling (e.g., redirect, confirmation, etc.)
     } catch (error) {
       console.error('Payment error:', error.message);
+      // Handle error (e.g., show error message, retry, etc.)
     }
   };
 
@@ -104,9 +106,11 @@ const StallsDetails = () => {
   }
 
   return (
-    <div className="p-8 gradient-background min-h-screen relative">
-      <div className="absolute top-4 left-4 p-4 border border-gray-600 rounded-lg bg-gray-900 shadow-lg w-80">
-        <h2 className="text-lg font-semibold mb-2 text-white">Cart</h2>
+    <div className="p-8 gradient-background min-h-screen">
+      <h1 className="text-4xl font-bold mb-6 text-center text-white">{stallName} Products</h1>
+
+      <div className="mt-4 p-4 border border-gray-600 rounded-lg bg-gray-900 shadow-lg mb-8 w-80 mx-auto">
+        <h2 className="text-xl font-semibold mb-2 text-white">Cart</h2>
         <ul className="list-disc pl-5 mb-2 text-gray-300">
           {Object.values(cart).map((item) => (
             <li key={item.id} className="text-base text-gray-200 flex items-center justify-between">
@@ -130,8 +134,6 @@ const StallsDetails = () => {
           Checkout
         </button>
       </div>
-
-      <h1 className="text-4xl font-bold mb-6 text-center text-white">{stallName} Products</h1>
 
       <div className="flex flex-wrap justify-center">
         {products.length > 0 ? products.map((product) => (
