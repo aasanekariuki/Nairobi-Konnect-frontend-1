@@ -16,8 +16,9 @@ const StallsDetails = () => {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isSuccess, setIsSuccess] = useState(false);  // Add this state to handle payment success
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(paymentSchema),
   });
 
@@ -72,34 +73,101 @@ const StallsDetails = () => {
 
   const totalAmount = Object.values(cart).reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
 
-  const handlePaymentSubmit = async (data) => {
-    const paymentData = {
-      mpesaNumber: data.mpesaNumber,
-      amount: totalAmount,
-      cart: cart,
-    };
-
+  const initiateMpesaPayment = async (mpesaNumber, amount) => {
     try {
-      const response = await fetch('http://localhost:5000/stk_push', {
+      const token = localStorage.getItem('token');
+
+      // Log the token to ensure it's correctly formatted
+      console.log('Authorization token:', token);
+
+      if (!token || token.split('.').length !== 3) {
+        throw new Error('Invalid token structure');
+      }
+
+      const response = await fetch(`${SERVER_URL}/stk_push`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,  // Include the token here
         },
-        body: JSON.stringify(paymentData),
+        body: JSON.stringify({
+          phone: mpesaNumber,
+          amount: amount,
+        }),
       });
 
       if (!response.ok) {
-        throw new Error(`Payment failed: ${response.statusText}`);
+        const errorMessage = await response.text();
+        console.error('Error response from server:', errorMessage);
+        throw new Error('Failed to initiate payment');
       }
 
       const result = await response.json();
       console.log('Payment successful:', result);
-      // Additional success handling (e.g., redirect, confirmation, etc.)
+      return result;
     } catch (error) {
-      console.error('Payment error:', error.message);
-      // Handle error (e.g., show error message, retry, etc.)
+      console.error('Error during payment:', error.message);
+      throw error;
     }
   };
+  const handlePaymentSubmit = async (data) => {
+    // Parse totalAmount as an integer and ensure it is valid
+    const amount = parseInt(totalAmount, 10);
+
+    console.log('Parsed Amount:', amount); // Debug: Log parsed amount
+    console.log('M-Pesa Number:', data.mpesaNumber); // Debug: Log M-Pesa number
+
+    if (isNaN(amount) || amount <= 0) {
+        console.error('Invalid amount:', totalAmount);
+        alert('Invalid amount. Amount must be a positive integer.');
+        return;
+    }
+
+    const paymentData = {
+        phone: data.mpesaNumber,
+        amount: amount,  // Ensure amount is an integer
+        cart: cart,
+    };
+
+    console.log('Payment Data being sent:', paymentData); // Debug: Log payment data before sending
+
+    try {
+        const token = localStorage.getItem('token');
+
+        if (!token || token.split('.').length !== 3) {
+            throw new Error('Invalid token structure');
+        }
+
+        const response = await fetch(`${SERVER_URL}/stk_push`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,  // Include the token here
+            },
+            body: JSON.stringify(paymentData),
+        });
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            console.error('Error response from server:', errorMessage);
+            throw new Error('Failed to initiate payment');
+        }
+
+        const result = await response.json();
+        console.log('Payment successful:', result);
+        setIsSuccess(true);
+        console.log('Payment successful');
+        reset(); // Reset the form after successful payment
+        setTimeout(() => {
+            setShowPaymentForm(false);
+            setIsSuccess(false);
+        }, 2000); // Close modal after 2 seconds
+    } catch (error) {
+        console.error('Payment error:', error.message);
+    }
+};
+
+
 
   if (loading) {
     return <p className="text-center text-white">Loading...</p>;
@@ -176,34 +244,41 @@ const StallsDetails = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
           <div className="bg-black text-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 className="text-2xl font-bold mb-4">Payment</h2>
-            <form onSubmit={handleSubmit(handlePaymentSubmit)} className="space-y-4">
-              <div className="mb-4">
-                <label htmlFor="mpesaNumber" className="block text-sm font-medium">M-Pesa Number</label>
-                <input
-                  id="mpesaNumber"
-                  type="text"
-                  {...register('mpesaNumber')}
-                  className="w-full p-2 bg-gray-800 border border-gray-600 rounded-lg text-white"
-                />
-                {errors.mpesaNumber && (
-                  <p className="mt-1 text-red-500 text-sm">{errors.mpesaNumber.message}</p>
-                )}
+            {isSuccess && (
+              <div className="mb-4 text-center text-green-500">
+                <p className="text-lg font-semibold">Payment Successful!</p>
               </div>
-              <p className="text-lg mb-4">Total Amount: Ksh {totalAmount}</p>
-              <button
-                type="submit"
-                className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300"
-              >
-                Pay Now
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowPaymentForm(false)}
-                className="ml-4 bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition duration-300"
-              >
-                Cancel
-              </button>
-            </form>
+            )}
+            {!isSuccess && (
+              <form onSubmit={handleSubmit(handlePaymentSubmit)} className="space-y-4">
+                <div className="mb-4">
+                  <label htmlFor="mpesaNumber" className="block text-sm font-medium">M-Pesa Number</label>
+                  <input
+                    id="mpesaNumber"
+                    type="text"
+                    {...register('mpesaNumber')}
+                    className="w-full p-2 bg-gray-800 border border-gray-600 rounded-lg text-white"
+                  />
+                  {errors.mpesaNumber && (
+                    <p className="mt-1 text-red-500 text-sm">{errors.mpesaNumber.message}</p>
+                  )}
+                </div>
+                <p className="text-lg mb-4">Total Amount: Ksh {totalAmount}</p>
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300"
+                >
+                  Pay Now
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowPaymentForm(false)}
+                  className="ml-4 bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition duration-300"
+                >
+                  Cancel
+                </button>
+              </form>
+            )}
           </div>
         </div>
       )}

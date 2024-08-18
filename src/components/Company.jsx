@@ -132,44 +132,42 @@ const Company = () => {
   
   const onSubmit = async (data) => {
     try {
-      const token = localStorage.getItem('token'); // Assuming you store your token in localStorage
+      const token = localStorage.getItem('token');
+  
+      // Ensure amount is a number
+      const formattedData = {
+        ...data,
+        amount: Number(data.amount), // Convert amount to number
+        route: selectedRoute.route,
+      };
   
       const response = await fetch(`${SERVER_URL}/bookings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,  // Include the token here
+          'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          ...data,
-          route: selectedRoute.route,
-        }),
+        body: JSON.stringify(formattedData),
       });
   
       if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error('Error response from server:', errorMessage);
         throw new Error('Failed to book ticket');
       }
   
-      // Initiate M-Pesa payment
+      // Handle successful booking and payment
       await initiateMpesaPayment(data.mpesaNumber, data.amount);
   
       setBookedRoutes([...bookedRoutes, selectedRoute.route]);
       setIsSuccess(true);
   
-      const ticket = {
-        name: data.name,
-        seatNumber: data.seatNumber,
-        route: selectedRoute.route,
-        departureTime: data.departureTime,
-        price: data.amount,
-      };
-  
-      console.log('Ticket generated:', ticket);
+      console.log('Ticket generated:', formattedData);
   
       setTimeout(() => {
         handleCloseModal();
-      }, 2000); 
-
+      }, 2000);
+  
     } catch (error) {
       console.error('Error during booking:', error);
     }
