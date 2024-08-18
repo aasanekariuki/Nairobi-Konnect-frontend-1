@@ -80,7 +80,7 @@ const StallsDetails = () => {
     };
 
     try {
-      const response = await fetch(`${SERVER_URL}/payment`, {
+      const response = await fetch('http://localhost:5000/stk_push', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,138 +1,186 @@
-import React, { useState } from 'react';
-import { SERVER_URL } from '../../utils';
+import React, { useState, useEffect } from 'react';
+import { Line } from 'react-chartjs-2';
+import 'chart.js/auto';
+import { FiShoppingBag, FiUsers, FiShoppingCart, FiDollarSign } from 'react-icons/fi';
+import { AiOutlineHome, AiOutlineOrderedList, AiOutlineUser, AiOutlineBarChart, AiOutlineSetting } from 'react-icons/ai';
+import { BiStore } from 'react-icons/bi';
 
-const Seller = () => {
-  const [product, setProduct] = useState({
-    name: '',
-    description: '',
-    price: '',
-    available_quantity: '',
-    shop_name: '',
-    location: '',
-    image: null,
-    imageUrl: '',
-  });
+function App() {
+  const [revenue, setRevenue] = useState(0);
+  const [totalProductsSold, setTotalProductsSold] = useState(0);
+  const [totalCustomers, setTotalCustomers] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [salesData, setSalesData] = useState({ labels: [], datasets: [] });
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'image') {
-      setProduct({ ...product, image: files[0] });
-    } else {
-      setProduct({ ...product, [name]: value });
-    }
-  };
+  useEffect(() => {
+    // Fetch revenue data
+    fetch('http://localhost:5000/api/revenue')
+      .then(response => response.json())
+      .then(data => setRevenue(data.totalRevenue))
+      .catch(error => console.error('Error fetching revenue:', error));
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append('name', product.name);
-      formData.append('description', product.description);
-      formData.append('price', product.price);
-      formData.append('available_quantity', product.available_quantity);
-      formData.append('shop_name', product.shop_name);
-      formData.append('location', product.location);
-      if (product.image) {
-        formData.append('image', product.image);
-      } else {
-        formData.append('imageUrl', product.imageUrl);
-      }
+    // Fetch total products sold
+    fetch('http://localhost:5000/api/products')
+      .then(response => response.json())
+      .then(data => setTotalProductsSold(data.totalProductsSold))
+      .catch(error => console.error('Error fetching products:', error));
 
-      const response = await fetch(`${SERVER_URL}/products`, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          // Important to set 'Accept' header, but do not set Content-Type when using FormData
-          'Accept': 'application/json',
-        },
-      });
+    // Fetch total customers
+    fetch('http://localhost:5000/api/customers')
+      .then(response => response.json())
+      .then(data => setTotalCustomers(data.totalCustomers))
+      .catch(error => console.error('Error fetching customers:', error));
 
-      if (response.ok) {
-        const data = await response.json();
-        alert('Product posted successfully');
-        // Handle any further actions like redirecting or resetting form fields
-      } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.message}`);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred while posting the product.');
-    }
-  };
+    // Fetch total orders
+    fetch('http://localhost:5000/api/orders')
+      .then(response => response.json())
+      .then(data => setTotalOrders(data.totalOrders))
+      .catch(error => console.error('Error fetching orders:', error));
+
+    // Fetch sales data for the chart
+    fetch('http://localhost:5000/api/sales')
+      .then(response => response.json())
+      .then(data => {
+        setSalesData({
+          labels: data.months,
+          datasets: [
+            {
+              label: 'Total Sales ($)',
+              data: data.sales,
+              fill: false,
+              backgroundColor: 'rgba(0, 39, 77, 0.2)',
+              borderColor: '#00274d',
+              tension: 0.4,
+            },
+          ],
+        });
+      })
+      .catch(error => console.error('Error fetching sales data:', error));
+  }, []);
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--primary-color)' }}>
-      <div className="relative bg-[#070211] text-dark p-6 rounded-3xl shadow-2xl w-full max-w-3xl" style={{ height: '780px' }}>
-        <div className="flex flex-col md:flex-row h-full">
-          <div className="flex-1 mr-0 md:mr-4">
-            <h2 className="text-center mb-4 font-bold text-[#fdfcfc] text-xl">Post a New Product</h2>
-            <form onSubmit={handleSubmit}>
-              {[
-                { name: 'name', type: 'text', label: 'Product Name' },
-                { name: 'description', type: 'textarea', label: 'Description' },
-                { name: 'price', type: 'number', label: 'Price' },
-                { name: 'available_quantity', type: 'number', label: 'Available Quantity' },
-                { name: 'shop_name', type: 'text', label: 'Shop Name' },
-                { name: 'location', type: 'text', label: 'Location' },
-              ].map(({ name, type, label }) => (
-                <div key={name} className="mb-4">
-                  <label className="block text-[#f3f0f0] text-sm font-medium">{label}</label>
-                  {type === 'textarea' ? (
-                    <textarea
-                      name={name}
-                      value={product[name]}
-                      onChange={handleChange}
-                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-900 text-white placeholder-gray-400"
-                      required
-                    ></textarea>
-                  ) : (
-                    <input
-                      type={type}
-                      name={name}
-                      value={product[name]}
-                      onChange={handleChange}
-                      className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-900 text-white placeholder-gray-400"
-                      required
-                    />
-                  )}
-                </div>
-              ))}
-              <div className="mb-4">
-                <label className="block text-[#f5f2f2] text-sm font-medium">Product Image (Upload or URL)</label>
-                <input
-                  type="file"
-                  name="image"
-                  onChange={handleChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-lg bg-gray-900 text-white placeholder-gray-400"
-                />
-                <input
-                  type="text"
-                  name="imageUrl"
-                  value={product.imageUrl}
-                  onChange={handleChange}
-                  placeholder="Or enter image URL"
-                  className="mt-2 block w-full p-2 border border-gray-300 rounded-lg bg-gray-900 text-white placeholder-gray-400"
-                />
-              </div>
-              <div className="grid gap-2">
-                <button type="submit" className="flex justify-center items-center w-full h-12 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold rounded-full hover:scale-105 transition-transform">
-                  Post Product
-                </button>
-              </div>
-            </form>
-          </div>
-          {/** Ensure this image only renders when the source exists **/}
-          <img
-            src="https://ilovenbo.com/wp-content/uploads/2023/12/pexels-antony-trivet-13348192.jpg"
-            alt="Side Image"
-            className="max-w-xs md:max-w-sm rounded-lg object-cover mt-4 md:mt-0"
-            style={{ width: '350px', height: '750px' }}
-          />
+    <div className="flex bg-gray-100 min-h-screen">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white p-6 border-r border-gray-200">
+        <div className="flex items-center mb-8">
+          <BiStore className="text-3xl text-red-500" />
+          <h2 className="ml-3 text-2xl font-bold text-gray-800">NairobiKonnect</h2>
         </div>
-      </div>
+        <nav className="space-y-4">
+          <a href="#home" className="flex items-center text-red-500">
+            <AiOutlineHome className="mr-3" /> Home
+          </a>
+          <a href="#products" className="flex items-center text-gray-600 hover:text-red-500">
+            <FiShoppingBag className="mr-3" /> Products
+          </a>
+          <a href="#orders" className="flex items-center text-gray-600 hover:text-red-500">
+            <AiOutlineOrderedList className="mr-3" /> Orders
+          </a>
+          <a href="#customers" className="flex items-center text-gray-600 hover:text-red-500">
+            <FiUsers className="mr-3" /> Customers
+          </a>
+          <a href="#analytics" className="flex items-center text-gray-600 hover:text-red-500">
+            <AiOutlineBarChart className="mr-3" /> Analytics
+          </a>
+          <a href="#settings" className="flex items-center text-gray-600 hover:text-red-500">
+            <AiOutlineSetting className="mr-3" /> Store settings
+          </a>
+        </nav>
+      </aside>
+
+      {/* Main content */}
+      <main className="flex-1 p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-700">Hi, Jane Doe</h3>
+                <p className="text-sm text-gray-500">Access your store here</p>
+              </div>
+              <img
+                src="https://www.qr-code-generator.com/wp-content/themes/qr/new_structure/assets/media/images/en/websiteQRCode_noFrame.png"
+                alt="QR Code"
+                className="w-20 h-20"
+              />
+            </div>
+            <div className="mt-6 flex space-x-4">
+              <button className="bg-red-500 text-white py-2 px-4 rounded-lg">Visit store</button>
+              <button className="border border-red-500 text-red-500 py-2 px-4 rounded-lg">Copy store link</button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
+              <div>
+                <h4 className="text-sm text-gray-500">Total products sold</h4>
+                <p className="text-2xl font-bold text-gray-700">{totalProductsSold}</p>
+                <p className="text-xs text-green-500">+80% than last month</p>
+              </div>
+              <FiShoppingBag className="text-3xl text-yellow-500" />
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
+              <div>
+                <h4 className="text-sm text-gray-500">Total sales</h4>
+                <p className="text-2xl font-bold text-gray-700">${revenue.toLocaleString()}</p>
+                <p className="text-xs text-green-500">+65% than last month</p>
+              </div>
+              <FiDollarSign className="text-3xl text-green-500" />
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
+              <div>
+                <h4 className="text-sm text-gray-500">Total customers</h4>
+                <p className="text-2xl font-bold text-gray-700">{totalCustomers}</p>
+                <p className="text-xs text-red-500">-10% than last month</p>
+              </div>
+              <FiUsers className="text-3xl text-red-500" />
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
+              <div>
+                <h4 className="text-sm text-gray-500">Total orders</h4>
+                <p className="text-2xl font-bold text-gray-700">{totalOrders}</p>
+                <p className="text-xs text-purple-500">-5% than last month</p>
+              </div>
+              <FiShoppingCart className="text-3xl text-purple-500" />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h4 className="text-xl font-bold text-gray-700 mb-4">Total sales</h4>
+            {/* Fixing the height issue */}
+            <div className="h-64">
+              <Line data={salesData} options={{ responsive: true, maintainAspectRatio: false }} />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h4 className="text-xl font-bold text-gray-700 mb-4">Top products</h4>
+            <ul className="space-y-3">
+              <li className="flex justify-between">
+                <span className="text-gray-700">Nike blazer</span>
+                <span className="font-bold">25 sold</span>
+              </li>
+              <li className="flex justify-between">
+                <span className="text-gray-700">Nike sb zoom</span>
+                <span className="font-bold">15 sold</span>
+              </li>
+              <li className="flex justify-between">
+                <span className="text-gray-700">Nike blazer suede</span>
+                <span className="font-bold">10 sold</span>
+              </li>
+            </ul>
+            <a href="#" className="block text-red-500 mt-4">View all</a>
+          </div>
+        </div>
+      </main>
     </div>
   );
-};
+}
 
-export default Seller;
+export default App;
