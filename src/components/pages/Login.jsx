@@ -41,9 +41,9 @@ const LoginPage = () => {
                 if (loginData.role === 'admin') {
                     navigate('/admin'); // Redirect to admin view
                 } else if (loginData.role === 'user') {
-                    navigate('/signupUser'); // Redirect to user signup
+                    navigate('/User'); // Redirect to user signup
                 } else {
-                    navigate('/signupBusiness'); // Redirect to business signup
+                    navigate('/'); // Redirect to business signup
                 }
             } else if (loginResponse.status === 401) {
                 console.error('Login failed: Invalid credentials');
