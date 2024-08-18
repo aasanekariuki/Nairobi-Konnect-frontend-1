@@ -35,7 +35,7 @@ const DriverPage = () => {
       try {
         const response = await fetch(`${SERVER_URL}/drivers`); // API endpoint to fetch driver data
 
-        const response = await fetch(`${SERVER_URL}/drivers/1`); // Fetch specific driver data, e.g., driver with ID 1
+        // const response = await fetch(`${SERVER_URL}/drivers/1`); // Fetch specific driver data, e.g., driver with ID 1
 
         const data = await response.json();
         setDriver(data);
