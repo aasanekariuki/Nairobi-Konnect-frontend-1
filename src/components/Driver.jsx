@@ -6,7 +6,11 @@ import { FiBell, FiLogOut, FiPhone } from 'react-icons/fi';
 import { BsClock, BsFillPeopleFill } from 'react-icons/bs';
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { MdOutlineRoute, MdSafetyDivider } from 'react-icons/md';
-import './styles/DriverPage.css';  // Import the CSS file
+
+// Import the CSS file
+
+import './styles/DriverPage.css';
+
 import { SERVER_URL } from '../../utils';
 
 // Zod schema for form validation
@@ -30,6 +34,9 @@ const DriverPage = () => {
     const fetchDriverData = async () => {
       try {
         const response = await fetch(`${SERVER_URL}/drivers`); // API endpoint to fetch driver data
+
+        const response = await fetch(`${SERVER_URL}/drivers/1`); // Fetch specific driver data, e.g., driver with ID 1
+
         const data = await response.json();
         setDriver(data);
       } catch (error) {
@@ -52,6 +59,7 @@ const DriverPage = () => {
       });
       const result = await response.json();
       alert(result.message);
+      fetchAllRoutes(); // Refresh routes after adding a new one
     } catch (error) {
       // console.error('Error adding route:', error);
       alert('Error adding route');
@@ -61,9 +69,13 @@ const DriverPage = () => {
   // Fetch tickets for the current route
   const fetchTickets = async () => {
     try {
+
       // const response = await fetch(/`${SERVER_URL}/tickets`);
+
+      const response = await fetch(`${SERVER_URL}/tickets?route_id=${driver.currentRouteId}`); // Assuming you can fetch tickets by route ID
+
       const data = await response.json();
-      setTickets(data.routes);
+      setTickets(data.tickets);
     } catch (error) {
       console.error('Error fetching tickets:', error);
       alert('Error fetching tickets');
@@ -73,9 +85,9 @@ const DriverPage = () => {
   // Fetch all available routes
   const fetchAllRoutes = async () => {
     try {
-      const response = await fetch('http://localhost:5000/routes'); // API endpoint to fetch all routes
+      const response = await fetch(`${SERVER_URL}/routes`);
       const data = await response.json();
-      setRoutes(data.routes); // Assuming the response has a 'routes' field
+      setRoutes(data.routes);
     } catch (error) {
       console.error('Error fetching routes:', error);
       alert('Error fetching routes');
@@ -175,8 +187,8 @@ const DriverPage = () => {
                   <p>Booked Seats: {ticket.booked_seats}</p>
                   <p>Tickets:</p>
                   <ul>
-                    {ticket.tickets.map((t, idx) => (
-                      <li key={idx}>Passenger ID: {t.passenger_id}, Seat Number: {t.seat_number}</li>
+                    {ticket.passengers && ticket.passengers.map((passenger, idx) => (
+                      <li key={idx}>Passenger ID: {passenger.passenger_id}, Seat Number: {passenger.seat_number}</li>
                     ))}
                   </ul>
                 </div>
