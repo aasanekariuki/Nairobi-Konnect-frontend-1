@@ -50,9 +50,9 @@ const LoginPage = () => {
                 if (loginData.role === 'admin') {
                     navigate('/admin');
                 } else if (loginData.role === 'user') {
-                    navigate('/signupUser');
+                    navigate('/User'); // Redirect to user signup
                 } else {
-                    navigate('/signupBusiness');
+                    navigate('/'); // Redirect to business signup
                 }
             } else if (loginResponse.status === 401) {
                 setError('Invalid email or password. Please try again.');

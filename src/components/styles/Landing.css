@@ -10,6 +10,10 @@
     --hero-background-2: url('https://img.freepik.com/premium-photo/nairobi-city-county-kenyas-capital-cityscapes-skyline-skyscrapers-highrise-buildings-architecture_257688-277.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1722297600&semt=ais_hybrid');
     --hero-background-3: url('https://www.voyagekenya.fr/cdn/ke-public/nairobi_centre_ville.jpg');
     --hero-background-4: url('https://media.cnn.com/api/v1/images/stellar/prod/230202121817-basigo-electric-bus-nairobi-kenya-2.jpg?c=original');
+
+     /* Added gradient colors for text and borders */
+     --gradient-color: linear-gradient(135deg, #0077cc, #ffcc00);
+     --text-gradient: linear-gradient(45deg, #0077cc, #ffcc00);
 }
 
 * {
@@ -23,12 +27,14 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
+    overflow-x: hidden
 }
 
 /* General Styles */
 a {
     text-decoration: none;
     color: inherit;
+    transition: color 0.3s ease
 }
 
 h1, h2, h3 {
@@ -49,6 +55,7 @@ h1, h2, h3 {
     overflow: hidden;
     color: var(--text-color);
     text-align: center;
+    perspective: 1000px;
 }
 
 .hero-content {
@@ -56,6 +63,8 @@ h1, h2, h3 {
     z-index: 2;
     position: relative;
     padding: 2rem;
+    animation: fadeInUp 2s ease-out; /* Smooth fade-in effect */
+    transform-style: preserve-3d;
 }
 
 .hero-title {
@@ -68,6 +77,27 @@ h1, h2, h3 {
     border: 5px solid var(--accent-color);
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.4);
+    animation: glow 3s ease-in-out infinite alternate
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
+    }
+    100% {
+        box-shadow: 0 0 20px var(--accent-color), 0 0 40px var(--accent-color);
+    }
 }
 
 .hero-description {
@@ -76,6 +106,18 @@ h1, h2, h3 {
     background-color: rgba(0, 0, 0, 0.5);
     padding: 1rem;
     border-radius: 5px;
+    animation: slideInRight 1.5s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .cta-button {
@@ -95,7 +137,23 @@ h1, h2, h3 {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
-
+@keyframes backgroundPulse {
+    0% {
+        background-image: var(--hero-background-1);
+    }
+    25% {
+        background-image: var(--hero-background-2);
+    }
+    50% {
+        background-image: var(--hero-background-3);
+    }
+    75% {
+        background-image: var(--hero-background-4);
+    }
+    100% {
+        background-image: var(--hero-background-1);
+    }
+}
 /* About Section */
 .about {
     padding: 5rem 2rem;
@@ -104,6 +162,7 @@ h1, h2, h3 {
     color: var(--text-color);
     position: relative;
     overflow: hidden;
+
 }
 
 .about::before {
@@ -119,15 +178,32 @@ h1, h2, h3 {
     animation: float 6s ease-in-out infinite;
 }
 
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
 .about-title {
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
-    /* font-weight: bold; */
-    /* text-transform: uppercase; */
     position: relative;
     z-index: 1;
+    animation: zoomIn 1s ease-out; /* Zoom-in effect */
 }
-
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 .about-description {
     font-size: 1.25rem;
     max-width: 700px;
@@ -136,6 +212,19 @@ h1, h2, h3 {
     line-height: 1.6;
     position: relative;
     z-index: 1;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 10px;
+    animation: fadeIn 1.5s ease-out; /* Fade-in effect */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .about-features {
@@ -826,6 +915,76 @@ h1, h2, h3 {
     background: #003d33; /* Darker shade for active state */
 }
 
+/* Live Chat */
+.live-chat {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    z-index: 1000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+}
+
+.live-chat.open {
+    background-color: #e74c3c;
+    transform: scale(1.05);
+}
+
+.chat-toggle-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.chat-box {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+}
+
+.chat-box p {
+    margin: 0 0 15px;
+    font-size: 1rem;
+    color: #34495e;
+}
+
+.chat-box input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.chat-box button {
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.chat-box button:hover {
+    background-color: #2980b9;
+}
 
 @keyframes backgroundPulse {
     0% {
