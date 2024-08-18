@@ -157,36 +157,34 @@ const Company = () => {
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
           </div>
         </div>
-        
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {filteredRoutes.length > 0 ? (
-            filteredRoutes.map((route, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transform hover:scale-101 transition duration-300 ease-in-out flex flex-col items-center justify-between route-card">
-                <div className="text-center">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-2">{`${route.origin} to ${route.destination}`}</h2>
-                  <p className="text-sm text-gray-600 mb-1">Origin: {route.origin}</p>
-                  <p className="text-sm text-gray-600 mb-1">Destination: {route.destination}</p>
-                  <p className="text-sm text-gray-600 mb-3">{route.description}</p>
-                  <p className="text-sm font-semibold text-gray-800 mb-2">Price: Ksh {route.price}</p>
-                  <p className="text-sm text-gray-600 mb-3">
-                    Departure Times: {route.departure_times ? route.departure_times.join(', ') : 'No times available'}
-                  </p>
-                </div>
-                <div className="flex justify-center">
-                  <button
-                    onClick={() => handleOpenModal(route, '', route.price)}
-                    className={`px-4 py-2 font-bold text-white rounded-full shadow-md bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 ${bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''}`}
-                    disabled={bookedRoutes.includes(`${route.origin} to ${route.destination}`)}
-                  >
-                    {bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'Booked' : 'Book Now'}
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500">No routes available</p>
-          )}
+  {filteredRoutes.length > 0 ? (
+    filteredRoutes.map((route, index) => (
+      <div key={index} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transform hover:scale-101 transition duration-300 ease-in-out flex flex-col items-center justify-between route-card">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">{`${route.origin} to ${route.destination}`}</h2>
+          <p className="text-sm text-gray-600 mb-1">Origin: {route.origin}</p>
+          <p className="text-sm text-gray-600 mb-1">Destination: {route.destination}</p>
+          <p className="text-sm text-gray-600 mb-3">{route.description}</p>
+          <p className="text-sm font-semibold text-gray-800 mb-2">Price: Ksh {route.price}</p>
+          {/* Removed Departure Times */}
         </div>
+        <div className="flex justify-center">
+          <button
+            onClick={() => handleOpenModal(route, '', route.price)}
+            className={`px-4 py-2 font-bold text-white rounded-full shadow-md bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 ${bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''}`}
+            disabled={bookedRoutes.includes(`${route.origin} to ${route.destination}`)}
+          >
+            {bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'Booked' : 'Book Now'}
+          </button>
+        </div>
+      </div>
+    ))
+  ) : (
+    <p className="text-center text-gray-500">No routes available</p>
+  )}
+</div>
+
 
         <Modal
           isOpen={isModalOpen}
@@ -243,12 +241,18 @@ const Company = () => {
                   <label htmlFor="departureTime" className="mb-1 text-sm font-semibold text-gray-700">
                     Departure Time
                   </label>
-                  <input
+                  <select
                     id="departureTime"
                     {...register('departureTime')}
                     className="p-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                    readOnly
-                  />
+                  >
+                    <option value="">Select Departure Time</option>
+                    {availableTimes.map((time, index) => (
+                      <option key={index} value={time}>
+                        {time}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="mpesaNumber" className="mb-1 text-sm font-semibold text-gray-700">
@@ -259,14 +263,19 @@ const Company = () => {
                     {...register('mpesaNumber')}
                     className="p-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   />
-                  {errors.mpesaNumber && (
-                    <p className="text-red-500 text-sm">{errors.mpesaNumber.message}</p>
-                  )}
+                  {errors.mpesaNumber && <p className="mt-1 text-sm text-red-500">{errors.mpesaNumber.message}</p>}
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-between mt-4">
+                  <button
+                    type="button"
+                    onClick={handleCloseModal}
+                    className="px-4 py-2 font-bold text-white rounded-full shadow-md bg-red-500 hover:bg-red-600"
+                  >
+                    Cancel
+                  </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+                    className="px-4 py-2 font-bold text-white rounded-full shadow-md bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800"
                   >
                     Confirm Booking
                   </button>
