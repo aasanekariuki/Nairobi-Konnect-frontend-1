@@ -112,21 +112,21 @@ const StallsDetails = () => {
     {products.length > 0 ? products.map((product) => (
       <div
         key={product.id}
-        className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-56 m-4" // Adjusted width and added margin
+        className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-56 m-4" 
       >
-        <div className="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-48"> // Adjusted height
+        <div className="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-48"> 
           <img
             src={product.image_url}
             alt={product.name}
             className="object-cover w-full h-full"
           />
         </div>
-        <div className="p-4"> // Reduced padding
+        <div className="p-4"> 
           <div className="flex items-center justify-between mb-2">
-            <p className="block font-sans text-sm font-medium leading-relaxed text-blue-gray-900"> // Adjusted text size
+            <p className="block font-sans text-sm font-medium leading-relaxed text-blue-gray-900"> 
               {product.name}
             </p>
-            <p className="block font-sans text-sm font-medium leading-relaxed text-blue-gray-900"> // Adjusted text size
+            <p className="block font-sans text-sm font-medium leading-relaxed text-blue-gray-900"> 
               Ksh {product.price.toFixed(2)}
             </p>
           </div>
