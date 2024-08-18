@@ -107,25 +107,30 @@ const StallsDetails = () => {
 
   return (
     <div className="p-8 gradient-background min-h-screen">
-      <h1 className="text-4xl font-bold mb-6 text-center text-white">{stallName} Products</h1>
-      <div className="flex flex-wrap -m-4 justify-center">
-        {products.length > 0 ? products.map((product) => (
-          <div key={product.id} className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-76">
-          <div className="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-76">
-            <img
-              src={product.image_url}
-              alt={product.name} className="object-cover w-full h-full" />
-          </div>
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-2">
-              <p className="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
+  <h1 className="text-4xl font-bold mb-6 text-center text-white">{stallName} Products</h1>
+  <div className="flex flex-wrap justify-center">
+    {products.length > 0 ? products.map((product) => (
+      <div
+        key={product.id}
+        className="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-56 m-4" // Adjusted width and added margin
+      >
+        <div className="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-48"> // Adjusted height
+          <img
+            src={product.image_url}
+            alt={product.name}
+            className="object-cover w-full h-full"
+          />
+        </div>
+        <div className="p-4"> // Reduced padding
+          <div className="flex items-center justify-between mb-2">
+            <p className="block font-sans text-sm font-medium leading-relaxed text-blue-gray-900"> // Adjusted text size
               {product.name}
-              </p>
-              <p className="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
+            </p>
+            <p className="block font-sans text-sm font-medium leading-relaxed text-blue-gray-900"> // Adjusted text size
               Ksh {product.price.toFixed(2)}
-              </p>
-            </div>
+            </p>
           </div>
+        </div>
           <div className="p-6 pt-0">
             <button
               onClick={() => addToCart(product)} className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg shadow-gray-900/10 hover:shadow-gray-900/20 focus:opacity-[0.85] active:opacity-[0.85] active:shadow-none block w-full bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
