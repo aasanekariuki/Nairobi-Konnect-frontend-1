@@ -100,26 +100,62 @@ const Company = () => {
     }
   };
 
+  // Function to initiate M-Pesa payment
+  const initiateMpesaPayment = async (mpesaNumber, amount) => {
+    try {
+      const token = localStorage.getItem('token'); // Assuming you store your token in localStorage
+  
+      const response = await fetch(`${SERVER_URL}/stk_push`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,  // Include the token here
+        },
+        body: JSON.stringify({
+          phone: mpesaNumber,
+          amount: amount,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('M-Pesa payment initiation failed');
+      }
+  
+      const data = await response.json();
+      console.log('M-Pesa payment initiated:', data);
+      return data;
+    } catch (error) {
+      console.error('Error during M-Pesa payment:', error);
+      throw error;
+    }
+  };
+  
   const onSubmit = async (data) => {
     try {
+      const token = localStorage.getItem('token'); // Assuming you store your token in localStorage
+  
       const response = await fetch(`${SERVER_URL}/bookings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,  // Include the token here
         },
         body: JSON.stringify({
           ...data,
           route: selectedRoute.route,
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to book ticket');
       }
-
+  
+      // Initiate M-Pesa payment
+      await initiateMpesaPayment(data.mpesaNumber, data.amount);
+  
       setBookedRoutes([...bookedRoutes, selectedRoute.route]);
       setIsSuccess(true);
-
+  
       const ticket = {
         name: data.name,
         seatNumber: data.seatNumber,
@@ -127,18 +163,18 @@ const Company = () => {
         departureTime: data.departureTime,
         price: data.amount,
       };
-
+  
       console.log('Ticket generated:', ticket);
-
+  
       setTimeout(() => {
         handleCloseModal();
       }, 2000); // Close modal after 2 seconds
-
+  
     } catch (error) {
       console.error('Error during booking:', error);
     }
   };
-
+  
   return (
     <div className="gradient-background">
       <div className="container mx-auto px-4">
