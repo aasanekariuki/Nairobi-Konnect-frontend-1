@@ -105,8 +105,8 @@ const StallsDetails = () => {
 
   return (
     <div className="p-8 gradient-background min-h-screen relative">
-      <div className="absolute top-0 left-0 mt-4 ml-4 p-6 border border-gray-600 rounded-lg bg-gray-900 shadow-lg w-96">
-        <h2 className="text-xl font-semibold mb-2 text-white">Cart</h2>
+      <div className="absolute top-4 left-4 p-4 border border-gray-600 rounded-lg bg-gray-900 shadow-lg w-80">
+        <h2 className="text-lg font-semibold mb-2 text-white">Cart</h2>
         <ul className="list-disc pl-5 mb-2 text-gray-300">
           {Object.values(cart).map((item) => (
             <li key={item.id} className="text-base text-gray-200 flex items-center justify-between">
