@@ -4,9 +4,8 @@ import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import './styles/Company.css';
 import { FaCheckCircle } from 'react-icons/fa';
-import { SERVER_URL } from '../../utils';
+import { SERVER_URL } from '../../utils'; // Ensure SERVER_URL is correctly set
 
 Modal.setAppElement('#root');
 
@@ -18,36 +17,14 @@ const schema = z.object({
   mpesaNumber: z.string().length(10, 'M-Pesa number must be exactly 10 digits'),
 });
 
-const RouteCard = ({ route, origin, destination, description, price, departureTime, onBook, isBooked }) => {
-  const [selectedTime, setSelectedTime] = useState(departureTime);
-
-  const handleBook = () => {
-    if (!isBooked) {
-      onBook(route, selectedTime, price);
-    }
-  };
-
-  return (
-    <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transform hover:scale-101 transition duration-300 ease-in-out flex flex-col items-center justify-between route-card">
-      <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">{route}</h2>
-        <p className="text-sm text-gray-600 mb-1">Origin: {origin}</p>
-        <p className="text-sm text-gray-600 mb-1">Destination: {destination}</p>
-        <p className="text-sm text-gray-600 mb-3">{description}</p>
-        <p className="text-sm font-semibold text-gray-800 mb-2">Price: Ksh {price}</p>
-        <p className="text-sm text-gray-600 mb-3">Departure Time: {departureTime}</p>
-      </div>
-      <div className="flex justify-center">
-        <button
-          onClick={handleBook}
-          className={`px-4 py-2 font-bold text-white rounded-full shadow-md bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 ${isBooked ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''}`}
-          disabled={isBooked}
-        >
-          {isBooked ? 'Booked' : 'Book Now'}
-        </button>
-      </div>
-    </div>
-  );
+const generateTimeOptions = () => {
+  const times = [];
+  for (let hour = 8; hour <= 20; hour++) {
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+    const ampm = hour < 12 ? 'AM' : 'PM';
+    times.push(`${formattedHour}:00 ${ampm}`);
+  }
+  return times;
 };
 
 const Company = () => {
@@ -57,6 +34,7 @@ const Company = () => {
   const [bookedRoutes, setBookedRoutes] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
   const [routes, setRoutes] = useState([]);
+  const [availableTimes, setAvailableTimes] = useState(generateTimeOptions());
 
   const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm({
     resolver: zodResolver(schema),
@@ -70,7 +48,6 @@ const Company = () => {
   });
 
   useEffect(() => {
-    // Fetch routes from backend
     const fetchRoutes = async () => {
       try {
         const response = await fetch(`${SERVER_URL}/routes`);
@@ -92,11 +69,11 @@ const Company = () => {
   };
 
   const handleOpenModal = (route, selectedTime, price) => {
-    setValue('amount', price);
-    setValue('departureTime', selectedTime);
+    const amountValue = price ? price.toString() : '0';
+    setValue('amount', amountValue);
+    setValue('departureTime', selectedTime || '');
     setValue('seatNumber', generateSeatNumber());
-
-    setSelectedRoute({ route, departureTime: selectedTime });
+    setSelectedRoute({ route, departureTime: selectedTime || '' });
     setIsModalOpen(true);
   };
 
@@ -140,7 +117,7 @@ const Company = () => {
 
       setTimeout(() => {
         handleCloseModal();
-      }, 2000);
+      }, 2000); // Close modal after 2 seconds
 
     } catch (error) {
       console.error('Error during booking:', error);
@@ -154,17 +131,27 @@ const Company = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {routes.length > 0 ? (
             routes.map((route, index) => (
-              <RouteCard
-                key={index}
-                route={`${route.origin} to ${route.destination}`}
-                origin={route.origin}
-                destination={route.destination}
-                description={route.description}
-                price={route.price}
-                departureTime={route.departure_time}
-                onBook={(route, selectedTime, price) => handleOpenModal(route, selectedTime, price)}
-                isBooked={bookedRoutes.includes(`${route.origin} to ${route.destination}`)}
-              />
+              <div key={index} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transform hover:scale-101 transition duration-300 ease-in-out flex flex-col items-center justify-between route-card">
+                <div className="text-center">
+                  <h2 className="text-2xl font-bold text-gray-800 mb-2">{`${route.origin} to ${route.destination}`}</h2>
+                  <p className="text-sm text-gray-600 mb-1">Origin: {route.origin}</p>
+                  <p className="text-sm text-gray-600 mb-1">Destination: {route.destination}</p>
+                  <p className="text-sm text-gray-600 mb-3">{route.description}</p>
+                  <p className="text-sm font-semibold text-gray-800 mb-2">Price: Ksh {route.price}</p>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Departure Times: {route.departure_times ? route.departure_times.join(', ') : 'No times available'}
+                  </p>
+                </div>
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => handleOpenModal(route, '', route.price)}
+                    className={`px-4 py-2 font-bold text-white rounded-full shadow-md bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 ${bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''}`}
+                    disabled={bookedRoutes.includes(`${route.origin} to ${route.destination}`)}
+                  >
+                    {bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'Booked' : 'Book Now'}
+                  </button>
+                </div>
+              </div>
             ))
           ) : (
             <p className="text-center text-gray-500">No routes available</p>
@@ -175,11 +162,11 @@ const Company = () => {
           isOpen={isModalOpen}
           onRequestClose={handleCloseModal}
           contentLabel="Book a Bus"
-          className="ReactModal__Content" // Updated class for modal content
-          overlayClassName="ReactModal__Overlay" // Updated class for modal overlay
+          className="fixed inset-0 flex items-center justify-center p-4"
+          overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Book a Bus</h2>
+          <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm w-full">
+            <h2 className="text-xl font-bold mb-4">Book a Bus</h2>
 
             {isSuccess && (
               <div className="mb-4 text-center text-green-500">
@@ -197,10 +184,8 @@ const Company = () => {
                   <input
                     id="name"
                     {...register('name')}
-                    className="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                    readOnly
+                    className="p-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   />
-                  {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>}
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="seatNumber" className="mb-1 text-sm font-semibold text-gray-700">
@@ -209,10 +194,9 @@ const Company = () => {
                   <input
                     id="seatNumber"
                     {...register('seatNumber')}
-                    className="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                    className="p-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                     readOnly
                   />
-                  {errors.seatNumber && <p className="mt-1 text-sm text-red-500">{errors.seatNumber.message}</p>}
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="amount" className="mb-1 text-sm font-semibold text-gray-700">
@@ -221,22 +205,26 @@ const Company = () => {
                   <input
                     id="amount"
                     {...register('amount')}
-                    className="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                    className="p-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                     readOnly
                   />
-                  {errors.amount && <p className="mt-1 text-sm text-red-500">{errors.amount.message}</p>}
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="departureTime" className="mb-1 text-sm font-semibold text-gray-700">
                     Departure Time
                   </label>
-                  <input
+                  <select
                     id="departureTime"
                     {...register('departureTime')}
-                    className="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                    readOnly
-                  />
-                  {errors.departureTime && <p className="mt-1 text-sm text-red-500">{errors.departureTime.message}</p>}
+                    className="p-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                  >
+                    <option value="">Select Departure Time</option>
+                    {availableTimes.map((time, index) => (
+                      <option key={index} value={time}>
+                        {time}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="mpesaNumber" className="mb-1 text-sm font-semibold text-gray-700">
@@ -245,14 +233,21 @@ const Company = () => {
                   <input
                     id="mpesaNumber"
                     {...register('mpesaNumber')}
-                    className="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                    className="p-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   />
                   {errors.mpesaNumber && <p className="mt-1 text-sm text-red-500">{errors.mpesaNumber.message}</p>}
                 </div>
-                <div className="flex justify-end">
+                <div className="flex justify-between mt-4">
+                  <button
+                    type="button"
+                    onClick={handleCloseModal}
+                    className="px-4 py-2 font-bold text-white rounded-full shadow-md bg-red-500 hover:bg-red-600"
+                  >
+                    Cancel
+                  </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
+                    className="px-4 py-2 font-bold text-white rounded-full shadow-md bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800"
                   >
                     Confirm Booking
                   </button>
