@@ -7,6 +7,7 @@ import { BsClock, BsFillPeopleFill } from 'react-icons/bs';
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { MdOutlineRoute, MdSafetyDivider } from 'react-icons/md';
 import './styles/DriverPage.css';  // Import the CSS file
+import { SERVER_URL } from '../../utils';
 
 // Zod schema for form validation
 const schema = z.object({
@@ -28,11 +29,11 @@ const DriverPage = () => {
   useEffect(() => {
     const fetchDriverData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/drivers'); // API endpoint to fetch driver data
+        const response = await fetch(`${SERVER_URL}/drivers`); // API endpoint to fetch driver data
         const data = await response.json();
         setDriver(data);
       } catch (error) {
-        console.error('Error fetching driver data:', error);
+        // console.error('Error fetching driver data:', error);
       }
     };
 
@@ -42,7 +43,7 @@ const DriverPage = () => {
   // Handle form submission to add a new route
   const handleSubmitForm = async (data) => {
     try {
-      const response = await fetch('http://localhost:5000/routes', {
+      const response = await fetch(`${SERVER_URL}/routes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +53,7 @@ const DriverPage = () => {
       const result = await response.json();
       alert(result.message);
     } catch (error) {
-      console.error('Error adding route:', error);
+      // console.error('Error adding route:', error);
       alert('Error adding route');
     }
   };
@@ -60,7 +61,7 @@ const DriverPage = () => {
   // Fetch tickets for the current route
   const fetchTickets = async () => {
     try {
-      const response = await fetch('http://localhost:5000/tickets');
+      // const response = await fetch(/`${SERVER_URL}/tickets`);
       const data = await response.json();
       setTickets(data.routes);
     } catch (error) {
