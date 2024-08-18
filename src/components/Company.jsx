@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { FaCheckCircle } from 'react-icons/fa';
+import { FaCheckCircle, FaSearch } from 'react-icons/fa';
 import { SERVER_URL } from '../../utils'; // Ensure SERVER_URL is correctly set
 
 Modal.setAppElement('#root');
@@ -34,6 +34,8 @@ const Company = () => {
   const [bookedRoutes, setBookedRoutes] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
   const [routes, setRoutes] = useState([]);
+  const [filteredRoutes, setFilteredRoutes] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [availableTimes, setAvailableTimes] = useState(generateTimeOptions());
 
   const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm({
@@ -56,6 +58,7 @@ const Company = () => {
         }
         const data = await response.json();
         setRoutes(data);
+        setFilteredRoutes(data);
       } catch (error) {
         console.error('Error fetching routes:', error);
       }
@@ -63,6 +66,18 @@ const Company = () => {
 
     fetchRoutes();
   }, []);
+
+  useEffect(() => {
+    if (searchTerm) {
+      setFilteredRoutes(
+        routes.filter(route =>
+          `${route.origin} to ${route.destination}`.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    } else {
+      setFilteredRoutes(routes);
+    }
+  }, [searchTerm, routes]);
 
   const generateSeatNumber = () => {
     return bookedRoutes.length + 1;
@@ -128,35 +143,48 @@ const Company = () => {
     <div className="gradient-background">
       <div className="container mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Routes for Company {companyId}</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {routes.length > 0 ? (
-            routes.map((route, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transform hover:scale-101 transition duration-300 ease-in-out flex flex-col items-center justify-between route-card">
-                <div className="text-center">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-2">{`${route.origin} to ${route.destination}`}</h2>
-                  <p className="text-sm text-gray-600 mb-1">Origin: {route.origin}</p>
-                  <p className="text-sm text-gray-600 mb-1">Destination: {route.destination}</p>
-                  <p className="text-sm text-gray-600 mb-3">{route.description}</p>
-                  <p className="text-sm font-semibold text-gray-800 mb-2">Price: Ksh {route.price}</p>
-                  <p className="text-sm text-gray-600 mb-3">
-                    Departure Times: {route.departure_times ? route.departure_times.join(', ') : 'No times available'}
-                  </p>
-                </div>
-                <div className="flex justify-center">
-                  <button
-                    onClick={() => handleOpenModal(route, '', route.price)}
-                    className={`px-4 py-2 font-bold text-white rounded-full shadow-md bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 ${bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''}`}
-                    disabled={bookedRoutes.includes(`${route.origin} to ${route.destination}`)}
-                  >
-                    {bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'Booked' : 'Book Now'}
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500">No routes available</p>
-          )}
+        
+        {/* Search Bar */}
+        <div className="flex justify-center mb-8">
+          <div className="relative w-full max-w-md">
+            <input
+              type="text"
+              placeholder="Search routes..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full p-2 pl-10 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+            />
+            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
+          </div>
         </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+  {filteredRoutes.length > 0 ? (
+    filteredRoutes.map((route, index) => (
+      <div key={index} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transform hover:scale-101 transition duration-300 ease-in-out flex flex-col items-center justify-between route-card">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">{`${route.origin} to ${route.destination}`}</h2>
+          <p className="text-sm text-gray-600 mb-1">Origin: {route.origin}</p>
+          <p className="text-sm text-gray-600 mb-1">Destination: {route.destination}</p>
+          <p className="text-sm text-gray-600 mb-3">{route.description}</p>
+          <p className="text-sm font-semibold text-gray-800 mb-2">Price: Ksh {route.price}</p>
+          {/* Removed Departure Times */}
+        </div>
+        <div className="flex justify-center">
+          <button
+            onClick={() => handleOpenModal(route, '', route.price)}
+            className={`px-4 py-2 font-bold text-white rounded-full shadow-md bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 ${bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''}`}
+            disabled={bookedRoutes.includes(`${route.origin} to ${route.destination}`)}
+          >
+            {bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'Booked' : 'Book Now'}
+          </button>
+        </div>
+      </div>
+    ))
+  ) : (
+    <p className="text-center text-gray-500">No routes available</p>
+  )}
+</div>
+
 
         <Modal
           isOpen={isModalOpen}
