@@ -43,8 +43,6 @@ const Company = () => {
     defaultValues: {
       name: '',
       seatNumber: '',
-      amount: '',
-      departureTime: '',
       mpesaNumber: '',
     },
   });

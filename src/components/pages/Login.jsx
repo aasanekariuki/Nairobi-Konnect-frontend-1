@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form'; 
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext'; // Import the useAuth hook
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import '../styles/Login.css';
 import { SERVER_URL } from '../../../utils';
+
 const loginSchema = z.object({
     email: z.string().email("Invalid email address").nonempty("Email address is required"),
     password: z.string().min(6, "Password must be at least 6 characters long").nonempty("Password is required"),
@@ -14,7 +15,8 @@ const loginSchema = z.object({
 const LoginPage = () => {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
+    const { setUser } = useAuth(); // Get setUser from context
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(loginSchema),
@@ -29,35 +31,30 @@ const LoginPage = () => {
                 },
                 body: JSON.stringify(data),
             });
-    
+
             const loginData = await loginResponse.json();
-    
+
             if (loginResponse.ok) {
-                // Handle successful login
-                console.log('Login successful:', loginData);
-                localStorage.setItem('token', loginData.access_token); // Store token if needed
-    
-                // Redirect based on user role
+                localStorage.setItem('token', loginData.access_token);
+                localStorage.setItem('role', loginData.role);
+                localStorage.setItem('user', JSON.stringify({ id: loginData.user.id, name: loginData.user.username }));
+
+                // Update user state in context
+                setUser({ id: loginData.user.id, name: loginData.user.username });
+
                 if (loginData.role === 'admin') {
-                    navigate('/admin'); // Redirect to admin view
-                } else if (loginData.role === 'user') {
-                    navigate('/User'); // Redirect to user signup
+                    navigate('/admin');
                 } else {
-                    navigate('/'); // Redirect to business signup
+                    navigate('/user');
                 }
-            } else if (loginResponse.status === 401) {
-                console.error('Login failed: Invalid credentials');
-                setError('Invalid email or password. Please try again.');
             } else {
-                console.error('Login failed:', loginData.message);
-                setError('An error occurred during login. Please try again.');
+                setError('Invalid email or password. Please try again.');
             }
         } catch (err) {
-            console.error('Error during login:', err);
             setError('An unexpected error occurred. Please try again later.');
         }
     };
-    
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-custom-blue">
             <div className="relative flex w-full max-w-7xl h-screen md:h-4/5 lg:h-[80vh] xl:h-[85vh] bg-black bg-opacity-50 rounded-lg shadow-lg overflow-hidden">
