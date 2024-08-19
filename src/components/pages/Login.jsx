@@ -31,21 +31,21 @@ const LoginPage = () => {
                 },
                 body: JSON.stringify(data),
             });
-
+    
             const loginData = await loginResponse.json();
-
+    
             if (loginResponse.ok) {
                 localStorage.setItem('token', loginData.access_token);
                 localStorage.setItem('role', loginData.role);
                 localStorage.setItem('user', JSON.stringify({ id: loginData.user.id, name: loginData.user.username }));
-
-                // Update user state in context
-                setUser({ id: loginData.user.id, name: loginData.user.username });
-
-                if (loginData.role === 'admin') {
-                    navigate('/admin');
+    
+                // Redirect based on role
+                if (loginData.role.toLowerCase() === 'admin') {
+                    navigate('/admin'); // Redirect to admin page
+                } else if (loginData.role.toLowerCase() === 'user') {
+                    navigate('/user'); // Redirect to user page
                 } else {
-                    navigate('/user');
+                    navigate('/'); // Default landing page
                 }
             } else {
                 setError('Invalid email or password. Please try again.');
