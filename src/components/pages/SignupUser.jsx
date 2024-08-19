@@ -33,7 +33,7 @@ const SignupBusiness = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     setErrorMessage('');
-
+  
     try {
       const response = await fetch(`${SERVER_URL}/signup`, {
         method: 'POST',
@@ -42,34 +42,16 @@ const SignupBusiness = () => {
         },
         body: JSON.stringify(data),
       });
-
+  
       if (response.ok) {
         const result = await response.json();
         console.log('Signup successful:', result);
         
         localStorage.setItem('token', result.token);
         localStorage.setItem('userRole', data.role.toLowerCase());
-
-        switch (data.role.toLowerCase()) {
-          case 'buyer':
-            navigate('/user');
-            break;
-          case 'passenger':
-            navigate('/passenger');
-            break;
-          case 'driver':
-            navigate('/driver');
-            break;
-          case 'seller':
-            navigate('/seller');
-            break;
-          case 'admin':
-            navigate('/admin');
-            break;
-          default:
-            navigate('/home');
-            break;
-        }
+  
+        // Redirect to login page
+        navigate('/login');
       } else {
         const result = await response.json();
         setErrorMessage(result.message || 'Signup failed. Please try again.');
@@ -82,7 +64,7 @@ const SignupBusiness = () => {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-custom-blue">
       <div className="flex bg-black shadow-lg rounded-lg overflow-hidden w-full max-w-6xl" style={{ maxHeight: '80vh' }}>
