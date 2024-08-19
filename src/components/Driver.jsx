@@ -6,7 +6,11 @@ import { FiBell, FiLogOut, FiPhone } from 'react-icons/fi';
 import { BsClock, BsFillPeopleFill } from 'react-icons/bs';
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { MdOutlineRoute, MdSafetyDivider } from 'react-icons/md';
+
+// Import the CSS file
+
 import './styles/DriverPage.css';
+
 import { SERVER_URL } from '../../utils';
 
 // Zod schema for form validation
@@ -29,11 +33,14 @@ const DriverPage = () => {
   useEffect(() => {
     const fetchDriverData = async () => {
       try {
-        const response = await fetch(`${SERVER_URL}/drivers/1`); // Fetch specific driver data, e.g., driver with ID 1
+        const response = await fetch(`${SERVER_URL}/drivers`); // API endpoint to fetch driver data
+
+        // const response = await fetch(`${SERVER_URL}/drivers/1`); // Fetch specific driver data, e.g., driver with ID 1
+
         const data = await response.json();
         setDriver(data);
       } catch (error) {
-        console.error('Error fetching driver data:', error);
+        // console.error('Error fetching driver data:', error);
       }
     };
 
@@ -54,7 +61,7 @@ const DriverPage = () => {
       alert(result.message);
       fetchAllRoutes(); // Refresh routes after adding a new one
     } catch (error) {
-      console.error('Error adding route:', error);
+      // console.error('Error adding route:', error);
       alert('Error adding route');
     }
   };
@@ -62,7 +69,11 @@ const DriverPage = () => {
   // Fetch tickets for the current route
   const fetchTickets = async () => {
     try {
+
+      // const response = await fetch(/`${SERVER_URL}/tickets`);
+
       const response = await fetch(`${SERVER_URL}/tickets?route_id=${driver.currentRouteId}`); // Assuming you can fetch tickets by route ID
+
       const data = await response.json();
       setTickets(data.tickets);
     } catch (error) {

@@ -11,7 +11,9 @@ Modal.setAppElement('#root');
 
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
-  seatNumber: z.string().min(1, 'Seat Number is required'),
+  seatNumber: z.string(), // No validation for seatNumber
+  amount: z.string().min(1, 'Amount is required').regex(/^\d+$/, 'Amount must be a number'),
+  departureTime: z.string().min(1, 'Departure Time is required'),
   mpesaNumber: z.string().length(10, 'M-Pesa number must be exactly 10 digits'),
 });
 
@@ -79,8 +81,8 @@ const Company = () => {
     return bookedRoutes.length + 1;
   };
 
-  const handleOpenModal = (route, selectedTime, price) => {
-    const amountValue = price ? price.toString() : '0';
+  const handleOpenModal = (route, selectedTime) => {
+    const amountValue = '10';
     setValue('amount', amountValue);
     setValue('departureTime', selectedTime || '');
     setValue('seatNumber', generateSeatNumber());
@@ -96,45 +98,79 @@ const Company = () => {
     }
   };
 
+  // Function to initiate M-Pesa payment
+  const initiateMpesaPayment = async (mpesaNumber, amount) => {
+    try {
+      const token = localStorage.getItem('token'); // Assuming you store your token in localStorage
+  
+      const response = await fetch(`${SERVER_URL}/stk_push`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,  // Include the token here
+        },
+        body: JSON.stringify({
+          phone: mpesaNumber,
+          amount: amount,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('M-Pesa payment initiation failed');
+      }
+  
+      const data = await response.json();
+      console.log('M-Pesa payment initiated:', data);
+      return data;
+    } catch (error) {
+      console.error('Error during M-Pesa payment:', error);
+      throw error;
+    }
+  };
+  
   const onSubmit = async (data) => {
     try {
+      const token = localStorage.getItem('token');
+  
+      // Ensure amount is a number
+      const formattedData = {
+        ...data,
+        amount: Number(data.amount), // Convert amount to number
+        route: selectedRoute.route,
+      };
+  
       const response = await fetch(`${SERVER_URL}/bookings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          ...data,
-          route: selectedRoute.route,
-        }),
+        body: JSON.stringify(formattedData),
       });
-
+  
       if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error('Error response from server:', errorMessage);
         throw new Error('Failed to book ticket');
       }
-
+  
+      // Handle successful booking and payment
+      await initiateMpesaPayment(data.mpesaNumber, data.amount);
+  
       setBookedRoutes([...bookedRoutes, selectedRoute.route]);
       setIsSuccess(true);
-
-      const ticket = {
-        name: data.name,
-        seatNumber: data.seatNumber,
-        route: selectedRoute.route,
-        departureTime: data.departureTime,
-        price: data.amount,
-      };
-
-      console.log('Ticket generated:', ticket);
-
+  
+      console.log('Ticket generated:', formattedData);
+  
       setTimeout(() => {
         handleCloseModal();
-      }, 2000); // Close modal after 2 seconds
-
+      }, 2000);
+  
     } catch (error) {
       console.error('Error during booking:', error);
     }
   };
-
+  
   return (
     <div className="gradient-background">
       <div className="container mx-auto px-4">
@@ -153,34 +189,33 @@ const Company = () => {
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
           </div>
         </div>
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-  {filteredRoutes.length > 0 ? (
-    filteredRoutes.map((route, index) => (
-      <div key={index} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transform hover:scale-101 transition duration-300 ease-in-out flex flex-col items-center justify-between route-card">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">{`${route.origin} to ${route.destination}`}</h2>
-          <p className="text-sm text-gray-600 mb-1">Origin: {route.origin}</p>
-          <p className="text-sm text-gray-600 mb-1">Destination: {route.destination}</p>
-          <p className="text-sm text-gray-600 mb-3">{route.description}</p>
-          <p className="text-sm font-semibold text-gray-800 mb-2">Price: Ksh {route.price}</p>
-          {/* Removed Departure Times */}
+          {filteredRoutes.length > 0 ? (
+            filteredRoutes.map((route, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transform hover:scale-101 transition duration-300 ease-in-out flex flex-col items-center justify-between route-card">
+                <div className="text-center">
+                  <h2 className="text-2xl font-bold text-gray-800 mb-2">{`${route.origin} to ${route.destination}`}</h2>
+                  <p className="text-sm text-gray-600 mb-1">Origin: {route.origin}</p>
+                  <p className="text-sm text-gray-600 mb-1">Destination: {route.destination}</p>
+                  <p className="text-sm text-gray-600 mb-3">{route.description}</p>
+                  <p className="text-sm font-semibold text-gray-800 mb-2">Price: Ksh {route.price || '10'}</p> {/* Default to 10 if price is not set */}
+                </div>
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => handleOpenModal(route, '')}
+                    className={`px-4 py-2 font-bold text-white rounded-full shadow-md bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 ${bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''}`}
+                    disabled={bookedRoutes.includes(`${route.origin} to ${route.destination}`)}
+                  >
+                    {bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'Booked' : 'Book Now'}
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500">No routes available</p>
+          )}
         </div>
-        <div className="flex justify-center">
-          <button
-            onClick={() => handleOpenModal(route, '', route.price)}
-            className={`px-4 py-2 font-bold text-white rounded-full shadow-md bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 ${bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''}`}
-            disabled={bookedRoutes.includes(`${route.origin} to ${route.destination}`)}
-          >
-            {bookedRoutes.includes(`${route.origin} to ${route.destination}`) ? 'Booked' : 'Book Now'}
-          </button>
-        </div>
-      </div>
-    ))
-  ) : (
-    <p className="text-center text-gray-500">No routes available</p>
-  )}
-</div>
-
 
         <Modal
           isOpen={isModalOpen}
@@ -210,6 +245,7 @@ const Company = () => {
                     {...register('name')}
                     className="p-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   />
+                  {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>}
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="seatNumber" className="mb-1 text-sm font-semibold text-gray-700">
@@ -232,6 +268,7 @@ const Company = () => {
                     className="p-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                     readOnly
                   />
+                  {errors.amount && <p className="mt-1 text-sm text-red-500">{errors.amount.message}</p>}
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="departureTime" className="mb-1 text-sm font-semibold text-gray-700">
@@ -249,6 +286,7 @@ const Company = () => {
                       </option>
                     ))}
                   </select>
+                  {errors.departureTime && <p className="mt-1 text-sm text-red-500">{errors.departureTime.message}</p>}
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="mpesaNumber" className="mb-1 text-sm font-semibold text-gray-700">
