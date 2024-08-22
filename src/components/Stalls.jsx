@@ -42,7 +42,7 @@ const Stalls = () => {
   useEffect(() => {
     const fetchStalls = async () => {
       try {
-        const response = await fetch(`${SERVER_URL}/stalls`); // Adjust URL as necessary
+        const response = await fetch(`${SERVER_URL}/stalls`); 
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
