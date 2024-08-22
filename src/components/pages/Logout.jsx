@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHome, faEnvelope, faCogs, faSignInAlt, faBars, faTimes, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import logoutIcon from '../assets/logout.png'; // Adjust this path if necessary
-import './styles/Navbar.css';
-import { useAuth } from './AuthContext'; // Import the useAuth hook
+import logoutIcon from "../../assets/logout.png"; 
+// import "../../styles/Navbar.css";
+// import { useAuth } from './AuthContext'; // Import the useAuth hook
 
 const Navbar = () => {
     const { user, setUser } = useAuth(); // Access user state and setUser function from context

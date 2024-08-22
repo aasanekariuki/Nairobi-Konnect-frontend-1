@@ -1,9 +1,10 @@
 import {
-	BrowserRouter as Router,
-	Route,
-	Routes,
-	Navigate,
+    BrowserRouter as Router,
+    Route,
+    Routes,
+    Navigate,
 } from 'react-router-dom';
+import { AuthProvider } from './components/AuthContext'; // Import the AuthProvider
 import Bus from './components/Bus';
 import Company from './components/Company';
 import Driver from './components/Driver';
@@ -15,91 +16,61 @@ import SignUpBusiness from './components/SignupBusiness';
 import SignUpUser from './components/pages/SignupUser';
 import Stalls from './components/Stalls';
 import User from './components/User';
-// import Profile from './components/Profile';
-// import EditProfile from './components/EditProfile';
 import StallDetails from './components/StallsDetails';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminUsers from './components/admin/AdminUsers';
 import AdminActivity from './components/admin/AdminActivity';
 import { Layout } from './components/Layout';
 import { AdminLayout } from './components/AdminLayout';
-
-const ProtectedRoute = ({ children, role }) => {
-	const userRole = localStorage.getItem('role');
-	// if (userRole !== role) {
-	// 	return <Navigate to="/login" />;
-	// }
-	return children;
-};
+import LogoutPage from './components/pages/Logout';
 
 function App() {
-	return (
-		<Router>
-			{/* <Navbar /> */}
-			{/* <div className="p-4 app-content mt-16"> */}
-			<Routes>
-				<Route path="/" element={<Layout />}>
-					<Route index element={<Landing />} />
-					<Route path="/bus" element={<Bus />} />
-					<Route path="/company/:companyId" element={<Company />} />
-					<Route path="/driver" element={<Driver />} />
-					<Route path="/stallspage" element={<Stalls />} />
-					<Route
-						path="/stalls/:stallName"
-						element={<StallDetails />}
-					/>
-					<Route path="/login" element={<Login />} />
-					<Route path="/seller" element={<Seller />} />
-					<Route
-						path="/signupBusiness"
-						element={<SignUpBusiness />}
-					/>
-					<Route path="/signupUser" element={<SignUpUser />} />
+    return (
+        <AuthProvider> 
+            <Router>
+                <Navbar /> 
+                <Routes>
+                    <Route path="/" element={<Layout />}>
+                        <Route index element={<Landing />} />
+                        <Route path="/bus" element={<Bus />} />
+                        <Route path="/company/:companyId" element={<Company />} />
+                        <Route path="/driver" element={<Driver />} />
+                        <Route path="/stallspage" element={<Stalls />} />
+                        <Route path="/stalls/:stallName" element={<StallDetails />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/seller" element={<Seller />} />
+                        <Route path="/signupBusiness" element={<SignUpBusiness />} />
+                        <Route path="/signupUser" element={<SignUpUser />} />
+                        
+                        
+                        <Route 
+                            path="/user" 
+                            element={<User />} 
+                        />
+                    </Route>
 
-					<Route
-						path="/signupBusiness"
-						element={<SignUpBusiness />}
-					/>
-					<Route path="/signupUser" element={<SignUpUser />} />
-					<Route path="/stalls" element={<Stalls />} />
-					<Route path="/stalls/:stallsId" element={<Stalls />} />
-					<Route path="/user" element={<User />} />
-					{/* <Route path="/profile" element={<Profile />} />
-					<Route path="/edit-profile" element={<EditProfile />} /> */}
-				</Route>
+                    
+                    <Route path="/admin" element={<AdminLayout />}>
+                        <Route
+                            index
+                            element={<AdminDashboard />}
+                        />
+                        <Route
+                            path="/admin/users"
+                            element={<AdminUsers />}
+                        />
+                        <Route
+                            path="/admin/activity"
+                            element={<AdminActivity />}
+                        />
+                    </Route>
 
-				{/* Protected Routes for Admin */}
-				<Route path="/admin" element={<AdminLayout />}>
-					<Route
-						index
-						element={
-							<ProtectedRoute role="admin">
-								<AdminDashboard />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/admin/users"
-						element={
-							<ProtectedRoute role="admin">
-								<AdminUsers />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/admin/activity"
-						element={
-							<ProtectedRoute role="admin">
-								<AdminActivity />
-							</ProtectedRoute>
-						}
-						
-					/>
-				</Route>
-			</Routes>
-			{/* </div> */}
-		</Router>
-	);
+                    
+                    <Route path="/logout" element={<LogoutPage />} />
+                </Routes>
+            </Router>
+        </AuthProvider>
+    );
 }
 
 export default App;
