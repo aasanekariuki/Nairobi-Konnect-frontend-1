@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faHome, faEnvelope, faCogs, faSignInAlt, faBars, faTimes, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faHome, faEnvelope, faCogs, faSignInAlt, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import logoutIcon from '../assets/logout.png'; // Adjust this path if necessary
 import './styles/Navbar.css';
-import { useAuth } from './AuthContext'; // Import the useAuth hook
 
 const Navbar = () => {
-    const { user, setUser } = useAuth(); // Access user state and setUser function from context
-    const navigate = useNavigate();
+    const [user, setUser] = useState({
+        name: 'User',
+        profilePhoto: null,
+    });
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [dropdownVisible, setDropdownVisible] = useState(false); // State for dropdown visibility
+
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if the user is logged in by retrieving the user from localStorage
-        const storedUser = localStorage.getItem('user');
+        const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedUser) {
-            setUser(JSON.parse(storedUser)); // Parse and set user state
+            setUser(storedUser);
         }
-    }, [setUser]); // Add setUser as a dependency
+    }, []);
 
     const getInitials = (name) => {
         return name
@@ -42,12 +44,8 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
-        // Clear the user from localStorage and update state
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
         localStorage.removeItem('user');
-        setUser(null); // Update user state immediately
-        navigate('/login'); // Navigate to the login page
+        navigate('/login');
     };
 
     const toggleMenu = () => {
@@ -64,62 +62,38 @@ const Navbar = () => {
                     <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
                 </div>
                 <ul className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
-                    <li>
-                        <a href="/#home" className="navbar-item" onClick={scrollToTop}>
-                            <FontAwesomeIcon icon={faHome} className="icon" /> <span className="menu-text">Home</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/#services" className="navbar-item" onClick={() => handleNavClick('services')}>
-                            <FontAwesomeIcon icon={faCogs} className="icon" /> <span className="menu-text">Services</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/#contact" className="navbar-item" onClick={() => handleNavClick('contact')}>
-                            <FontAwesomeIcon icon={faEnvelope} className="icon" /> <span className="menu-text">Contact</span>
-                        </a>
-                    </li>
-                    {user ? (
-                        <>
-                            <li>
-                                <Link to="/user" className="navbar-item">
-                                    <FontAwesomeIcon icon={faUser} className="icon" /> {user.name}
-                                </Link>
-                            </li>
-                            <li className="relative">
-                                <div onClick={() => setDropdownVisible(!dropdownVisible)} className="cursor-pointer flex items-center" aria-label="Logout">
-                                    <FontAwesomeIcon icon={faSignOutAlt} className="h-6 w-6 ml-2 transition-transform duration-200 hover:scale-110" />
-                                    <span className="ml-2">Logout</span>
-                                </div>
-                                {dropdownVisible && (
-                                    <div className="absolute right-0 z-10 mt-2 w-48 bg-white rounded-md shadow-lg">
-                                        <div className="px-4 py-2 text-gray-800">Are you sure you want to log out?</div>
-                                        <div className="flex justify-between">
-                                            <button
-                                                onClick={handleLogout}
-                                                className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
-                                            >
-                                                Yes
-                                            </button>
-                                            <button
-                                                onClick={() => setDropdownVisible(false)}
-                                                className="px-4 py-2 text-gray-800 bg-gray-200 rounded-md hover:bg-gray-300"
-                                            >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-                            </li>
-                        </>
-                    ) : (
-                        <li>
-                            <Link to="/login" className="navbar-item login-button">
-                                <FontAwesomeIcon icon={faSignInAlt} className="icon" /> <span className="menu-text">Login</span>
-                            </Link>
-                        </li>
-                    )}
-                </ul>
+    <li>
+        <a href="/#home" className="navbar-item" onClick={scrollToTop}>
+            <FontAwesomeIcon icon={faHome} className="icon" /> <span className="menu-text">Home</span>
+        </a>
+    </li>
+    <li>
+        <a href="/#services" className="navbar-item" onClick={() => handleNavClick('services')}>
+            <FontAwesomeIcon icon={faCogs} className="icon" /> <span className="menu-text">Services</span>
+        </a>
+    </li>
+    <li>
+        <a href="/#contact" className="navbar-item" onClick={() => handleNavClick('contact')}>
+            <FontAwesomeIcon icon={faEnvelope} className="icon" /> <span className="menu-text">Contact</span>
+        </a>
+    </li>
+    <li>
+        <Link to="/user" className="navbar-item">
+            <FontAwesomeIcon icon={faUser} className="icon" /> <span className="menu-text">User</span>
+        </Link>
+    </li>
+    <li>
+        <Link to="/login" className="navbar-item login-button">
+            <FontAwesomeIcon icon={faSignInAlt} className="icon" /> <span className="menu-text">Login</span>
+        </Link>
+    </li>
+    <li>
+        <div onClick={handleLogout} className="cursor-pointer">
+            <img src={logoutIcon} alt="Logout" className="h-8 w-8 ml-4 transition-transform duration-200 hover:scale-110" />
+        </div>
+    </li>
+</ul>
+
             </div>
         </nav>
     );
