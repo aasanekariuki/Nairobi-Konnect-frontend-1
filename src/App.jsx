@@ -26,9 +26,9 @@ import LogoutPage from './components/pages/Logout';
 
 function App() {
     return (
-        <AuthProvider> {/* Wrap your application with AuthProvider */}
+        <AuthProvider> 
             <Router>
-                <Navbar /> {/* Include Navbar here */}
+                <Navbar /> 
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index element={<Landing />} />
@@ -42,14 +42,14 @@ function App() {
                         <Route path="/signupBusiness" element={<SignUpBusiness />} />
                         <Route path="/signupUser" element={<SignUpUser />} />
                         
-                        {/* User route with authentication check */}
+                        
                         <Route 
                             path="/user" 
                             element={<User />} 
                         />
                     </Route>
 
-                    {/* Protected Routes for Admin */}
+                    
                     <Route path="/admin" element={<AdminLayout />}>
                         <Route
                             index
@@ -65,7 +65,7 @@ function App() {
                         />
                     </Route>
 
-                    {/* Logout Route */}
+                    
                     <Route path="/logout" element={<LogoutPage />} />
                 </Routes>
             </Router>

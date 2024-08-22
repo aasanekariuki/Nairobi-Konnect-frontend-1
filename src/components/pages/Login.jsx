@@ -118,8 +118,8 @@ const LoginPage = () => {
                 </div>
                 <div className="w-full bg-center bg-cover rounded-r-lg md:w-1/3 lg:w-2/5 xl:w-1/3" style={{ backgroundImage: 'url(https://ilovenbo.com/wp-content/uploads/2023/12/pexels-antony-trivet-13348192.jpg)' }}>
                     <div className="flex flex-col items-center justify-center h-full p-12 text-white bg-black bg-opacity-50">
-                        <h3 className="mb-6 text-4xl font-semibold lg:text-3xl">Welcome Back</h3>
-                        <p className="text-lg text-center lg:text-base">Discover a seamless login experience with our modern and secure platform. Connect effortlessly and access your account with ease.</p>
+                        <h3 className="mb-6 text-4xl font-semibold lg:text-3xl">Welcome To NairobiKonnect</h3>
+                        <p className="text-lg text-center lg:text-base">🚌 Shop and travel seamlessly—book your bus tickets and shop online all in one secure platform. 🛒</p>
                     </div>
                 </div>
             </div>
