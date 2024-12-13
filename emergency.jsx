@@ -1,103 +1,105 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// import React, { useEffect, useState } from 'react';
+// import { Link, useNavigate } from 'react-router-dom';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faUser, faHome, faEnvelope, faCogs, faSignInAlt, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+// import logoutIcon from '../assets/logout.png'; // Adjust this path if necessary
+// import './styles/Navbar.css';
+
+// const Navbar = () => {
+//     const [user, setUser] = useState({
+//         name: 'User',
+//         profilePhoto: null,
+//     });
+
+//     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+//     const navigate = useNavigate();
+
+//     useEffect(() => {
+//         const storedUser = JSON.parse(localStorage.getItem('user'));
+//         if (storedUser) {
+//             setUser(storedUser);
+//         }
+//     }, []);
+
+//     const getInitials = (name) => {
+//         return name
+//             .split(' ')
+//             .map((n) => n[0])
+//             .join('');
+//     };
+
+//     const handleNavClick = (id) => {
+//         document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+//         setIsMenuOpen(false); // Close the menu after clicking
+//     };
+
+//     const scrollToTop = () => {
+//         window.scrollTo({ top: 0, behavior: 'smooth' });
+//         setIsMenuOpen(false); // Close the menu after clicking
+//     };
+
+//     const goToProfile = () => {
+//         navigate('/profile');
+//     };
+
+//     const handleLogout = () => {
+//         localStorage.removeItem('user');
+//         navigate('/login');
+//     };
+
+//     const toggleMenu = () => {
+//         setIsMenuOpen(!isMenuOpen);
+//     };
+
+//     return (
+//         <nav className="navbar">
+//             <div className="navbar-container">
+//                 <Link to="/" className="navbar-brand" onClick={scrollToTop}>
+//                     NairobiKonnect
+//                 </Link>
+//                 <div className="menu-icon" onClick={toggleMenu}>
+//                     <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
+//                 </div>
+//                 <ul className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
+//     <li>
+//         <a href="/#home" className="navbar-item" onClick={scrollToTop}>
+//             <FontAwesomeIcon icon={faHome} className="icon" /> <span className="menu-text">Home</span>
+//         </a>
+//     </li>
+//     <li>
+//         <a href="/#services" className="navbar-item" onClick={() => handleNavClick('services')}>
+//             <FontAwesomeIcon icon={faCogs} className="icon" /> <span className="menu-text">Services</span>
+//         </a>
+//     </li>
+//     <li>
+//         <a href="/#contact" className="navbar-item" onClick={() => handleNavClick('contact')}>
+//             <FontAwesomeIcon icon={faEnvelope} className="icon" /> <span className="menu-text">Contact</span>
+//         </a>
+//     </li>
+//     <li>
+//         <Link to="/user" className="navbar-item">
+//             <FontAwesomeIcon icon={faUser} className="icon" /> <span className="menu-text">User</span>
+//         </Link>
+//     </li>
+//     <li>
+//         <Link to="/login" className="navbar-item login-button">
+//             <FontAwesomeIcon icon={faSignInAlt} className="icon" /> <span className="menu-text">Login</span>
+//         </Link>
+//     </li>
+//     <li>
+//         <div onClick={handleLogout} className="cursor-pointer">
+//             <img src={logoutIcon} alt="Logout" className="h-8 w-8 ml-4 transition-transform duration-200 hover:scale-110" />
+//         </div>
+//     </li>
+// </ul>
+
+//             </div>
+//         </nav>
+//     );
+// };
+
+// export default Navbar;
 
 
 
@@ -117,74 +119,62 @@ import 'aos/dist/aos.css'; // Import AOS styles
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// Custom Hooks
-const useImageRotator = (images, intervalDuration = 10000) => {
-    const [currentImage, setCurrentImage] = useState(0);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentImage((prevImage) => (prevImage + 1) % images.length);
-        }, intervalDuration);
-
-        return () => clearInterval(interval);
-    }, [images, intervalDuration]);
-
-    return images[currentImage];
-};
-
-const useAnimatedCounters = (limits, step = 5, duration = 30) => {
-    const [counters, setCounters] = useState(limits.map(() => 0));
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCounters((prev) =>
-                prev.map((count, index) => (count < limits[index] ? count + step : limits[index]))
-            );
-        }, duration);
-
-        return () => clearInterval(interval);
-    }, [limits, step, duration]);
-
-    return counters;
-};
-
-// Validation Schema
-const landingSchema = z.object({
-    email: z.string().email({ message: 'Invalid email address' }),
-    password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
-    role: z.string().min(2, { message: 'Role must be at least 2 characters' }),
-});
-
-// Main Component
 const LandingPage = () => {
+    const [currentImage, setCurrentImage] = useState(0);
+    const [isChatOpen, setIsChatOpen] = useState(false); // Live chat state
+    const [counter1, setCounter1] = useState(0);
+    const [counter2, setCounter2] = useState(0);
+    const [counter3, setCounter3] = useState(0);
+
     const images = [
         'url(https://i.ytimg.com/vi/ofzQqJNEYBk/maxresdefault.jpg)',
         'url(https://img.freepik.com/premium-photo/nairobi-city-county-kenyas-capital-cityscapes-skyline-skyscrapers-highrise-buildings-architecture_257688-277.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1722297600&semt=ais_hybrid)',
         'url(https://www.voyagekenya.fr/cdn/ke-public/nairobi_centre_ville.jpg)',
-        'url(https://media.cnn.com/api/v1/images/stellar/prod/230202121817-basigo-electric-bus-nairobi-kenya-2.jpg?c=original)',
+        'url(https://media.cnn.com/api/v1/images/stellar/prod/230202121817-basigo-electric-bus-nairobi-kenya-2.jpg?c=original)'
     ];
 
-    const [isChatOpen, setIsChatOpen] = useState(false);
-    const backgroundImage = useImageRotator(images);
-    const [counter1, counter2, counter3] = useAnimatedCounters([10000, 1000, 500], 100);
+    const landingSchema = z.object({
+        email: z.string().email({ message: 'Invalid email address' }),
+        password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+        role: z.string().min(2, { message: 'Role must be at least 2 characters' }),
+    });
 
     useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+        }, 10000);
+
         AOS.init(); // Initialize AOS for scroll animations
+
+        // Animated Counters
+        const intervalCounter = setInterval(() => {
+            setCounter1((prev) => (prev < 10000 ? prev + 100 : 10000));
+            setCounter2((prev) => (prev < 1000 ? prev + 10 : 1000));
+            setCounter3((prev) => (prev < 500 ? prev + 5 : 500));
+        }, 30);
+
+        return () => {
+            clearInterval(interval);
+            clearInterval(intervalCounter);
+        };
     }, []);
 
-    const toggleChat = () => setIsChatOpen(!isChatOpen);
+    // Toggle live chat window
+    const toggleChat = () => {
+        setIsChatOpen(!isChatOpen);
+    };
 
     return (
         <div className="landing-page">
             <Navbar />
-            <header id="home" className="hero" style={{ backgroundImage }}>
+            <header id="home" className="hero" style={{ backgroundImage: images[currentImage] }}>
                 <div className="hero-content" data-aos="fade-up">
                     <h1 className="hero-title">Welcome to NairobiKonnect</h1>
-                    <p className="hero-description">Explore the greatness of Nairobi</p>
+                    <p className="hero-description">
+                        Explore the greatness of Nairobi
+                    </p>
                     <button
-                        onClick={() =>
-                            document.getElementById('services').scrollIntoView({ behavior: 'smooth' })
-                        }
+                        onClick={() => document.getElementById('services').scrollIntoView({ behavior: 'smooth' })}
                         className="cta-button"
                     >
                         Discover More
@@ -193,48 +183,35 @@ const LandingPage = () => {
             </header>
 
             <section id="about" className="about">
-    <div className="about-container" data-aos="fade-up">
-        <h2 className="about-title">About NairobiKonnect</h2>
-        <p className="about-description">
-            NairobiKonnect is your gateway to discovering the best Nairobi has to offer. 
-            Whether you're booking a bus, shopping, or connecting with local businesses, 
-            we're here to make your experience seamless and enjoyable.
-        </p>
-        <div className="about-features">
-            <div className="feature-card" data-aos="zoom-in" data-aos-delay="100">
-                <i className="fas fa-users feature-icon"></i>
-                <h3>{counter1}+</h3>
-                <p>Users</p>
-            </div>
-            <div className="feature-card" data-aos="zoom-in" data-aos-delay="200">
-                <i className="fas fa-briefcase feature-icon"></i>
-                <h3>{counter2}+</h3>
-                <p>Businesses</p>
-            </div>
-            <div className="feature-card" data-aos="zoom-in" data-aos-delay="300">
-                <i className="fas fa-bus feature-icon"></i>
-                <h3>{counter3}+</h3>
-                <p>Buses Available</p>
-            </div>
-        </div>
-        <div className="about-cta">
-            <a href="#services" className="btn-primary" data-aos="fade-right">Explore Our Services</a>
-            <a href="#contact" className="btn-secondary" data-aos="fade-left">Contact Us</a>
-        </div>
-    </div>
-</section>
-            {/* Map Section */}
-            <section id="map" className="map-section">
-                <h2>Discover Nairobi</h2>
-                <MapContainer center={[-1.286389, 36.817223]} zoom={12} scrollWheelZoom={false} style={{ height: '400px' }}>
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    <Marker position={[-1.286389, 36.817223]}>
-                        <Popup>Nairobi City Center</Popup>
-                    </Marker>
-                </MapContainer>
+                <div className="about-container" data-aos="fade-up">
+                    <h2 className="about-title">About NairobiKonnect</h2>
+                    <p className="about-description">
+                        NairobiKonnect is your gateway to discovering the best Nairobi has to offer. 
+                        Whether you're booking a bus, shopping, or connecting with local businesses, 
+                        we're here to make your experience seamless and enjoyable.
+                    </p>
+                    <div className="about-features">
+                        <div className="feature-card" data-aos="zoom-in" data-aos-delay="100">
+                            <i className="fas fa-users feature-icon"></i>
+                            <h3>{counter1}+</h3>
+                            <p>Users</p>
+                        </div>
+                        <div className="feature-card" data-aos="zoom-in" data-aos-delay="200">
+                            <i className="fas fa-briefcase feature-icon"></i>
+                            <h3>{counter2}+</h3>
+                            <p>Businesses</p>
+                        </div>
+                        <div className="feature-card" data-aos="zoom-in" data-aos-delay="300">
+                            <i className="fas fa-bus feature-icon"></i>
+                            <h3>{counter3}+</h3>
+                            <p>Buses Available</p>
+                        </div>
+                    </div>
+                    <div className="about-cta">
+                        <a href="#services" className="btn-primary" data-aos="fade-right">Explore Our Services</a>
+                        <a href="#contact" className="btn-secondary" data-aos="fade-left">Contact Us</a>
+                    </div>
+                </div>
             </section>
 
             <section id="testimonials" className="testimonials">
@@ -473,3 +450,4 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+

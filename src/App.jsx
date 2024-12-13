@@ -26,9 +26,9 @@ import LogoutPage from './components/pages/Logout';
 
 function App() {
     return (
-        <AuthProvider> {/* Wrap your application with AuthProvider */}
+        <AuthProvider>
             <Router>
-                <Navbar /> {/* Include Navbar here */}
+                <Navbar /> 
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index element={<Landing />} />
