@@ -1,111 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -223,20 +116,6 @@ const LandingPage = () => {
         </div>
     </div>
 </section>
-            {/* Map Section */}
-            <section id="map" className="map-section">
-                <h2>Discover Nairobi</h2>
-                <MapContainer center={[-1.286389, 36.817223]} zoom={12} scrollWheelZoom={false} style={{ height: '400px' }}>
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    <Marker position={[-1.286389, 36.817223]}>
-                        <Popup>Nairobi City Center</Popup>
-                    </Marker>
-                </MapContainer>
-            </section>
-
             <section id="testimonials" className="testimonials">
                 <div className="testimonials-container" data-aos="fade-up">
                     <h2 className="testimonials-title">What Our Users Say</h2>
@@ -245,7 +124,7 @@ const LandingPage = () => {
                         <p className="testimonial-author">- Jane Doe</p>
                     </div>
                     <div className="testimonial">
-                        <p className="testimonial-quote">"As a business owner, I've reached more customers than ever. Highly recommend!"</p>
+                        <p className="testimonial-quote">" As a business owner, I've reached more customers than ever. Highly recommend!"</p>
                         <p className="testimonial-author">- John Smith</p>
                     </div>
                     <div className="testimonial-form">
